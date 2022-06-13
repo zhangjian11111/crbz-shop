@@ -1,0 +1,5 @@
+spring:
+  profiles:
+    active: dev
+  application:
+    name: CRBZ-shop-gateway #当前服务的名称

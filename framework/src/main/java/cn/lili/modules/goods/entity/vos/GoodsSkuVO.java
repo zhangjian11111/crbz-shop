@@ -5,6 +5,7 @@ import cn.lili.modules.goods.entity.dos.GoodsSku;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
@@ -18,6 +19,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode(callSuper = true)
 public class GoodsSkuVO extends GoodsSku {
 
     private static final long serialVersionUID = -7651149660489332344L;

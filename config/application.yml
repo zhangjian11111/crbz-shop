@@ -20,6 +20,7 @@ management:
       exposure:
         include: '*'
 spring:
+  ip: 192.168.2.194
   # 要在其中注册的Spring Boot Admin Server的URL。
   boot:
     admin:
@@ -29,7 +30,7 @@ spring:
     type: redis
   # Redis
   redis:
-    host: 192.168.2.195
+    host: ${spring.ip}
     port: 6379
     #password: lilishop
     lettuce:
@@ -268,7 +269,7 @@ lili:
   data:
     elasticsearch:
       cluster-name: elasticsearch
-      cluster-nodes: 192.168.2.195:9200
+      cluster-nodes: ${spring.ip}:9200
       index:
         number-of-replicas: 0
         number-of-shards: 3
@@ -279,7 +280,7 @@ lili:
     #        password: LiLiShopES
 
     logstash:
-      server: 192.168.2.195:4560
+      server: ${spring.ip}:4560
     rocketmq:
       promotion-topic: lili_promotion_topic
       promotion-group: lili_promotion_group
@@ -300,7 +301,7 @@ lili:
       after-sale-topic: lili_after_sale_topic
       after-sale-group: lili_after_sale_group
 rocketmq:
-  name-server: 192.168.2.195:9876
+  name-server: ${spring.ip}:9876
   isVIPChannel: false
   producer:
     group: lili_group
@@ -309,7 +310,7 @@ rocketmq:
 xxl:
   job:
     admin:
-      addresses: http://192.168.2.195:9001/xxl-job-admin
+      addresses: http://${spring.ip}:9001/xxl-job-admin
     executor:
       appname: xxl-job-executor-lilishop
       address:

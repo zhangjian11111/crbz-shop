@@ -85,7 +85,7 @@ public abstract class BaseElasticsearchService {
      */
     protected void createIndexRequest(String index) {
         try {
-            deleteIndexRequest(index);
+//            deleteIndexRequest(index);
             CreateIndexRequest request = new CreateIndexRequest(index);
             //Settings for this index
             request.settings(Settings.builder()

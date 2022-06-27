@@ -20,7 +20,7 @@ management:
       exposure:
         include: '*'
 spring:
-  ip: 192.168.2.194
+  ip: 192.168.2.192
   # 要在其中注册的Spring Boot Admin Server的URL。
   boot:
     admin:
@@ -177,21 +177,21 @@ mybatis-plus:
 #    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 
 # 日志
-logging:
+#logging:
   # 输出级别
-  level:
-    cn.lili: info
+#  level:
+#    cn.lili: info
   #    org.hibernate: debug
   #    org.springframework: debug
-  file:
+#  file:
     # 指定路径
-    path: crbz-logs
-  logback:
-    rollingpolicy:
+#    name: H:/CRBZ-shop/crbz-logs/config/${spring.application.name}-%d{yyyy-MM-dd}.log
+#  logback:
+#    rollingpolicy:
       # 最大保存天数
-      max-history: 7
+#      max-history: 7
       # 每个文件最大大小
-      max-file-size: 5MB
+#      max-file-size: 5MB
 #加密参数
 jasypt:
   encryptor:
@@ -241,16 +241,16 @@ lili:
     sk: zhNKVrJK6UPOhqIjn8AQvG37b9sz6
   #域名
   domain:
-    pc: http://192.168.0.116:8888
-    wap: http://192.168.0.116:8888
-    seller: http://192.168.0.116:8888
-    admin: http://192.168.0.116:8888
+    pc: https://yqswgjz.mynatapp.cc
+    wap: https://yqswgjz.mynatapp.cc
+    seller: https://yqswgjz.mynatapp.cc
+    admin: https://yqswgjz.mynatapp.cc
   #api地址
   api:
-    buyer: https://z171l91606.51mypc.cn
-    base: http://192.168.0.116:8888
-    manager: http://192.168.0.116:8888
-    seller: http://192.168.0.116:8888
+    buyer: https://yqswgjz.mynatapp.cc
+    base: https://yqswgjz.mynatapp.cc
+    manager: https://yqswgjz.mynatapp.cc
+    seller: https://yqswgjz.mynatapp.cc
 
   # jwt 细节设定
   jwt-setting:

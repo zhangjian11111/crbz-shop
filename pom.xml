@@ -72,6 +72,7 @@
         <module>consumer</module>
         <module>admin</module>
         <module>zjmallGateway</module>
+        <module>jhkjtools</module>
     </modules>
 
     <build>

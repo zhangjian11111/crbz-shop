@@ -25,7 +25,7 @@ management:
       exposure:
         include: '*'
 spring:
-  ip: 192.168.2.194
+  ip: 192.168.2.192
   application:
     name: consumer
   # 要在其中注册的Spring Boot Admin Server的URL。
@@ -186,7 +186,7 @@ logging:
   #    org.springframework: debug
   file:
     # 指定路径
-    path: H:\\CRBZ-shop\\crbz-logs
+    path: H:/CRBZ-shop/crbz-logs/consumer
   logback:
     rollingpolicy:
       # 最大保存天数

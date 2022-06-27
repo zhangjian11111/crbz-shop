@@ -46,6 +46,20 @@ spring:
           predicates:
             #            - Host=**.manager,manager
             - Host=manager.yqswgjz.mynatapp.cc
+  #周报开始
+        - id: zjmall-ZBBBBB
+          uri: http://localhost:8012
+          predicates:
+            - Path=/pages/**
+        - id: zjmall-ZBBB
+          uri: http://localhost:8012
+          predicates:
+            - Host=zb.yqswgjz.mynatapp.cc
+        - id: zjmall-ZB
+          uri: http://localhost:8012
+          predicates:
+            - Path=/zbfc/**
+  #周报结束
         - id: zjmall-chatwithme
           uri: http://localhost:8899
           predicates:

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.itheima.mapper.ZbforcoshineMapper">
+
+    <!--执行自定义SQL将返回结果保存到Map中-->
+    <select id="weGet" resultType="java.util.HashMap">
+        select * from zbforcoshine;
+    </select>
+
+</mapper>

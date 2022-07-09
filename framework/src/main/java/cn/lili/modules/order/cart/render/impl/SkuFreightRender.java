@@ -1,5 +1,10 @@
 package cn.lili.modules.order.cart.render.impl;
 
+import cn.hutool.http.HttpUtil;
+import cn.hutool.json.JSONObject;
+import cn.hutool.json.JSONUtil;
+import cn.lili.common.enums.ResultCode;
+import cn.lili.common.exception.ServiceException;
 import cn.lili.common.utils.CurrencyUtil;
 import cn.lili.modules.member.entity.dos.MemberAddress;
 import cn.lili.modules.order.cart.entity.dto.TradeDTO;
@@ -11,6 +16,7 @@ import cn.lili.modules.store.entity.dto.FreightTemplateChildDTO;
 import cn.lili.modules.store.entity.enums.FreightTemplateEnum;
 import cn.lili.modules.store.entity.vos.FreightTemplateVO;
 import cn.lili.modules.store.service.FreightTemplateService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,6 +33,7 @@ import java.util.stream.Collectors;
  * @since 2020-07-02 14:47
  */
 @Service
+@Slf4j
 public class SkuFreightRender implements CartRenderStep {
 
     @Autowired
@@ -39,6 +46,7 @@ public class SkuFreightRender implements CartRenderStep {
 
     @Override
     public void render(TradeDTO tradeDTO) {
+        log.info("运费计算运费计算：：！！！");
         List<CartSkuVO> cartSkuVOS = tradeDTO.getCheckedSkuList();
         //会员收货地址问题处理
         MemberAddress memberAddress = tradeDTO.getMemberAddress();
@@ -46,11 +54,44 @@ public class SkuFreightRender implements CartRenderStep {
         if (memberAddress == null) {
             return;
         }
+
+        //计算距离
+        int distance = 0;
+        int counting = 0;
+        int distanceNum = 2;
+        ArrayList<String> list = new ArrayList<>();
+        String gdMapUrl = "https://restapi.amap.com/v3/distance?key=2ffb3bf9fe600c584a6fd6b64b7d4791&origins=125.393144,43.832683&destination="+memberAddress.getLon()+","+memberAddress.getLat()+"&type=1";
+        log.info(gdMapUrl);
+        String content = HttpUtil.get(gdMapUrl);
+        JSONObject distanceObject = JSONUtil.parseObj(content);
+        String resultsObject = distanceObject.getStr("results");
+        for (String retval: resultsObject.split("\\[|:|\\{|]|,|\"|}")){
+            log.info("分割的字符串："+retval);
+            list.add(retval);
+            counting++;
+            if (retval.equals("distance")){
+                distanceNum += counting;
+            }
+            log.info("距离在这里：：："+counting+"    ::"+distanceNum);
+        }
+        log.info("list里存的数据：：："+list+"长度：：："+list.size());
+        try {
+            distance = Integer.parseInt(list.get(distanceNum));
+        }catch (ServiceException se) {
+            log.error(ResultCode.DISTANCE_CHANGE.message(), se);
+            throw new ServiceException(ResultCode.DISTANCE_CHANGE);
+        }
+        log.info(content);
+        log.info("距离距离：：："+distance);
+
+
         //运费分组信息
         Map<String, List<String>> freightGroups = freightTemplateGrouping(cartSkuVOS);
 
         //循环运费模版
         for (Map.Entry<String, List<String>> freightTemplateGroup : freightGroups.entrySet()) {
+            log.info("运费模板key：："+freightTemplateGroup.getKey());
+            log.info("运费模板value：："+freightTemplateGroup.getValue());
 
             //商品id列表
             List<String> skuIds = freightTemplateGroup.getValue();
@@ -64,6 +105,7 @@ public class SkuFreightRender implements CartRenderStep {
                     && freightTemplate.getFreightTemplateChildList() != null
                     && !freightTemplate.getFreightTemplateChildList().isEmpty()) {
                 //店铺模版免运费则跳过
+                log.info("运费模板类型："+freightTemplate.getPricingMethod());
                 if (freightTemplate.getPricingMethod().equals(FreightTemplateEnum.FREE.name())) {
                     break;
                 }
@@ -101,6 +143,10 @@ public class SkuFreightRender implements CartRenderStep {
                                 item.getNum().doubleValue() :
                                 CurrencyUtil.mul(item.getNum(), item.getGoodsSku().getWeight())
                 ).sum();
+                if (freightTemplateChildDTO.getPricingMethod().equals(FreightTemplateEnum.DISTANCE.name())){
+                    count = Double.valueOf(distance)/1000;
+                }
+                log.info("计数（件数/重量/距离："+count);
 
                 //计算运费
                 Double countFreight = countFreight(count, freightTemplateChildDTO);

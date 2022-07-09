@@ -166,6 +166,7 @@ public enum ResultCode {
     CART_PINTUAN_NOT_EXIST_ERROR(30002, "拼团活动已关闭，请稍后重试"),
     CART_PINTUAN_LIMIT_ERROR(30003, "购买数量超过拼团活动限制数量"),
     SHIPPING_NOT_APPLY(30005, "购物商品不支持当前收货地址配送"),
+    DISTANCE_CHANGE(36666,"高德地图接口参数改变，请关注！！！"),
 
     /**
      * 订单

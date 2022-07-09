@@ -1,5 +1,6 @@
 package cn.lili.controller.order;
 
+import cn.hutool.http.HttpUtil;
 import cn.lili.common.aop.annotation.PreventDuplicateSubmissions;
 import cn.lili.common.enums.ResultCode;
 import cn.lili.common.enums.ResultUtil;
@@ -159,6 +160,7 @@ public class CartController {
     public ResultMessage<TradeDTO> cartChecked(@NotNull(message = "读取选中列表") String way) {
         try {
             //读取选中的列表
+            log.info("结算信息："+this.cartService.getCheckedTradeDTO(CartTypeEnum.valueOf(way)));
             return ResultUtil.data(this.cartService.getCheckedTradeDTO(CartTypeEnum.valueOf(way)));
         } catch (ServiceException se) {
             log.error(se.getMsg(), se);
@@ -172,11 +174,20 @@ public class CartController {
     @ApiOperation(value = "选择收货地址")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "shippingAddressId", value = "收货地址id ", required = true, paramType = "query"),
-            @ApiImplicitParam(name = "way", value = "购物车类型 ", paramType = "query")
+            @ApiImplicitParam(name = "way", value = "购物车类型 ", paramType = "query"),
+            @ApiImplicitParam(name = "lon", value = "经度 ", paramType = "query"),
+            @ApiImplicitParam(name = "lat", value = "纬度 ", paramType = "query")
+
     })
     @GetMapping("/shippingAddress")
     public ResultMessage<Object> shippingAddress(@NotNull(message = "收货地址ID不能为空") String shippingAddressId,
-                                                 String way) {
+                                                 String way,String lon,String lat) {
+        String gdMapUrl = "https://restapi.amap.com/v3/distance?key=2ffb3bf9fe600c584a6fd6b64b7d4791&origins=125.393147,43.832692&destination="+lon+","+lat+"&type=1";
+        String content = HttpUtil.get(gdMapUrl);
+        log.info(gdMapUrl);
+        log.info(content);
+        log.info("shippingAddressId:"+shippingAddressId);
+        log.info("way:"+way);
         try {
             cartService.shippingAddress(shippingAddressId, way);
             return ResultUtil.success();

@@ -123,7 +123,13 @@ public class SkuFreightRender implements CartRenderStep {
                     }
                 }
                 //如果没有匹配到物流规则，则说明不支持配送
-                if (freightTemplateChild == null) {
+                if (freightTemplateChild == null || distance > 10000 ) {
+
+                    if (distance > 10000){
+                        log.info("距离为："+Double.valueOf(distance)/1000+"大于10公里超出配送范围！！！");
+
+                    }
+
                     if (tradeDTO.getNotSupportFreight() == null) {
                         tradeDTO.setNotSupportFreight(new ArrayList<>());
                     }

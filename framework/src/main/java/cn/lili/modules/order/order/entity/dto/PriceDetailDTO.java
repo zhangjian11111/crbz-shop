@@ -216,6 +216,7 @@ public class PriceDetailDTO implements Serializable {
         for (PriceDetailDTO price : priceDetailDTOS) {
             this.increase(price);
         }
+
     }
 
 

@@ -194,15 +194,15 @@ lili:
   #短信模版配置
   sms:
     #登录
-    LOGIN: SMS_205755300
+    LOGIN: SMS_245210228
     #注册
-    REGISTER: SMS_205755298
+    REGISTER: SMS_245210228
     #找回密码
-    FIND_USER: SMS_205755301
+    FIND_USER: SMS_245210228
     #设置密码
-    UPDATE_PASSWORD: SMS_205755297
+    UPDATE_PASSWORD: SMS_245210228
     #支付密码
-    WALLET_PASSWORD: SMS_205755301
+    WALLET_PASSWORD: SMS_245210228
   system:
     isTestModel: false
   statistics:
@@ -283,9 +283,9 @@ xxl:
     admin:
       addresses: http://${spring.ip}:9001/xxl-job-admin
     executor:
-      appname: xxl-job-executor-lilishop
+      appname: xxl-job-executor-crbzshop
       address:
-      ip:
+      ip: 192.168.2.1
       port: 8891
       logpath: ./xxl-job/executor
       logretentiondays: 7

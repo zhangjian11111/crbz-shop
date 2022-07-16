@@ -200,7 +200,7 @@ jasypt:
 
 lili:
   system:
-    isDemoSite: true
+    isDemoSite: false
   statistics:
     # 在线人数统计 X 小时。这里设置48，即统计过去48小时每小时在线人数
     onlineMember: 48
@@ -281,9 +281,9 @@ xxl:
     admin:
       addresses: http://${spring.ip}:9001/xxl-job-admin
     executor:
-      appname: xxl-job-executor-lilishop
+      appname: xxl-job-executor-crbzshop
       address:
-      ip:
+      ip: 192.168.2.1
       port: 8891
       logpath: ./xxl-job/executor
       logretentiondays: 7

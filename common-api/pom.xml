@@ -6,7 +6,7 @@
 
     <parent>
         <groupId>cn.lili</groupId>
-        <artifactId>lili-shop-parent</artifactId>
+        <artifactId>crbz-shop-parent</artifactId>
         <version>${revision}</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
@@ -29,5 +29,5 @@
             </plugin>
         </plugins>
     </build>
-    
+
 </project>

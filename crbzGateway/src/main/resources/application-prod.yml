@@ -14,7 +14,7 @@ spring:
       #            allowedOriginPatterns: '*'
       routes:
         - id: zjmall-buyer
-          uri: http://localhost:8888
+          uri: http://localhost:8859
           predicates:
             - Path=/buyer/**
         - id: zjmall-common
@@ -29,14 +29,14 @@ spring:
           uri: http://localhost:8855
           predicates:
             - Path=/store/**
-        - id: zjmall-nginx-buyer
-          uri: http://localhost:11000
-          predicates:
-            - Host=zjmallbuyer.yqswgjz.mynatapp.cc
-        - id: zjmall-nginx-buyerH5
-          uri: http://localhost:8869
-          predicates:
-            - Host=yqswgjz.mynatapp.cc
+#        - id: zjmall-nginx-buyer
+#          uri: http://localhost:11000
+#          predicates:
+#            - Host=zjmallbuyer.yqswgjz.mynatapp.cc
+#        - id: zjmall-nginx-buyerH5
+#          uri: http://localhost:8869
+#          predicates:
+#            - Host=yqswgjz.mynatapp.cc
         - id: zjmall-nginx-seller
           uri: http://localhost:10002
           predicates:

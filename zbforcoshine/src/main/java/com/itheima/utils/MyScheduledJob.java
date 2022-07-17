@@ -69,7 +69,7 @@ public class MyScheduledJob {
             }*/
             mailService.sendAttachmentsMail(timeName.format(new Date())+"张建周报",
                     "<h1 style=\"color: #f78989\">早上好呀，这是张建的本周周报。</h1>",
-                    "H:\\CRBZ-shop\\zb\\",
+                    "\\home\\source\\crbzapirun\\CRBZ-shop\\zb\\",
                     "张建周报"+timeName.format(new Date())+".xlsx",to3,to4);
             log.info("邮件发送成功!!!");
         } catch (MessagingException e) {
@@ -100,14 +100,14 @@ public class MyScheduledJob {
         String formatStartTime = timeName.format(startTime);
         log.info(formatEndTime+",,,"+formatStartTime);
 
-        try {
-            /*Runtime.getRuntime().exec("rundll32 url.dll,FileProtocolHandler "+
-                    "http://localhost:8012/zbfc/export/?starttime="+formatStartTime+"&endtime="+formatEndTime);*/
-            Runtime.getRuntime().exec("C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe "+
-                    "http://localhost:8012/zbfc/export/?starttime="+formatStartTime+"&endtime="+formatEndTime);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            /*Runtime.getRuntime().exec("rundll32 url.dll,FileProtocolHandler "+
+//                    "http://localhost:8012/zbfc/export/?starttime="+formatStartTime+"&endtime="+formatEndTime);*/
+//            Runtime.getRuntime().exec("C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe "+
+//                    "http://192.168.2.192:8012/zbfc/export/?starttime="+formatStartTime+"&endtime="+formatEndTime);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
 
 
         try {
@@ -118,7 +118,7 @@ public class MyScheduledJob {
             }
             mailService.sendTestAttachmentsMail(timeName.format(new Date())+"周报",
                     "<h1 style=\"color: #f78989\">早上好呀，这是张建的本周周报。</h1>",
-                    "H:\\CRBZ-shop\\zb\\",
+                    "\\home\\source\\crbzapirun\\CRBZ-shop\\zb\\",
                     "张建周报"+timeName.format(new Date())+".xlsx",to1,to2);
             log.info("邮件发送成功!!!");
         } catch (MessagingException e) {

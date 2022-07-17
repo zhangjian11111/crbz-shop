@@ -12,7 +12,7 @@
     </parent>
 
     <groupId>cn.lili</groupId>
-    <artifactId>lili-shop-parent</artifactId>
+    <artifactId>crbz-shop-parent</artifactId>
     <version>${revision}</version>
     <packaging>pom</packaging>
 
@@ -71,8 +71,8 @@
         <module>common-api</module>
         <module>consumer</module>
         <module>admin</module>
-        <module>zjmallGateway</module>
-        <module>jhkjtools</module>
+        <module>crbzGateway</module>
+        <module>zbforcoshine</module>
     </modules>
 
     <build>

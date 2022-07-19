@@ -25,7 +25,7 @@ management:
       exposure:
         include: '*'
 spring:
-  ip: 192.168.2.192
+  ip: 192.168.2.194
   application:
     name: consumer
   # 要在其中注册的Spring Boot Admin Server的URL。

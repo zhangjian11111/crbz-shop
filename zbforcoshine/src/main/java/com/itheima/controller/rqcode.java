@@ -35,7 +35,6 @@ public class rqcode {
     public static void main(String[] args) {
 //        R r = new rqcode().deQrcode();
 //        System.out.println(r);
-        HttpUtil.get("http://192.168.2.192:8012/zbfc/export");
 
 
     }

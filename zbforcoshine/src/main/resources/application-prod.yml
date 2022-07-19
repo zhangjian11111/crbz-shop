@@ -29,8 +29,8 @@ spring:
     druid:
       driver-class-name: com.mysql.cj.jdbc.Driver
 #      url: jdbc:mysql://192.168.2.200:3306/ssm_db?serverTimezone=UTC
-      url: jdbc:mysql://192.168.2.180:3306/zbforcoshine?serverTimezone=UTC
-      username:  zjzj
+      url: jdbc:mysql://${spring.ip}:3306/zbforcoshine?serverTimezone=UTC
+      username: root
       password: 640102
 
 mybatis-plus:

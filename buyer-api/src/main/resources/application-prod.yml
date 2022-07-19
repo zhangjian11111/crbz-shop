@@ -75,8 +75,8 @@ spring:
         name: crbzshop
         type: com.alibaba.druid.pool.DruidDataSource
         driverClassName: com.mysql.cj.jdbc.Driver
-        url: jdbc:mysql://192.168.2.180:3306/${spring.shardingsphere.datasource.default-datasource.name}?useUnicode=true&characterEncoding=utf-8&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Shanghai
-        username: zjzj
+        url: jdbc:mysql://${spring.ip}:3306/${spring.shardingsphere.datasource.default-datasource.name}?useUnicode=true&characterEncoding=utf-8&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Shanghai
+        username: root
         password: 640102
         maxActive: 50
         initialSize: 10

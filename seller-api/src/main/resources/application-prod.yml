@@ -23,6 +23,7 @@ management:
         include: '*'
 spring:
   ip: 192.168.2.194
+  mysqlip: 192.168.2.198
   application:
     name: seller-api
   # 要在其中注册的Spring Boot Admin Server的URL。
@@ -66,7 +67,7 @@ spring:
         name: crbzshop
         type: com.alibaba.druid.pool.DruidDataSource
         driverClassName: com.mysql.cj.jdbc.Driver
-        url: jdbc:mysql://${spring.ip}:3306/${spring.shardingsphere.datasource.default-datasource.name}?useUnicode=true&characterEncoding=utf-8&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Shanghai
+        url: jdbc:mysql://${spring.mysqlip}:3306/${spring.shardingsphere.datasource.default-datasource.name}?useUnicode=true&characterEncoding=utf-8&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Shanghai
         username: root
         password: 640102
         maxActive: 20

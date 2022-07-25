@@ -2,6 +2,7 @@ package cn.lili.modules.search.mapper;
 
 import cn.lili.modules.search.entity.dos.CustomWords;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import cn.lili.mybatis.mybatisplus.SpiceBaseMapper;
 
 /**
  * 自定义分词数据处理层
@@ -9,5 +10,6 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * @author paulG
  * @since 2020/10/15
  **/
-public interface CustomWordsMapper extends BaseMapper<CustomWords> {
+public interface CustomWordsMapper extends BaseMapper<CustomWords>, SpiceBaseMapper<CustomWords>{
+
 }

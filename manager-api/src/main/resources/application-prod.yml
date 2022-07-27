@@ -23,7 +23,7 @@ management:
         include: '*'
 spring:
   ip: 192.168.2.194
-  mysqlip: 192.168.2.193
+  mysqlip: 192.168.2.194
   application:
     name: manager-api
   # 要在其中注册的Spring Boot Admin Server的URL。

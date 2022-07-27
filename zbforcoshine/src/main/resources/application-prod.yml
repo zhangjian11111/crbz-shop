@@ -2,7 +2,7 @@ server:
   port: 8012
 
 spring:
-  mysqlip: 192.168.2.194
+  mysqlip: 192.168.2.191
   mail:
 #    host: smtp.qq.com #发送邮件服务器
     host: smtp.exmail.qq.com #发送邮件服务器

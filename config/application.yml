@@ -21,17 +21,17 @@ management:
         include: '*'
 spring:
   ip: 192.168.2.194
-  mysqlip: 192.168.2.193
+  mysqlip: 127.0.0.1
   # 要在其中注册的Spring Boot Admin Server的URL。
   boot:
     admin:
       client:
-        url: http://127.0.0.1:8000
+        url: http://192.168.2.145:8000
   cache:
     type: redis
   # Redis
   redis:
-    host: ${ip}
+    host: ${spring.ip}
     port: 6379
     #password: lilishop
     lettuce:
@@ -63,7 +63,7 @@ spring:
         type: com.alibaba.druid.pool.DruidDataSource
         driverClassName: com.mysql.cj.jdbc.Driver
         url: jdbc:mysql://${spring.mysqlip}:3306/crbzshop?useUnicode=true&characterEncoding=utf-8&useSSL=false&rewriteBatchedStatements=true&allowPublicKeyRetrieval=true&serverTimezone=Asia/Shanghai
-        username: zjzj
+        username: root
         password: 640102
         maxActive: 50
         initialSize: 20
@@ -162,7 +162,7 @@ ignored:
 swagger:
   title: CRBZ API接口文档
   description: CRBZ Api Documentation
-  version: 4.2.2
+  version: 1.0.0
   termsOfServiceUrl: https://www.baidu.com
   contact:
     name: crbzshop
@@ -271,7 +271,7 @@ lili:
   data:
     elasticsearch:
       cluster-name: elasticsearch
-      cluster-nodes: ${ip}:9200
+      cluster-nodes: ${spring.ip}:9200
       index:
         number-of-replicas: 0
         number-of-shards: 3

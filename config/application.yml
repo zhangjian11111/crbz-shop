@@ -26,7 +26,7 @@ spring:
   boot:
     admin:
       client:
-        url: http://192.168.2.145:8000
+        url: http://${spring.ip}:8000
   cache:
     type: redis
   # Redis

@@ -22,8 +22,8 @@ management:
       exposure:
         include: '*'
 spring:
-  ip: 192.168.2.191
-  mysqlip: 192.168.2.191
+  ip: 127.0.0.1
+  mysqlip: 127.0.0.1
   application:
     name: seller-api
   # 要在其中注册的Spring Boot Admin Server的URL。

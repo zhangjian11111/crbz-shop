@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.NotEmpty;
+import java.util.Date;
 
 /**
  * 自定义分词
@@ -37,8 +38,12 @@ public class CustomWords extends BaseEntity {
     private String name;
 
 
-    @ApiModelProperty(value = "是否禁用: 0,禁用;1,不禁用")
+    @ApiModelProperty(value = "是否禁用")
     private Integer disabled;
 
 
+    public CustomWords(String name) {
+        this.name = name;
+        this.disabled = 0;
+    }
 }

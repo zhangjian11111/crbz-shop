@@ -5,6 +5,8 @@ import cn.hutool.core.convert.Convert;
 import cn.hutool.core.text.CharSequenceUtil;
 import cn.hutool.crypto.SecureUtil;
 import cn.lili.cache.Cache;
+import cn.lili.common.event.TransactionCommitSendMQEvent;
+import org.springframework.context.ApplicationEventPublisher;
 import cn.lili.cache.CachePrefix;
 import cn.lili.common.context.ThreadContextHolder;
 import cn.lili.common.enums.ResultCode;
@@ -92,11 +94,9 @@ public class MemberServiceImpl extends ServiceImpl<MemberMapper, Member> impleme
      */
     @Autowired
     private RocketmqCustomProperties rocketmqCustomProperties;
-    /**
-     * RocketMQ
-     */
+
     @Autowired
-    private RocketMQTemplate rocketMQTemplate;
+    private ApplicationEventPublisher applicationEventPublisher;
     /**
      * 缓存
      */
@@ -259,8 +259,8 @@ public class MemberServiceImpl extends ServiceImpl<MemberMapper, Member> impleme
         member.setId(SnowFlake.getIdStr());
         //保存会员
         this.save(member);
-        String destination = rocketmqCustomProperties.getMemberTopic() + ":" + MemberTagsEnum.MEMBER_REGISTER.name();
-        rocketMQTemplate.asyncSend(destination, member, RocketmqSendCallbackBuilder.commonCallback());
+        // 发送会员注册信息
+        applicationEventPublisher.publishEvent(new TransactionCommitSendMQEvent("new member register", rocketmqCustomProperties.getMemberTopic(), MemberTagsEnum.MEMBER_REGISTER.name(), member));
     }
 
     @Override
@@ -302,10 +302,7 @@ public class MemberServiceImpl extends ServiceImpl<MemberMapper, Member> impleme
             throw new ServiceException(ResultCode.USER_NOT_LOGIN);
         }
         Member member = this.getById(tokenUser.getId());
-        if (member.getPassword().equals(DEFAULT_PASSWORD)) {
-            return true;
-        }
-        return false;
+        return member.getPassword().equals(DEFAULT_PASSWORD);
 
     }
 
@@ -364,8 +361,8 @@ public class MemberServiceImpl extends ServiceImpl<MemberMapper, Member> impleme
         Member member = new Member(userName, new BCryptPasswordEncoder().encode(password), mobilePhone);
         //注册成功后用户自动登录
         registerHandler(member);
-        Token token = memberTokenGenerate.createToken(member, false);
-        return token;
+        return memberTokenGenerate.createToken(member, false);
+
     }
 
     @Override
@@ -477,8 +474,8 @@ public class MemberServiceImpl extends ServiceImpl<MemberMapper, Member> impleme
                 memberPointMessage.setPoint(point);
                 memberPointMessage.setType(type);
                 memberPointMessage.setMemberId(memberId);
-                String destination = rocketmqCustomProperties.getMemberTopic() + ":" + MemberTagsEnum.MEMBER_POINT_CHANGE.name();
-                rocketMQTemplate.asyncSend(destination, memberPointMessage, RocketmqSendCallbackBuilder.commonCallback());
+                // 发送会员注册信息
+                applicationEventPublisher.publishEvent(new TransactionCommitSendMQEvent("new member register", rocketmqCustomProperties.getMemberTopic(), MemberTagsEnum.MEMBER_REGISTER.name(), member));
                 return true;
             }
             return false;

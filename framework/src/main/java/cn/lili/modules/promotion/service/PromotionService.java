@@ -29,4 +29,11 @@ public interface PromotionService {
      */
     Map<String, Object> getGoodsSkuPromotionMap(String storeId, String goodsSkuId);
 
+    /**
+     * 删除商品，则删除相关促销信息
+     *
+     * @param goodsIdsJsonStr
+     */
+    void removeByGoodsIds(String goodsIdsJsonStr);
+
 }

@@ -190,6 +190,7 @@ public class MemberServiceImpl extends ServiceImpl<MemberMapper, Member> impleme
     }
 
     @Override
+    @Transactional
     public Token autoRegister(ConnectAuthUser authUser) {
 
         if (CharSequenceUtil.isEmpty(authUser.getNickname())) {
@@ -233,6 +234,7 @@ public class MemberServiceImpl extends ServiceImpl<MemberMapper, Member> impleme
     }
 
     @Override
+    @Transactional
     public Token mobilePhoneLogin(String mobilePhone) {
         QueryWrapper<Member> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("mobile", mobilePhone);
@@ -255,6 +257,7 @@ public class MemberServiceImpl extends ServiceImpl<MemberMapper, Member> impleme
      *
      * @param member
      */
+    @Transactional
     private void registerHandler(Member member) {
         member.setId(SnowFlake.getIdStr());
         //保存会员
@@ -354,6 +357,7 @@ public class MemberServiceImpl extends ServiceImpl<MemberMapper, Member> impleme
     }
 
     @Override
+    @Transactional
     public Token register(String userName, String password, String mobilePhone) {
         //检测会员信息
         checkMember(userName, mobilePhone);
@@ -399,6 +403,7 @@ public class MemberServiceImpl extends ServiceImpl<MemberMapper, Member> impleme
     }
 
     @Override
+    @Transactional
     public Member addMember(MemberAddDTO memberAddDTO) {
 
         //检测会员信息
@@ -475,7 +480,7 @@ public class MemberServiceImpl extends ServiceImpl<MemberMapper, Member> impleme
                 memberPointMessage.setType(type);
                 memberPointMessage.setMemberId(memberId);
                 // 发送会员注册信息
-                applicationEventPublisher.publishEvent(new TransactionCommitSendMQEvent("new member register", rocketmqCustomProperties.getMemberTopic(), MemberTagsEnum.MEMBER_REGISTER.name(), member));
+                applicationEventPublisher.publishEvent(new TransactionCommitSendMQEvent("update member point", rocketmqCustomProperties.getMemberTopic(), MemberTagsEnum.MEMBER_POINT_CHANGE.name(), memberPointMessage));
                 return true;
             }
             return false;

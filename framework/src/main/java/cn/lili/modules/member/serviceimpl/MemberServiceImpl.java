@@ -5,6 +5,7 @@ import cn.hutool.core.convert.Convert;
 import cn.hutool.core.text.CharSequenceUtil;
 import cn.hutool.crypto.SecureUtil;
 import cn.lili.cache.Cache;
+import cn.lili.common.aop.annotation.DemoSite;
 import cn.lili.common.event.TransactionCommitSendMQEvent;
 import org.springframework.context.ApplicationEventPublisher;
 import cn.lili.cache.CachePrefix;
@@ -258,7 +259,7 @@ public class MemberServiceImpl extends ServiceImpl<MemberMapper, Member> impleme
      * @param member
      */
     @Transactional
-    private void registerHandler(Member member) {
+    public void registerHandler(Member member) {
         member.setId(SnowFlake.getIdStr());
         //保存会员
         this.save(member);
@@ -278,6 +279,7 @@ public class MemberServiceImpl extends ServiceImpl<MemberMapper, Member> impleme
     }
 
     @Override
+    @DemoSite
     public Member modifyPass(String oldPassword, String newPassword) {
         AuthUser tokenUser = UserContext.getCurrentUser();
         if (tokenUser == null) {

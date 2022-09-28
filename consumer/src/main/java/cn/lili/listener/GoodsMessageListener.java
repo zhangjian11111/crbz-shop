@@ -205,10 +205,15 @@ public class GoodsMessageListener implements RocketMQListener<MessageExt> {
                     for (String goodsId : JSONUtil.toList(goodsIdsJsonStr, String.class)) {
                         goodsIndexService.deleteIndex(MapUtil.builder(new HashMap<String, Object>()).put("goodsId", goodsId).build());
                     }
+
                     promotionService.removeByGoodsIds(goodsIdsJsonStr);
                 } catch (Exception e) {
                     log.error("删除商品索引事件执行异常，商品信息: " + new String(messageExt.getBody()), e);
                 }
+                break;
+            case DOWN:
+                String goodsIdsJsonStr = new String(messageExt.getBody());
+                promotionService.removeByGoodsIds(goodsIdsJsonStr);
                 break;
             //规格删除
             case SKU_DELETE:
@@ -276,8 +281,6 @@ public class GoodsMessageListener implements RocketMQListener<MessageExt> {
                 this.goodsIndexService.deleteEsGoodsPromotionByPromotionKey(skuIds, esPromotionKey);
                 this.goodsIndexService.updateEsGoodsIndexPromotions(skuIds, promotions, esPromotionKey);
             } else if (PromotionsScopeTypeEnum.ALL.name().equals(promotions.getScopeType())) {
-                // 更新商品索引促销信息（删除原索引中相关的促销信息，更新索引中促销信息）
-//                this.goodsIndexService.deleteEsGoodsPromotionByPromotionKey(esPromotionKey);
                 this.goodsIndexService.updateEsGoodsIndexAllByList(promotions, esPromotionKey);
             }
         } catch (Exception e) {

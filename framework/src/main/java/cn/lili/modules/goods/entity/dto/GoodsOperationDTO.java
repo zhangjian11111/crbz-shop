@@ -44,6 +44,9 @@ public class GoodsOperationDTO implements Serializable {
     @Min(value = 0, message = "品牌值不正确")
     private String brandId;
 
+    @ApiModelProperty(value = "商品货号sn")
+    private String sn;
+
     @ApiModelProperty(value = "商品名称", required = true)
     @NotEmpty(message = "商品名称不能为空")
     @Length(max = 50, message = "商品名称不能超过50个字符")

@@ -32,6 +32,9 @@ public class GoodsSearchParams extends PageVO {
     @ApiModelProperty(value = "商品编号")
     private String id;
 
+    @ApiModelProperty(value = "商品货号")
+    private String sn;
+
     @ApiModelProperty(value = "商家ID")
     private String storeId;
 
@@ -87,6 +90,9 @@ public class GoodsSearchParams extends PageVO {
         QueryWrapper<T> queryWrapper = new QueryWrapper<>();
         if (CharSequenceUtil.isNotEmpty(goodsId)) {
             queryWrapper.eq("goods_id", goodsId);
+        }
+        if (CharSequenceUtil.isNotEmpty(sn)) {
+            queryWrapper.eq("sn", sn);
         }
         if (CharSequenceUtil.isNotEmpty(goodsName)) {
             queryWrapper.like("goods_name", goodsName);

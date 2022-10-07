@@ -60,6 +60,9 @@ public class Goods extends BaseEntity {
     @ApiModelProperty(value = "计量单位")
     private String goodsUnit;
 
+    @ApiModelProperty(value = "商品货号sn")
+    private String sn;
+
 
     @Length(max = 60, message = "商品卖点太长，不能超过60个字符")
     @ApiModelProperty(value = "卖点")
@@ -158,6 +161,7 @@ public class Goods extends BaseEntity {
         this.categoryPath = goodsOperationDTO.getCategoryPath();
         this.storeCategoryPath = goodsOperationDTO.getStoreCategoryPath();
         this.brandId = goodsOperationDTO.getBrandId();
+        this.sn = goodsOperationDTO.getSn();
         this.templateId = goodsOperationDTO.getTemplateId();
         this.recommend = goodsOperationDTO.getRecommend();
         this.sellingPoint = goodsOperationDTO.getSellingPoint();

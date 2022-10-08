@@ -92,7 +92,7 @@ public class GoodsSearchParams extends PageVO {
             queryWrapper.eq("goods_id", goodsId);
         }
         if (CharSequenceUtil.isNotEmpty(sn)) {
-            queryWrapper.eq("sn", sn);
+            queryWrapper.like("sn", sn);
         }
         if (CharSequenceUtil.isNotEmpty(goodsName)) {
             queryWrapper.like("goods_name", goodsName);

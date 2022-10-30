@@ -65,19 +65,15 @@ public class TradeBuilder {
     /**
      * 构造结算页面
      */
-    public TradeDTO
-    buildChecked(CartTypeEnum checkedWay) {
+    public TradeDTO buildChecked(CartTypeEnum checkedWay) {
         //读取对应购物车的商品信息
         TradeDTO tradeDTO = cartService.readDTO(checkedWay);
         //需要对购物车渲染
         if (isSingle(checkedWay)) {
-            log.info("单品渲染！！！！！");
             renderCartBySteps(tradeDTO, RenderStepStatement.checkedSingleRender);
         } else if (checkedWay.equals(CartTypeEnum.PINTUAN)) {
-            log.info("拼团拼团！！！！");
             renderCartBySteps(tradeDTO, RenderStepStatement.pintuanTradeRender);
         } else {
-            log.info("不是单品不是拼团！！！！");
             renderCartBySteps(tradeDTO, RenderStepStatement.checkedRender);
         }
 

@@ -4,7 +4,7 @@ import cn.lili.common.security.token.Token;
 import lombok.Data;
 
 @Data
-public class QRLoginResultVo {
+public class  QRLoginResultVo {
 
     private Token token;
 

@@ -3,7 +3,7 @@ package cn.lili.mybatis.mybatisplus.external;
 import java.util.List;
 
 /**
- * @author zhangjian
+ * @author paulG
  * @since 2022/7/18
  **/
 public interface SpiceBaseMapper<T> {

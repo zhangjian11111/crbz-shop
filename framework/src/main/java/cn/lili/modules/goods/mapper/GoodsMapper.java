@@ -47,4 +47,5 @@ public interface GoodsMapper extends BaseMapper<Goods> {
      */
     @Select("select g.* from li_goods as g ")
     IPage<GoodsVO> queryByParams(IPage<GoodsVO> page, @Param(Constants.WRAPPER) Wrapper<GoodsVO> queryWrapper);
+
 }

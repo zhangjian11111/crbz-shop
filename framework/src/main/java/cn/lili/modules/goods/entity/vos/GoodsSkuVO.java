@@ -17,9 +17,9 @@ import java.util.List;
  * @since 2020-02-26 23:24:13
  */
 @Data
+@EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(callSuper = true)
 public class GoodsSkuVO extends GoodsSku {
 
     private static final long serialVersionUID = -7651149660489332344L;

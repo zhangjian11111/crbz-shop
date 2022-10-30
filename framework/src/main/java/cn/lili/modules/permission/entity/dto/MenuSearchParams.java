@@ -24,7 +24,7 @@ public class MenuSearchParams {
     @ApiModelProperty(value = "赋权API地址,正则表达式")
     private String path;
 
-    @ApiModelProperty(value = "前端                                                                                                                                                                                                          路由")
+    @ApiModelProperty(value = "前端路由")
     private String frontRoute;
 
     @ApiModelProperty(value = "图标")

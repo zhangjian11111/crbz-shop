@@ -103,6 +103,7 @@ public interface GoodsSkuMapper extends BaseMapper<GoodsSku> {
             ")")
     int replaceGoodsSku(@Param("goodsSku") GoodsSku goodsSku);
 
+
     /**
      * 分页查询商品skuDTO
      *
@@ -112,6 +113,7 @@ public interface GoodsSkuMapper extends BaseMapper<GoodsSku> {
      */
     @Select("SELECT *,g.params as params FROM li_goods_sku gs inner join li_goods g on gs.goods_id = g.id ${ew.customSqlSegment}")
     IPage<GoodsSkuDTO> queryByParams(IPage<GoodsSkuDTO> page, @Param(Constants.WRAPPER) Wrapper<GoodsSkuDTO> queryWrapper);
+
 
 
 }

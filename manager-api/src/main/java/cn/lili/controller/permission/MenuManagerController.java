@@ -53,7 +53,6 @@ public class MenuManagerController {
     @ApiImplicitParam(name = "id", value = "菜单ID", required = true, paramType = "path", dataType = "String")
     @ApiOperation(value = "编辑")
     @PutMapping(value = "/{id}")
-
     @DemoSite
     public ResultMessage<Menu> edit(@PathVariable String id, Menu menu) {
         menu.setId(id);
@@ -75,7 +74,7 @@ public class MenuManagerController {
         return ResultUtil.data(menuService.tree());
     }
 
-    @ApiOperation(value = "获取所有菜单")
+    @ApiOperation(value = "获取所有菜单--根据当前用户角色")
     @GetMapping("/memberMenu")
     public ResultMessage<List<MenuVO>> memberMenu() {
         return ResultUtil.data(menuService.findUserTree());

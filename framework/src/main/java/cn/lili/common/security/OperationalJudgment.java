@@ -4,7 +4,6 @@ import cn.lili.common.enums.ResultCode;
 import cn.lili.common.exception.ServiceException;
 import cn.lili.common.security.context.UserContext;
 import cn.lili.common.utils.BeanUtil;
-import lombok.extern.slf4j.Slf4j;
 
 import java.util.Objects;
 
@@ -15,7 +14,6 @@ import java.util.Objects;
  * @version v1.0
  * 2020-08-20 18:07
  */
-@Slf4j
 public class OperationalJudgment {
 
     /**
@@ -47,18 +45,15 @@ public class OperationalJudgment {
                 if (tokenUser.getId().equals(BeanUtil.getFieldValueByName(buyerIdField, object))) {
                     return object;
                 } else {
-                    log.info("11111111111111111111");
                     throw new ServiceException(ResultCode.USER_AUTHORITY_ERROR);
                 }
             case STORE:
                 if (tokenUser.getStoreId().equals(BeanUtil.getFieldValueByName(storeIdField, object))) {
                     return object;
                 } else {
-                    log.info("2222222222222");
                     throw new ServiceException(ResultCode.USER_AUTHORITY_ERROR);
                 }
             default:
-                log.info("333333333333333");
                 throw new ServiceException(ResultCode.USER_AUTHORITY_ERROR);
         }
     }

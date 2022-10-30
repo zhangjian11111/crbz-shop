@@ -28,7 +28,7 @@ public class RegionManagerController {
     @Autowired
     private RegionService regionService;
 
-//    @DemoSite
+    @DemoSite
     @PostMapping(value = "/sync")
     @ApiOperation(value = "同步高德行政地区数据")
     public void synchronizationData(String url) {

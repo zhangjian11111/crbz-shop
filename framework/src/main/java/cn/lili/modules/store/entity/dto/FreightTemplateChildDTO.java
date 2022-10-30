@@ -28,7 +28,7 @@ public class FreightTemplateChildDTO extends FreightTemplateChild {
      * @see cn.lili.modules.store.entity.enums.FreightTemplateEnum
      */
     @NotEmpty(message = "计价方式不能为空")
-    @ApiModelProperty(value = "计价方式：按件、按重量", allowableValues = "WEIGHT, NUM, DISTANCE")
+    @ApiModelProperty(value = "计价方式：按件、按重量", allowableValues = "WEIGHT, NUM")
     private String pricingMethod;
 
     public FreightTemplateChildDTO(FreightTemplateChild freightTemplateChild) {

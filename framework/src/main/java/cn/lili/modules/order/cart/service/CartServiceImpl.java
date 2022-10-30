@@ -16,7 +16,6 @@ import cn.lili.modules.goods.entity.dos.Wholesale;
 import cn.lili.modules.goods.entity.enums.GoodsAuthEnum;
 import cn.lili.modules.goods.entity.enums.GoodsSalesModeEnum;
 import cn.lili.modules.goods.entity.enums.GoodsStatusEnum;
-import cn.lili.modules.goods.service.GoodsService;
 import cn.lili.modules.goods.service.GoodsSkuService;
 import cn.lili.modules.goods.service.WholesaleService;
 import cn.lili.modules.member.entity.dos.Member;
@@ -46,7 +45,6 @@ import cn.lili.modules.promotion.service.MemberCouponService;
 import cn.lili.modules.promotion.service.PointsGoodsService;
 import cn.lili.modules.promotion.service.PromotionGoodsService;
 import cn.lili.modules.search.entity.dos.EsGoodsIndex;
-import cn.lili.modules.search.service.EsGoodsIndexService;
 import cn.lili.modules.search.service.EsGoodsSearchService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -151,7 +149,7 @@ public class CartServiceImpl implements CartService {
                         int newNum = oldNum + num;
                         this.checkSetGoodsQuantity(cartSkuVO, skuId, newNum);
                     }
-
+                    cartSkuVO.setPromotionMap(promotionMap);
                     //计算购物车小计
                     cartSkuVO.setSubTotal(CurrencyUtil.mul(cartSkuVO.getPurchasePrice(), cartSkuVO.getNum()));
                 } else {
@@ -160,10 +158,10 @@ public class CartServiceImpl implements CartService {
                     cartSkuVOS.remove(cartSkuVO);
                     //购物车中不存在此商品，则新建立一个
                     cartSkuVO = new CartSkuVO(dataSku, promotionMap);
+
                     cartSkuVO.setCartType(cartTypeEnum);
                     //再设置加入购物车的数量
                     this.checkSetGoodsQuantity(cartSkuVO, skuId, num);
-                    cartSkuVO.setPromotionMap(promotionMap);
                     //计算购物车小计
                     cartSkuVO.setSubTotal(CurrencyUtil.mul(cartSkuVO.getPurchasePrice(), cartSkuVO.getNum()));
                     cartSkuVOS.add(cartSkuVO);
@@ -244,6 +242,7 @@ public class CartServiceImpl implements CartService {
                 cartSkuVO.setChecked(checked);
             }
         }
+
         this.resetTradeDTO(tradeDTO);
     }
 
@@ -259,6 +258,7 @@ public class CartServiceImpl implements CartService {
                 cartSkuVO.setChecked(checked);
             }
         }
+
         resetTradeDTO(tradeDTO);
     }
 
@@ -277,9 +277,10 @@ public class CartServiceImpl implements CartService {
 
     /**
      * 当购物车商品发生变更时，取消已选择当优惠券
+     *
      * @param tradeDTO
      */
-    private void remoteCoupon(TradeDTO tradeDTO){
+    private void remoteCoupon(TradeDTO tradeDTO) {
         tradeDTO.setPlatformCoupon(null);
         tradeDTO.setStoreCoupons(new HashMap<>());
     }
@@ -319,6 +320,7 @@ public class CartServiceImpl implements CartService {
         tradeDTO.setStoreCoupons(null);
         //清除添加过的备注
         tradeDTO.setStoreRemark(null);
+
         resetTradeDTO(tradeDTO);
     }
 
@@ -346,7 +348,7 @@ public class CartServiceImpl implements CartService {
         if (tradeDTO.getSkuList() != null && !tradeDTO.getSkuList().isEmpty()) {
             List<String> ids = tradeDTO.getSkuList().stream().filter(i -> Boolean.TRUE.equals(i.getChecked())).map(i -> i.getGoodsSku().getId()).collect(Collectors.toList());
 
-            List<EsGoodsIndex> esGoodsList = esGoodsSearchService.getEsGoodsBySkuIds(ids);
+            List<EsGoodsIndex> esGoodsList = esGoodsSearchService.getEsGoodsBySkuIds(ids, null);
             for (EsGoodsIndex esGoodsIndex : esGoodsList) {
                 if (esGoodsIndex != null && esGoodsIndex.getPromotionMap() != null && !esGoodsIndex.getPromotionMap().isEmpty()) {
                     List<String> couponIds = esGoodsIndex.getPromotionMap().keySet().stream().filter(i -> i.contains(PromotionTypeEnum.COUPON.name())).map(i -> i.substring(i.lastIndexOf("-") + 1)).collect(Collectors.toList());

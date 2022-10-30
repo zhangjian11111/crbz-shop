@@ -45,7 +45,7 @@ public class CommonSecurityConfig extends WebSecurityConfigurerAdapter {
                 .permitAll()
                 .and()
                 //允许跨域
-                //.cors().configurationSource(corsConfigurationSource).and()
+                .cors().configurationSource(corsConfigurationSource).and()
                 //关闭跨站请求防护
                 .csrf().disable();
     }

@@ -6,7 +6,9 @@ import cn.hutool.http.HtmlUtil;
 import cn.hutool.json.JSONUtil;
 import cn.lili.common.enums.ResultCode;
 import cn.lili.common.exception.ServiceException;
+import cn.lili.modules.goods.entity.dto.DraftGoodsDTO;
 import cn.lili.modules.goods.entity.dto.GoodsOperationDTO;
+import cn.lili.modules.goods.entity.dto.GoodsOperationFuLuDTO;
 import cn.lili.modules.goods.entity.enums.GoodsAuthEnum;
 import cn.lili.modules.goods.entity.enums.GoodsSalesModeEnum;
 import cn.lili.modules.goods.entity.enums.GoodsStatusEnum;
@@ -59,9 +61,6 @@ public class Goods extends BaseEntity {
 
     @ApiModelProperty(value = "计量单位")
     private String goodsUnit;
-
-    @ApiModelProperty(value = "商品货号sn")
-    private String sn;
 
 
     @Length(max = 60, message = "商品卖点太长，不能超过60个字符")
@@ -161,7 +160,6 @@ public class Goods extends BaseEntity {
         this.categoryPath = goodsOperationDTO.getCategoryPath();
         this.storeCategoryPath = goodsOperationDTO.getStoreCategoryPath();
         this.brandId = goodsOperationDTO.getBrandId();
-        this.sn = goodsOperationDTO.getSn();
         this.templateId = goodsOperationDTO.getTemplateId();
         this.recommend = goodsOperationDTO.getRecommend();
         this.sellingPoint = goodsOperationDTO.getSellingPoint();
@@ -206,6 +204,30 @@ public class Goods extends BaseEntity {
 
 
         }
+    }
+
+    public Goods(DraftGoodsDTO goodsDTO) {
+        this.goodsName = goodsDTO.getGoodsName();
+        this.categoryPath = goodsDTO.getCategoryPath();
+        this.storeCategoryPath = goodsDTO.getStoreCategoryPath();
+        this.brandId = goodsDTO.getBrandId();
+        this.templateId = goodsDTO.getTemplateId();
+        this.recommend = goodsDTO.getRecommend();
+        this.sellingPoint = goodsDTO.getSellingPoint();
+        this.salesModel = goodsDTO.getSalesModel();
+        this.goodsUnit = goodsDTO.getGoodsUnit();
+        this.intro = goodsDTO.getIntro();
+        this.mobileIntro = goodsDTO.getMobileIntro();
+        this.goodsVideo = goodsDTO.getGoodsVideo();
+        this.price = goodsDTO.getPrice();
+        if (goodsDTO.getGoodsParamsDTOList() != null && goodsDTO.getGoodsParamsDTOList().isEmpty()) {
+            this.params = JSONUtil.toJsonStr(goodsDTO.getGoodsParamsDTOList());
+        }
+        //如果立即上架则
+        this.marketEnable = GoodsStatusEnum.DOWN.name();
+        this.goodsType = goodsDTO.getGoodsType();
+        this.grade = 100D;
+
     }
 
     public String getIntro() {

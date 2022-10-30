@@ -1,17 +1,13 @@
 package cn.lili.modules.order.cart.render.impl;
 
-import cn.lili.modules.goods.entity.dos.GoodsSku;
-import cn.lili.modules.member.entity.dos.MemberAddress;
 import cn.lili.modules.order.cart.entity.dto.TradeDTO;
 import cn.lili.modules.order.cart.entity.enums.RenderStepEnums;
 import cn.lili.modules.order.cart.entity.vo.CartSkuVO;
 import cn.lili.modules.order.cart.entity.vo.CartVO;
 import cn.lili.modules.order.cart.render.CartRenderStep;
 import cn.lili.modules.order.order.entity.dto.PriceDetailDTO;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -22,7 +18,6 @@ import java.util.stream.Collectors;
  * @see CartVO
  */
 @Service
-@Slf4j
 public class CartPriceRender implements CartRenderStep {
 
     @Override
@@ -32,28 +27,13 @@ public class CartPriceRender implements CartRenderStep {
 
     @Override
     public void render(TradeDTO tradeDTO) {
-        List<CartSkuVO> notsupportMessage = new ArrayList<>();
-        CartSkuVO cartSkuVO = new CartSkuVO();
-        GoodsSku goodsSku = new GoodsSku();
-
         //价格过滤 在购物车商品失效时，需要对价格进行初始化操作
         initPriceDTO(tradeDTO);
+
 
         //构造cartVO
         buildCartPrice(tradeDTO);
         buildTradePrice(tradeDTO);
-        if (tradeDTO.getPriceDetailDTO().getGoodsPrice() < 25) {
-            if (tradeDTO.getPriceDetailDTO().getGoodsPrice() < 25){
-                log.info("总金额为: "+tradeDTO.getPriceDetailDTO().getGoodsPrice()+"小于25不到起送条件");
-            }
-            goodsSku.setGoodsName(" 25起送订单未满25元，无法配送！");
-            cartSkuVO.setGoodsSku(goodsSku);
-            notsupportMessage.add(cartSkuVO);
-            tradeDTO.setNotSupportFreight(notsupportMessage);
-        }
-        if (tradeDTO.getPriceDetailDTO().getGoodsPrice() >= 59){
-            tradeDTO.getPriceDetailDTO().setFreightPrice(0.00);
-        }
 
 
     }

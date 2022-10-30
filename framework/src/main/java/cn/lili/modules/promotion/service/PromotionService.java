@@ -23,7 +23,7 @@ public interface PromotionService {
     /**
      * 根据商品索引获取当前商品索引的所有促销活动信息
      *
-     * @param storeId 店铺id
+     * @param storeId    店铺id
      * @param goodsSkuId 商品skuId
      * @return 当前促销活动集合
      */
@@ -35,5 +35,4 @@ public interface PromotionService {
      * @param goodsIdsJsonStr
      */
     void removeByGoodsIds(String goodsIdsJsonStr);
-
 }

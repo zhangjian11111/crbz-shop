@@ -294,32 +294,9 @@ public class GoodsMessageListener implements RocketMQListener<MessageExt> {
      * @param goodsList 商品列表消息
      */
     private void updateGoodsIndex(List<Goods> goodsList) {
-        List<EsGoodsIndex> goodsIndices = new ArrayList<>();
         for (Goods goods : goodsList) {
-            //如果商品通过审核&&并且已上架
-            GoodsSearchParams searchParams = new GoodsSearchParams();
-            searchParams.setGoodsId(goods.getId());
-            searchParams.setGeQuantity(0);
-            List<GoodsSku> goodsSkuList = this.goodsSkuService.getGoodsSkuByList(searchParams);
-            if (goods.getAuthFlag().equals(GoodsAuthEnum.PASS.name())
-                    && goods.getMarketEnable().equals(GoodsStatusEnum.UPPER.name())
-                    && Boolean.FALSE.equals(goods.getDeleteFlag())) {
-                goodsSkuList.forEach(goodsSku -> {
-                    EsGoodsIndex goodsIndex = this.settingUpGoodsIndexData(goods, goodsSku);
-                    goodsIndices.add(goodsIndex);
-                });
-            }
-            //如果商品状态值不支持es搜索，那么将商品信息做下架处理
-            else {
-                for (GoodsSku goodsSku : goodsSkuList) {
-                    EsGoodsIndex esGoodsOld = goodsIndexService.findById(goodsSku.getId());
-                    if (esGoodsOld != null) {
-                        goodsIndexService.deleteIndexById(goodsSku.getId());
-                    }
-                }
-            }
+            this.updateGoodsIndex(goods);
         }
-        goodsIndexService.addIndex(goodsIndices);
     }
 
 
@@ -379,11 +356,8 @@ public class GoodsMessageListener implements RocketMQListener<MessageExt> {
             EsGoodsIndex goodsIndex = this.settingUpGoodsIndexData(goods, goodsSku);
             goodsIndex.setSkuSource(skuSource--);
             log.info("goodsSku：{}", goodsSku);
-            //如果商品库存不为0，并且es中有数据
-            if (goodsSku.getQuantity() > 0) {
-                log.info("生成商品索引 {}", goodsIndex);
-                esGoodsIndices.add(goodsIndex);
-            }
+            log.info("生成商品索引 {}", goodsIndex);
+            esGoodsIndices.add(goodsIndex);
         }
         this.goodsIndexService.deleteIndex(MapUtil.builder(new HashMap<String, Object>()).put("goodsId", goods.getId()).build());
         this.goodsIndexService.addIndex(esGoodsIndices);

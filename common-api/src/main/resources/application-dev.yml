@@ -1,3 +1,4 @@
+ip: 192.168.127.128
 server:
   port: 8890
 
@@ -22,7 +23,6 @@ management:
       exposure:
         include: '*'
 spring:
-  ip: 192.168.2.194
   application:
     name: common-api
   # 要在其中注册的Spring Boot Admin Server的URL。
@@ -34,7 +34,7 @@ spring:
     type: redis
   # Redis
   redis:
-    host: ${spring.ip}
+    host: ${ip}
     port: 6379
     #password: lilishop
     lettuce:
@@ -66,7 +66,7 @@ spring:
         name: crbzshop
         type: com.alibaba.druid.pool.DruidDataSource
         driverClassName: com.mysql.cj.jdbc.Driver
-        url: jdbc:mysql://127.0.0.1:3306/${spring.shardingsphere.datasource.default-datasource.name}?useUnicode=true&characterEncoding=utf-8&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Shanghai
+        url: jdbc:mysql://127.0.0.1:3306/${spring.shardingsphere.datasource.default-datasource.name}?useUnicode=true&characterEncoding=utf-8&useSSL=false&rewriteBatchedStatements=true&allowPublicKeyRetrieval=true&serverTimezone=Asia/Shanghai
         username: root
         password: 640102
         maxActive: 20
@@ -124,6 +124,7 @@ ignored:
     - /common/common/slider/**
     - /common/common/sms/**
     - /common/common/logo
+    - /common/common/site
     - /druid/**
     - /swagger-ui.html
     - /doc.html
@@ -168,7 +169,7 @@ logging:
   #    org.springframework: debug
   file:
     # 指定路径
-    path: H:/CRBZ-shop/crbz-logs/commonApi
+    path: D:/data/CRBZ-shop/crbz-logs/commonApi
   logback:
     rollingpolicy:
       # 最大保存天数
@@ -244,7 +245,7 @@ lili:
   data:
     elasticsearch:
       cluster-name: elasticsearch
-      cluster-nodes: ${spring.ip}:9200
+      cluster-nodes: ${ip}:9200
       index:
         number-of-replicas: 0
         number-of-shards: 3
@@ -254,7 +255,7 @@ lili:
     #        username: elastic
     #        password: LiLiShopES
     logstash:
-      server: ${spring.ip}:4560
+      server: ${ip}:4560
     rocketmq:
       promotion-topic: lili_promotion_topic
       promotion-group: lili_promotion_group
@@ -273,7 +274,7 @@ lili:
       notice-send-topic: lili_send_notice_topic
       notice-send-group: lili_send_notice_group
 rocketmq:
-  name-server: ${spring.ip}:9876
+  name-server: ${ip}:9876
   producer:
     group: lili_group
     send-message-timeout: 30000
@@ -281,7 +282,7 @@ rocketmq:
 xxl:
   job:
     admin:
-      addresses: http://${spring.ip}:9001/xxl-job-admin
+      addresses: http://${ip}:9001/xxl-job-admin
     executor:
       appname: xxl-job-executor-crbzshop
       address:

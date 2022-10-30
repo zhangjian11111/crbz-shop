@@ -121,7 +121,6 @@ ignored:
     - /store/passport/login/refresh/**
     - /common/common/slider/**
     - /common/common/sms/**
-    - /common/common/site
     - /buyer/payment/cashier/**
     - /buyer/other/pageData/**
     - /buyer/other/article/**
@@ -179,21 +178,21 @@ mybatis-plus:
 #    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 
 # 日志
-#logging:
+logging:
   # 输出级别
-#  level:
-#    cn.lili: info
+  level:
+    cn.lili: info
   #    org.hibernate: debug
   #    org.springframework: debug
-#  file:
+  file:
     # 指定路径
-#    name: D:/data/CRBZ-shop/crbz-logs/config/${spring.application.name}-%d{yyyy-MM-dd}.log
-#  logback:
-#    rollingpolicy:
+    path: logs
+  logback:
+    rollingpolicy:
       # 最大保存天数
-#      max-history: 7
+      max-history: 7
       # 每个文件最大大小
-#      max-file-size: 5MB
+      max-file-size: 5MB
 #加密参数
 jasypt:
   encryptor:

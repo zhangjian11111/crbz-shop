@@ -15,6 +15,7 @@ import cn.lili.modules.member.entity.vo.QRLoginResultVo;
 import cn.lili.modules.member.entity.vo.QRCodeLoginSessionVo;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
+import org.elasticsearch.monitor.os.OsStats;
 
 import java.util.List;
 import java.util.Map;
@@ -73,6 +74,14 @@ public interface MemberService extends IService<Member> {
      * @return token
      */
     Token usernameStoreLogin(String username, String password);
+
+    /**
+     * 商家登录：用户名、密码登录
+     *
+     * @param mobilePhone 用户名
+     * @return token
+     */
+    Token mobilePhoneStoreLogin(String mobilePhone);
 
     /**
      * 注册：手机号、验证码登录
@@ -175,12 +184,12 @@ public interface MemberService extends IService<Member> {
     IPage<MemberVO> getMemberPage(MemberSearchVO memberSearchVO, PageVO page);
 
 
-    /**
-     * 一键注册会员
-     *
-     * @return
-     */
-    Token autoRegister();
+//    /**
+//     * 一键注册会员
+//     *
+//     * @return
+//     */
+//    Token autoRegister();
 
     /**
      * 一键注册会员
@@ -188,7 +197,7 @@ public interface MemberService extends IService<Member> {
      * @param authUser 联合登录用户
      * @return Token
      */
-    Token autoRegister(ConnectAuthUser authUser);
+    Member autoRegister(ConnectAuthUser authUser);
 
     /**
      * 刷新token
@@ -252,7 +261,6 @@ public interface MemberService extends IService<Member> {
     void logout(UserEnums userEnums);
 
     /**
-     * <<<<<<< HEAD
      * 修改会员是否拥有店铺
      *
      * @param haveStore 是否拥有店铺

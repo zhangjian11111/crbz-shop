@@ -13,6 +13,10 @@ spring:
       #            allowedMethods: '*'
       #            allowedOriginPatterns: '*'
       routes:
+        - id: zjmall-im
+          uri: http://localhost:8885
+          predicates:
+            - Path=/im/**
         - id: zjmall-buyer
           uri: http://localhost:8859
           predicates:

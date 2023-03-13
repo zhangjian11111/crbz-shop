@@ -16,21 +16,21 @@ public class SmsTemplateProperties {
     /**
      * 登录
      */
-    private String lOGIN = "SMS_245210228";
+    private String lOGIN = "SMS_185821482";
     /**
      * 注册
      */
-    private String REGISTER = "SMS_245210228";
+    private String REGISTER = "SMS_185821482";
     /**
      * 找回密码
      */
-    private String FIND_USER = "SMS_245210228";
+    private String FIND_USER = "SMS_185821482";
     /**
      * 设置密码
      */
-    private String UPDATE_PASSWORD = "SMS_245210228";
+    private String UPDATE_PASSWORD = "SMS_185821482";
     /**
      * 设置支付密码
      */
-    private String WALLET_PASSWORD = "SMS_245210228";
+    private String WALLET_PASSWORD = "SMS_185821482";
 }

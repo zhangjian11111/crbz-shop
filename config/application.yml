@@ -121,6 +121,7 @@ ignored:
     - /store/passport/login/refresh/**
     - /common/common/slider/**
     - /common/common/sms/**
+    - /common/common/site
     - /buyer/payment/cashier/**
     - /buyer/other/pageData/**
     - /buyer/other/article/**

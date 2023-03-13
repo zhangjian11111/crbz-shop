@@ -1,14 +1,15 @@
 package cn.lili.controller.goods;
 
+import cn.lili.common.aop.annotation.DemoSite;
+import cn.lili.common.enums.ResultCode;
 import cn.lili.common.enums.ResultUtil;
-import cn.lili.common.fulu.core.utils.Test;
+import cn.lili.common.exception.ServiceException;
 import cn.lili.common.security.OperationalJudgment;
 import cn.lili.common.security.context.UserContext;
 import cn.lili.common.vo.ResultMessage;
 import cn.lili.modules.goods.entity.dos.Goods;
 import cn.lili.modules.goods.entity.dos.GoodsSku;
 import cn.lili.modules.goods.entity.dto.GoodsOperationDTO;
-import cn.lili.modules.goods.entity.dto.GoodsOperationFuLuDTO;
 import cn.lili.modules.goods.entity.dto.GoodsSearchParams;
 import cn.lili.modules.goods.entity.dto.GoodsSkuStockDTO;
 import cn.lili.modules.goods.entity.enums.GoodsStatusEnum;
@@ -17,11 +18,9 @@ import cn.lili.modules.goods.entity.vos.GoodsVO;
 import cn.lili.modules.goods.entity.vos.StockWarningVO;
 import cn.lili.modules.goods.service.GoodsService;
 import cn.lili.modules.goods.service.GoodsSkuService;
+import cn.lili.modules.statistics.aop.PageViewPoint;
+import cn.lili.modules.statistics.aop.enums.PageViewEnum;
 import cn.lili.modules.store.entity.dos.StoreDetail;
-import cn.lili.modules.store.entity.dto.FuLuConfigureDTO;
-import cn.lili.modules.store.service.StoreDetailService;
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
 import cn.lili.modules.store.service.StoreDetailService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -29,12 +28,14 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.*;
+import javax.validation.constraints.NotNull;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -45,6 +46,7 @@ import java.util.stream.Collectors;
  * @since 2020-02-23 15:18:56
  */
 @RestController
+@Slf4j
 @Api(tags = "店铺端,商品接口")
 @RequestMapping("/store/goods/goods")
 public class GoodsStoreController {
@@ -109,7 +111,6 @@ public class GoodsStoreController {
     @ApiOperation(value = "新增商品")
     @PostMapping(value = "/create", consumes = "application/json", produces = "application/json")
     public ResultMessage<GoodsOperationDTO> save(@Valid @RequestBody GoodsOperationDTO goodsOperationDTO) {
-        System.out.println(goodsOperationDTO.toString());
         goodsService.addGoods(goodsOperationDTO);
         return ResultUtil.success();
     }
@@ -121,6 +122,7 @@ public class GoodsStoreController {
         return ResultUtil.success();
     }
 
+    @DemoSite
     @ApiOperation(value = "下架商品", notes = "下架商品时使用")
     @ApiImplicitParam(name = "goodsId", value = "商品ID", required = true, paramType = "query", allowMultiple = true)
     @PutMapping(value = "/under")
@@ -138,6 +140,7 @@ public class GoodsStoreController {
         return ResultUtil.success();
     }
 
+    @DemoSite
     @ApiOperation(value = "删除商品")
     @PutMapping(value = "/delete")
     @ApiImplicitParam(name = "goodsId", value = "商品ID", required = true, paramType = "query", allowMultiple = true)
@@ -177,6 +180,29 @@ public class GoodsStoreController {
         List<GoodsSkuStockDTO> collect = updateStockList.stream().filter(i -> filterGoodsSkuIds.contains(i.getSkuId())).collect(Collectors.toList());
         goodsSkuService.updateStocks(collect);
         return ResultUtil.success();
+    }
+
+    @ApiOperation(value = "通过id获取商品信息")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "goodsId", value = "商品ID", required = true, paramType = "path"),
+            @ApiImplicitParam(name = "skuId", value = "skuId", required = true, paramType = "path")
+    })
+    @GetMapping(value = "/sku/{goodsId}/{skuId}")
+    @PageViewPoint(type = PageViewEnum.SKU, id = "#id")
+    public ResultMessage<Map<String, Object>> getSku(@NotNull(message = "商品ID不能为空") @PathVariable("goodsId") String goodsId,
+                                                     @NotNull(message = "SKU ID不能为空") @PathVariable("skuId") String skuId) {
+        try {
+            // 读取选中的列表
+            Map<String, Object> map = goodsSkuService.getGoodsSkuDetail(goodsId, skuId);
+            return ResultUtil.data(map);
+        } catch (ServiceException se) {
+            log.info(se.getMsg(), se);
+            throw se;
+        } catch (Exception e) {
+            log.error(ResultCode.GOODS_ERROR.message(), e);
+            return ResultUtil.error(ResultCode.GOODS_ERROR);
+        }
+
     }
 
 }

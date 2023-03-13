@@ -5,6 +5,7 @@ import cn.hutool.core.text.CharSequenceUtil;
 import cn.hutool.core.util.ArrayUtil;
 import cn.lili.cache.Cache;
 import cn.lili.cache.CachePrefix;
+import cn.lili.common.exception.ServiceException;
 import cn.lili.common.vo.PageVO;
 import cn.lili.modules.goods.entity.enums.GoodsAuthEnum;
 import cn.lili.modules.goods.entity.enums.GoodsStatusEnum;
@@ -119,8 +120,6 @@ public class EsGoodsSearchServiceImpl implements EsGoodsSearchService {
     @Override
     public List<EsGoodsIndex> getEsGoodsBySkuIds(List<String> skuIds, PageVO pageVo) {
         NativeSearchQueryBuilder searchQueryBuilder = new NativeSearchQueryBuilder();
-        NativeSearchQuery build = searchQueryBuilder.build();
-        build.setIds(skuIds);
         if (pageVo != null) {
             int pageNumber = pageVo.getPageNumber() - 1;
             if (pageNumber < 0) {
@@ -130,6 +129,8 @@ public class EsGoodsSearchServiceImpl implements EsGoodsSearchService {
             //分页
             searchQueryBuilder.withPageable(pageable);
         }
+        NativeSearchQuery build = searchQueryBuilder.build();
+        build.setIds(skuIds);
         return restTemplate.multiGet(build, EsGoodsIndex.class, restTemplate.getIndexCoordinatesFor(EsGoodsIndex.class));
     }
 
@@ -468,6 +469,10 @@ public class EsGoodsSearchServiceImpl implements EsGoodsSearchService {
         if (CharSequenceUtil.isNotEmpty(searchDTO.getProp())) {
             this.propSearch(filterBuilder, searchDTO);
         }
+        // 促销活动判定
+        if (CharSequenceUtil.isNotEmpty(searchDTO.getPromotionsId()) && CharSequenceUtil.isNotEmpty(searchDTO.getPromotionType())) {
+            filterBuilder.must(QueryBuilders.wildcardQuery("promotionMapJson", "*" + searchDTO.getPromotionType() + "-" + searchDTO.getPromotionsId() + "*"));
+        }
         //价格区间判定
         if (CharSequenceUtil.isNotEmpty(searchDTO.getPrice())) {
             String[] prices = searchDTO.getPrice().split("_");
@@ -479,6 +484,15 @@ public class EsGoodsSearchServiceImpl implements EsGoodsSearchService {
 
             if (prices.length == 2) {
                 max = Convert.toDouble(prices[1], Double.MAX_VALUE);
+            }
+            if (min > max) {
+                throw new ServiceException("价格区间错误");
+            }
+            if (min > Double.MAX_VALUE) {
+                min = Double.MAX_VALUE;
+            }
+            if (max > Double.MAX_VALUE) {
+                max = Double.MAX_VALUE;
             }
             filterBuilder.must(QueryBuilders.rangeQuery("price").from(min).to(max).includeLower(true).includeUpper(true));
         }

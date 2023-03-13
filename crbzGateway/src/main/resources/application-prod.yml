@@ -17,6 +17,7 @@ spring:
           uri: http://localhost:8885
           predicates:
             - Path=/im/**
+            - Path=/lili/**
         - id: zjmall-buyer
           uri: http://localhost:8859
           predicates:

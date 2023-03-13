@@ -1,13 +1,24 @@
-HELP.md
-target/
-!.mvn/wrapper/maven-wrapper.jar
-!**/src/main/**/target/
-!**/src/test/**/target/
+/.idea/
+target
+*.iml
+*.class
+.DS_Store
+*.classpath
+*.project
+*.log
+.settings/
+.factorypath
+
+log/
+logs/
+*.factorypath
+lili-shop/src/main/java/cn/lili/generator/CodeGenerator.java
+lili-logs
+
 
 ### STS ###
 .apt_generated
 .classpath
-.factorypath
 .project
 .settings
 .springBeans
@@ -16,7 +27,6 @@ target/
 ### IntelliJ IDEA ###
 .idea
 *.iws
-*.iml
 *.ipr
 
 ### NetBeans ###
@@ -26,8 +36,6 @@ target/
 /nbdist/
 /.nb-gradle/
 build/
-!**/src/main/**/build/
-!**/src/test/**/build/
 
 ### VS Code ###
 .vscode/

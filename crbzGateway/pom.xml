@@ -13,7 +13,7 @@
 
     <groupId>com.zhangjian</groupId>
     <artifactId>zjmallGateway</artifactId>
-    <version>1.0.0</version>
+    <version>4.2.5</version>
     <name>crbzGateway</name>
     <description>春日半盏</description>
     <properties>

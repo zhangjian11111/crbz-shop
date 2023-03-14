@@ -24,7 +24,7 @@ public interface SmsUtil {
     void sendSmsCode(String mobile, VerificationEnums verificationEnums, String uuid);
 
     /**
-     * 验证码发送(春日半盏小铺)
+     * 验证码发送(春日半盏小铺第三方平台短信，已弃用)
      *
      * @param mobile            手机号
      * @param verificationEnums 验证码场景

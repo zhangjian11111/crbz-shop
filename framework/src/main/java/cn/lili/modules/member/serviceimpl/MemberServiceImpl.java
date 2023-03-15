@@ -252,6 +252,7 @@ public class MemberServiceImpl extends ServiceImpl<MemberMapper, Member> impleme
             Member member = new Member(username, UuidUtils.getUUID(), authUser.getAvatar(), authUser.getNickname(),
                     authUser.getGender() != null ? Convert.toInt(authUser.getGender().getCode()) : 0);
             member.setPassword(DEFAULT_PASSWORD);
+            member.setMobile(authUser.getPhone());
             // 发送会员注册信息
             registerHandler(member);
 

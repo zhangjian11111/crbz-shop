@@ -76,6 +76,8 @@
         <module>consumer</module>
         <module>admin</module>
         <module>im-api</module>
+        <module>zbforcoshine</module>
+        <module>crbzGateway</module>
     </modules>
 
     <build>

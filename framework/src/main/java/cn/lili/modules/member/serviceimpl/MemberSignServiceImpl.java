@@ -72,6 +72,8 @@ public class MemberSignServiceImpl extends ServiceImpl<MemberSignMapper, MemberS
 
             LambdaQueryWrapper<MemberSign> queryWrapper = new LambdaQueryWrapper<>();
             queryWrapper.eq(MemberSign::getMemberId, authUser.getId());
+            queryWrapper.eq(MemberSign::getDay,DateUtil.getDayOfStart().intValue());
+            log.error("这是今日签到日数字："+DateUtil.getDayOfStart().intValue());
             List<MemberSign> signSize = this.baseMapper.getTodayMemberSign(queryWrapper);
             if (!signSize.isEmpty()) {
                 throw new ServiceException(ResultCode.MEMBER_SIGN_REPEAT);

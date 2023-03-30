@@ -2,6 +2,7 @@ package cn.lili;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.socket.server.standard.ServerEndpointExporter;
 
@@ -10,6 +11,7 @@ import org.springframework.web.socket.server.standard.ServerEndpointExporter;
  * @author liushuai
  */
 @SpringBootApplication
+//@EnableDiscoveryClient
 public class ImApiApplication {
 
     public static void main(String[] args) {

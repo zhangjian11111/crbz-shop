@@ -13,7 +13,10 @@ import cn.lili.common.properties.RocketmqCustomProperties;
 import cn.lili.common.security.AuthUser;
 import cn.lili.common.security.context.UserContext;
 import cn.lili.common.security.enums.UserEnums;
-import cn.lili.modules.goods.entity.dos.*;
+import cn.lili.modules.goods.entity.dos.Category;
+import cn.lili.modules.goods.entity.dos.Goods;
+import cn.lili.modules.goods.entity.dos.GoodsGallery;
+import cn.lili.modules.goods.entity.dos.Wholesale;
 import cn.lili.modules.goods.entity.dto.GoodsOperationDTO;
 import cn.lili.modules.goods.entity.dto.GoodsParamsDTO;
 import cn.lili.modules.goods.entity.dto.GoodsSearchParams;
@@ -117,9 +120,6 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements
     @Autowired
     private Cache<GoodsVO> cache;
 
-    @Autowired
-    private Cache<GoodsSku> cachesku;
-
     @Override
     public List<Goods> getByBrandIds(List<String> brandIds) {
         LambdaQueryWrapper<Goods> lambdaQueryWrapper = new LambdaQueryWrapper<>();
@@ -133,7 +133,7 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements
         //获取商品ID列表
         List<String> list = this.baseMapper.getGoodsIdByStoreId(storeId);
         //下架店铺下的商品
-        updateGoodsMarketAble(list, GoodsStatusEnum.DOWN, "店铺关闭");
+        this.updateGoodsMarketAbleByStoreId(storeId, GoodsStatusEnum.DOWN, "店铺关闭");
 
         applicationEventPublisher.publishEvent(new TransactionCommitSendMQEvent("下架商品",
                 rocketmqCustomProperties.getGoodsTopic(), GoodsTagsEnum.DOWN.name(), JSONUtil.toJsonStr(list)));
@@ -427,22 +427,8 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements
         LambdaUpdateWrapper<Goods> lambdaUpdateWrapper = Wrappers.lambdaUpdate();
         lambdaUpdateWrapper.set(Goods::getTemplateId, templateId);
         lambdaUpdateWrapper.in(Goods::getId, goodsIds);
-
-        LambdaUpdateWrapper<GoodsSku> lambdaUpdateSkuWrapper = Wrappers.lambdaUpdate();
-        lambdaUpdateSkuWrapper.set(GoodsSku::getFreightTemplateId, templateId);
-        lambdaUpdateSkuWrapper.in(GoodsSku::getGoodsId, goodsIds);
-        for (int i = 0; i < goodsIds.size(); i++) {
-            cache.vagueDel("{GOODS}_"+goodsIds.get(i));
-            log.error("goodsIds:"+goodsIds.get(i));
-            List<String> skuId = this.goodsSkuService.getSkuIdsByGoodsId(goodsIds.get(i));
-            for (int i1 = 0; i1 < skuId.size(); i1++) {
-                cachesku.vagueDel("{GOODS_SKU}_"+skuId.get(i1));
-            }
-        }
-//        cache.multiDel(goodsIds);
-        this.update(lambdaUpdateWrapper);
-        this.goodsSkuService.update(lambdaUpdateSkuWrapper);
-        return true;
+        cache.multiDel(goodsIds);
+        return this.update(lambdaUpdateWrapper);
     }
 
     @Override

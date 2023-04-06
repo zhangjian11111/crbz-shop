@@ -266,7 +266,9 @@ public class ConnectServiceImpl extends ServiceImpl<ConnectMapper, Connect> impl
             } else {
                 //使用OpenID登录
                 SourceEnum sourceEnum = SourceEnum.getSourceEnum(ConnectEnum.valueOf(authUser.getType()), ClientTypeEnum.valueOf(authUser.getSource()));
-                queryWrapper.eq(Connect::getUnionId, authUser.getToken().getUnionId())
+//                queryWrapper.eq(Connect::getUnionId, authUser.getToken().getUnionId())
+//                        .eq(Connect::getUnionType, sourceEnum.name());
+                queryWrapper.eq(Connect::getUnionId, authUser.getUuid())
                         .eq(Connect::getUnionType, sourceEnum.name());
             }
 
@@ -354,6 +356,7 @@ public class ConnectServiceImpl extends ServiceImpl<ConnectMapper, Connect> impl
             //初始化
             Security.addProvider(new BouncyCastleProvider());
             Cipher cipher = Cipher.getInstance("AES/CBC/PKCS7Padding", "BC");
+//            Cipher cipher = Cipher.getInstance("AES/CBC/PKCS7Padding");
             SecretKeySpec spec = new SecretKeySpec(keyByte, "AES");
             AlgorithmParameters parameters = AlgorithmParameters.getInstance("AES");
             parameters.init(new IvParameterSpec(ivByte));

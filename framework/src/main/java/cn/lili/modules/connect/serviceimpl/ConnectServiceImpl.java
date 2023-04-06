@@ -187,8 +187,8 @@ public class ConnectServiceImpl extends ServiceImpl<ConnectMapper, Connect> impl
             connectAuthUser.setAvatar(params.getImage());
             connectAuthUser.setUsername("m" + phone);
             connectAuthUser.setPhone(phone);
-            connectAuthUser.setSource(ConnectEnum.WECHAT.name());
-            connectAuthUser.setType(ClientTypeEnum.WECHAT_MP.name());
+            connectAuthUser.setSource(ClientTypeEnum.WECHAT_MP.name());
+            connectAuthUser.setType(ConnectEnum.WECHAT.name());
 
             AuthToken authToken = new AuthToken();
             authToken.setUnionId(unionId);
@@ -265,21 +265,15 @@ public class ConnectServiceImpl extends ServiceImpl<ConnectMapper, Connect> impl
                         .eq(Connect::getUnionType, authUser.getSource());
             } else {
                 //使用OpenID登录
-                log.info("authUser.getType():"+authUser.getType());
-                log.info("authUser.getSource():"+authUser.getSource());
-                SourceEnum sourceEnum = SourceEnum.getSourceEnum(ConnectEnum.valueOf(authUser.getSource()), ClientTypeEnum.valueOf(authUser.getType()));
-//                queryWrapper.eq(Connect::getUnionId, authUser.getToken().getUnionId())
-//                        .eq(Connect::getUnionType, sourceEnum.name());
-                queryWrapper.eq(Connect::getUnionId, authUser.getUuid())
+                SourceEnum sourceEnum = SourceEnum.getSourceEnum(ConnectEnum.valueOf(authUser.getType()), ClientTypeEnum.valueOf(authUser.getSource()));
+                queryWrapper.eq(Connect::getUnionId, authUser.getToken().getUnionId())
                         .eq(Connect::getUnionType, sourceEnum.name());
             }
 
             //查询绑定关系
             Connect connect = this.getOne(queryWrapper);
-//            log.info("userid:"+connect.getUserId());
             Member member = new Member();
             if (connect == null) {
-                log.info("获取的大大手机号："+authUser.getPhone());
                 member = memberService.autoRegister(authUser);
             } else {
                 //查询会员
@@ -287,7 +281,6 @@ public class ConnectServiceImpl extends ServiceImpl<ConnectMapper, Connect> impl
                 //如果未绑定会员，则把刚才查询到的联合登录表数据删除
                 if (member == null) {
                     this.remove(queryWrapper);
-                    log.info("获取的手机号："+authUser.getPhone());
                     member = memberService.autoRegister(authUser);
                 }
             }

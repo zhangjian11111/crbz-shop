@@ -2,7 +2,6 @@ package cn.lili;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-
 /**
  * 消费者
  *
@@ -10,6 +9,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @since 2020/11/16 10:03 下午
  */
 @SpringBootApplication
+//@EnableDiscoveryClient
 public class ConsumerApplication {
 
     public static void main(String[] args) {

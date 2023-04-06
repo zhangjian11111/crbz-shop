@@ -18,6 +18,7 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 @SpringBootApplication
 @EnableCaching
 @EnableAsync
+//@EnableDiscoveryClient
 public class StoreApiApplication {
 
     @Primary

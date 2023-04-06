@@ -17,6 +17,9 @@ spring:
           uri: http://localhost:8885
           predicates:
             - Path=/im/**
+        - id: zjmall-imws
+          uri: ws://localhost:8885
+          predicates:
             - Path=/lili/**
         - id: zjmall-impage
           uri: http://localhost:10004

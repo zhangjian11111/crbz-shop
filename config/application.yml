@@ -20,13 +20,13 @@ management:
       exposure:
         include: '*'
 spring:
-  ip: 127.0.0.1
-  mysqlip: 127.0.0.1
+  ip: 192.168.124.11
+  mysqlip: 192.168.124.11
   # 要在其中注册的Spring Boot Admin Server的URL。
   boot:
     admin:
       client:
-        url: http://${spring.ip}:8000
+        url: http://${spring.ip}:9110
   cache:
     type: redis
   # Redis
@@ -62,8 +62,8 @@ spring:
       default-datasource:
         type: com.alibaba.druid.pool.DruidDataSource
         driverClassName: com.mysql.cj.jdbc.Driver
-        url: jdbc:mysql://${spring.mysqlip}:3306/crbzshop?useUnicode=true&characterEncoding=utf-8&useSSL=false&rewriteBatchedStatements=true&allowPublicKeyRetrieval=true&serverTimezone=Asia/Shanghai
-        username: root
+        url: jdbc:mysql://${spring.mysqlip}:3306/crbz-shop?useUnicode=true&characterEncoding=utf-8&useSSL=false&rewriteBatchedStatements=true&allowPublicKeyRetrieval=true&serverTimezone=Asia/Shanghai
+        username: ZHANGJIAN
         password: 640102
         maxActive: 50
         initialSize: 20
@@ -100,9 +100,9 @@ spring:
     #            standard:
     #              sharding-column: create_time
     #              #分表策略
-    #              precise-algorithm-class-name: cn.lili.mybatis.sharding.CreateTimeShardingTableAlgorithm
+    #              precise-algorithm-class-name: cn.crbz.mybatis.sharding.CreateTimeShardingTableAlgorithm
     #              #范围查询实现
-    #              range-algorithm-class-name: cn.lili.mybatis.sharding.CreateTimeShardingTableAlgorithm
+    #              range-algorithm-class-name: cn.crbz.mybatis.sharding.CreateTimeShardingTableAlgorithm
     props:
       #是否打印逻辑SQL语句和实际SQL语句，建议调试时打印，在生产环境关闭
       sql:
@@ -163,10 +163,10 @@ swagger:
   title: CRBZ API接口文档
   description: CRBZ Api Documentation
   version: 1.0.0
-  termsOfServiceUrl: https://www.baidu.com
+  termsOfServiceUrl: https://www.qgxbm.com
   contact:
     name: crbzshop
-    url: https://www.baidu.com
+    url: https://www.qgxbm.com
     email: 1097951193@qq.com
 
 # Mybatis-plus
@@ -176,18 +176,18 @@ mybatis-plus:
     #缓存开启
     cache-enabled: true
     #日志
-#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 
 # 日志
 logging:
   # 输出级别
   level:
-    cn.lili: info
+    cn.crbz: info
   #    org.hibernate: debug
   #    org.springframework: debug
   file:
     # 指定路径
-    path: logs
+    path: /home/data/programming/crbz/logs
   logback:
     rollingpolicy:
       # 最大保存天数
@@ -197,10 +197,10 @@ logging:
 #加密参数
 jasypt:
   encryptor:
-    password: lili
+    password: crbz
 
 
-lili:
+crbz:
   #验证码设置
   verification-code:
     #图形验证码有效时间 秒 包含滑块验证码有效时间， 以及验证通过之后，缓存中存储的验证结果有效时间
@@ -243,16 +243,16 @@ lili:
     sk: zhNKVrJK6UPOhqIjn8AQvG37b9sz6
   #域名
   domain:
-    pc: https://yqswgjz.mynatapp.cc
-    wap: https://yqswgjz.mynatapp.cc
-    seller: https://yqswgjz.mynatapp.cc
-    admin: https://yqswgjz.mynatapp.cc
+    pc: http://www.qgxbm.com
+    wap: http://www.qgxbm.com
+    seller: http://www.qgxbm.com
+    admin: http://www.qgxbm.com
   #api地址
   api:
-    buyer: https://yqswgjz.mynatapp.cc
-    base: https://yqswgjz.mynatapp.cc
-    manager: https://yqswgjz.mynatapp.cc
-    seller: https://yqswgjz.mynatapp.cc
+    buyer: http://www.qgxbm.com
+    base: http://www.qgxbm.com
+    manager: http://www.qgxbm.com
+    seller: http://www.qgxbm.com
 
   # jwt 细节设定
   jwt-setting:
@@ -270,12 +270,12 @@ lili:
     queueCapacity: 50
   data:
     elasticsearch:
-      cluster-name: elasticsearch
+      cluster-name: jhkjes-cluster
       cluster-nodes: ${spring.ip}:9200
       index:
         number-of-replicas: 0
         number-of-shards: 3
-      index-prefix: lili
+      index-prefix: crbz
       schema: http
     #      account:
     #        username: elastic
@@ -284,29 +284,31 @@ lili:
     logstash:
       server: ${spring.ip}:5044
     rocketmq:
-      promotion-topic: lili_promotion_topic
-      promotion-group: lili_promotion_group
-      msg-ext-topic: lili_msg_topic
-      msg-ext-group: lili_msg_group
-      goods-topic: lili_goods_topic
-      goods-group: lili_goods_group
-      order-topic: lili_order_topic
-      order-group: lili_order_group
-      member-topic: lili_member_topic
-      member-group: lili_member_group
-      other-topic: lili_other_topic
-      other-group: lili_other_group
-      notice-topic: lili_notice_topic
-      notice-group: lili_notice_group
-      notice-send-topic: lili_send_notice_topic
-      notice-send-group: lili_send_notice_group
-      after-sale-topic: lili_after_sale_topic
-      after-sale-group: lili_after_sale_group
+      promotion-topic: shop_crbz_promotion_topic
+      promotion-group: shop_crbz_promotion_group
+      msg-ext-topic: shop_crbz_msg_topic
+      msg-ext-group: shop_crbz_msg_group
+      goods-topic: shop_crbz_goods_topic
+      goods-group: shop_crbz_goods_group
+      order-topic: shop_crbz_order_topic
+      order-group: shop_crbz_order_group
+      member-topic: shop_crbz_member_topic
+      member-group: shop_crbz_member_group
+      store-topic: shop_crbz_store_topic
+      store-group: shop_crbz_store_group
+      other-topic: shop_crbz_other_topic
+      other-group: shop_crbz_other_group
+      notice-topic: shop_crbz_notice_topic
+      notice-group: shop_crbz_notice_group
+      notice-send-topic: shop_crbz_send_notice_topic
+      notice-send-group: shop_crbz_send_notice_group
+      after-sale-topic: shop_crbz_after_sale_topic
+      after-sale-group: shop_crbz_after_sale_group
 rocketmq:
   name-server: ${spring.ip}:9876
   isVIPChannel: false
   producer:
-    group: lili_group
+    group: crbz_group
     send-message-timeout: 30000
 
 xxl:

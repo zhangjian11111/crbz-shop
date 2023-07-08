@@ -1,0 +1,116 @@
+server:
+  port: 9111
+spring:
+  application:
+    name: zjmall-gateway
+  cloud:
+    gateway:
+      #      globalcors:
+      #        corsConfigurations:
+      #          '[/**]':
+      #            allowCredentials: true
+      #            allowedHeaders: '*'
+      #            allowedMethods: '*'
+      #            allowedOriginPatterns: '*'
+      routes:
+        - id: zjmall-im
+          uri: http://localhost:9115
+          predicates:
+            - Path=/im/**
+        - id: zjmall-imws
+          uri: ws://localhost:9115
+          predicates:
+            - Path=/lili/**
+        - id: zjmall-impage
+          uri: http://localhost:10004
+          predicates:
+            - Path=/message/**
+        - id: zjmall-buyer
+          uri: http://localhost:9112
+          predicates:
+            - Path=/buyer/**
+        - id: zjmall-common
+          uri: http://localhost:9113
+          predicates:
+            - Path=/common/**
+        - id: zjmall-manager
+          uri: http://localhost:9116
+          predicates:
+            - Path=/manager/**
+        - id: zjmall-store
+          uri: http://localhost:9117
+          predicates:
+            - Path=/store/**
+#        - id: zjmall-nginx-buyer
+#          uri: http://localhost:11000
+#          predicates:
+#            - Host=zjmallbuyer.yqswgjz.mynatapp.cc
+#        - id: zjmall-nginx-buyerH5
+#          uri: http://localhost:8869
+#          predicates:
+#            - Host=yqswgjz.mynatapp.cc
+        - id: zjmall-nginx-seller
+          uri: http://localhost:10002
+          predicates:
+            - Host=seller.yqswgjz.mynatapp.cc
+        - id: zjmall-nginx-manager
+          uri: http://localhost:10003
+          predicates:
+            #            - Host=**.manager,manager
+            - Host=manager.yqswgjz.mynatapp.cc
+  #周报开始
+        - id: zjmall-ZBBBBB
+          uri: http://localhost:9118
+          predicates:
+            - Path=/pages/**
+        - id: zjmall-ZBBB
+          uri: http://localhost:9118
+          predicates:
+            - Host=zb.yqswgjz.mynatapp.cc
+        - id: zjmall-ZB
+          uri: http://localhost:9118
+          predicates:
+            - Path=/zbfc/**
+  #周报结束
+  #西部梦start
+#        - id: zhou-xbm
+#          uri: http://localhost:9211
+#          predicates:
+#            - Path=/**
+#          filters:
+#            - PrefixPath=/im/**
+#            - PrefixPath=/common/**
+#            - PrefixPath=/store/**
+#            - PrefixPath=/manager/**
+#            - PrefixPath=/buyer/**
+#            - PrefixPath=/zbfc/**
+#        - id: zhou-xbm-page
+#          uri: http://localhost:3000
+#          predicates:
+#            - Host=xbm.yqswgjz.mynatapp.cc
+  #西部梦结束
+        - id: zjmall-chatwithme
+          uri: http://localhost:8899
+          predicates:
+            - Host=chat.yqswgjz.mynatapp.cc
+        - id: zjmall-pay
+          uri: http://localhost:8892
+          predicates:
+            - Host=zjpay.yqswgjz.mynatapp.cc
+        - id: zjpay-payurl
+          uri: http://localhost:8892
+          predicates:
+            - Path=/pay/**
+            - Path=/page/**
+            - Path=/wechat/**
+            - Path=/success
+            - Path=/500
+            - Path=/error
+            - Path=/thanks
+
+
+
+
+
+
+

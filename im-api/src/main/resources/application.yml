@@ -2,4 +2,4 @@ spring:
   profiles:
     active: prod
   application:
-    name: im #当前服务的名称
+    name: im-api

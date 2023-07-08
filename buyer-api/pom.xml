@@ -5,15 +5,15 @@
     <modelVersion>4.0.0</modelVersion>
     <artifactId>buyer-api</artifactId>
     <parent>
-        <groupId>cn.lili</groupId>
-        <artifactId>crbz-shop-parent</artifactId>
+        <groupId>cn.crbz</groupId>
+        <artifactId>crbzshop</artifactId>
         <version>${revision}</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
     <dependencies>
         <dependency>
-            <groupId>cn.lili</groupId>
+            <groupId>cn.crbz</groupId>
             <artifactId>framework</artifactId>
             <version>${revision}</version>
         </dependency>

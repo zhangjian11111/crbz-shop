@@ -1,20 +1,20 @@
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: lilishop-service
+  name: crbzshop-service
 
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: buyer-api-service
-  namespace: lilishop-service
+  namespace: crbzshop-service
   labels:
     app.kubernetes.io/name: buyer-api-service
     app.kubernetes.io/instance: api
     app.kubernetes.io/version: "4.2.4.1"
     app.kubernetes.io/component: api
-    app.kubernetes.io/part-of: lilishop
+    app.kubernetes.io/part-of: crbzshop
     tier: "api-service"
 spec:
   type: NodePort
@@ -24,20 +24,20 @@ spec:
       port: 8888
       targetPort: buyer8888
   selector:
-    lilishop.service: buyer-api
+    crbzshop.service: buyer-api
 
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: common-api-service
-  namespace: lilishop-service
+  namespace: crbzshop-service
   labels:
     app.kubernetes.io/name: common-api-service
     app.kubernetes.io/instance: api
     app.kubernetes.io/version: "4.2.4.1"
     app.kubernetes.io/component: api
-    app.kubernetes.io/part-of: lilishop
+    app.kubernetes.io/part-of: crbzshop
     tier: "api-service"
 spec:
   type: NodePort
@@ -47,20 +47,20 @@ spec:
       port: 8890
       targetPort: common8890
   selector:
-    lilishop.service: common-api
+    crbzshop.service: common-api
 
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: seller-api-service
-  namespace: lilishop-service
+  namespace: crbzshop-service
   labels:
     app.kubernetes.io/name: seller-api-service
     app.kubernetes.io/instance: api
     app.kubernetes.io/version: "4.2.4.1"
     app.kubernetes.io/component: api
-    app.kubernetes.io/part-of: lilishop
+    app.kubernetes.io/part-of: crbzshop
     tier: "api-service"
 spec:
   type: NodePort
@@ -70,20 +70,20 @@ spec:
       port: 8889
       targetPort: seller8889
   selector:
-    lilishop.service: seller-api
+    crbzshop.service: seller-api
 
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: manager-api-service
-  namespace: lilishop-service
+  namespace: crbzshop-service
   labels:
     app.kubernetes.io/name: manager-api-service
     app.kubernetes.io/instance: api
     app.kubernetes.io/version: "4.2.4.1"
     app.kubernetes.io/component: api
-    app.kubernetes.io/part-of: lilishop
+    app.kubernetes.io/part-of: crbzshop
     tier: "api-service"
 spec:
   type: NodePort
@@ -93,20 +93,20 @@ spec:
       port: 8887
       targetPort: manager8887
   selector:
-    lilishop.service: manager-api
+    crbzshop.service: manager-api
 
 ---
 apiVersion: v1
 kind: ConfigMap
 metadata:
   name: api-config
-  namespace: lilishop-service
+  namespace: crbzshop-service
   labels:
     app.kubernetes.io/name: mysql-db-config
     app.kubernetes.io/instance: mysql-single
     app.kubernetes.io/version: "8.0.28"
     app.kubernetes.io/component: database
-    app.kubernetes.io/part-of: lilishop
+    app.kubernetes.io/part-of: crbzshop
 data:
   application.yml: |
     server:
@@ -140,9 +140,9 @@ data:
         type: redis
       # Redis
       redis:
-        host: redis-service.lilishop-middleware
+        host: redis-service.crbzshop-middleware
         port: 6379
-        password: lilishop
+        password: crbzshop
         lettuce:
           pool:
             # 连接池最大连接数（使用负值表示没有限制） 默认 8
@@ -171,9 +171,9 @@ data:
           default-datasource:
             type: com.alibaba.druid.pool.DruidDataSource
             driverClassName: com.mysql.cj.jdbc.Driver
-            url: jdbc:mysql://mysql.lilishop-middleware:3306/lilishop?useUnicode=true&characterEncoding=utf-8&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Shanghai
+            url: jdbc:mysql://mysql.crbzshop-middleware:3306/crbzshop?useUnicode=true&characterEncoding=utf-8&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Shanghai
             username: root
-            password: lilishop
+            password: crbzshop
             maxActive: 50
             initialSize: 20
             maxWait: 60000
@@ -209,9 +209,9 @@ data:
         #            standard:
         #              sharding-column: create_time
         #              #分表策略
-        #              precise-algorithm-class-name: cn.lili.mybatis.sharding.CreateTimeShardingTableAlgorithm
+        #              precise-algorithm-class-name: cn.crbz.mybatis.sharding.CreateTimeShardingTableAlgorithm
         #              #范围查询实现
-        #              range-algorithm-class-name: cn.lili.mybatis.sharding.CreateTimeShardingTableAlgorithm
+        #              range-algorithm-class-name: cn.crbz.mybatis.sharding.CreateTimeShardingTableAlgorithm
         props:
           #是否打印逻辑SQL语句和实际SQL语句，建议调试时打印，在生产环境关闭
           sql:
@@ -268,12 +268,12 @@ data:
 
     # Swagger界面内容配置
     swagger:
-      title: lilishop API接口文档
-      description: lilishop Api Documentation
+      title: crbzshop API接口文档
+      description: crbzshop Api Documentation
       version: 4.2.2
       termsOfServiceUrl: https://pickmall.cn
       contact:
-        name: lili
+        name: crbz
         url: https://pickmall.cn
         email: admin@pickmall.com
 
@@ -290,7 +290,7 @@ data:
     logging:
       # 输出级别
       level:
-        cn.lili: info
+        cn.crbz: info
       #    org.hibernate: debug
       #    org.springframework: debug
       file:
@@ -305,16 +305,16 @@ data:
     #加密参数
     jasypt:
       encryptor:
-        password: lili
+        password: crbz
 
 
-    lili:
+    crbz:
       #验证码设置
       verification-code:
         #图形验证码有效时间 秒 包含滑块验证码有效时间， 以及验证通过之后，缓存中存储的验证结果有效时间
         effectiveTime: 300
         #水印
-        watermark: LILI-SHOP
+        watermark: crbz-SHOP
         #干扰项数量 最大2 默认0
         interfereNum: 1
         #允许误差像素
@@ -379,50 +379,50 @@ data:
       data:
         elasticsearch:
           cluster-name: elasticsearch
-          cluster-nodes: elasticsearch.lilishop-middleware:9200
+          cluster-nodes: elasticsearch.crbzshop-middleware:9200
           index:
             number-of-replicas: 0
             number-of-shards: 3
-          index-prefix: lili
+          index-prefix: crbz
           schema: http
         #      account:
         #        username: elastic
-        #        password: LiLiShopES
+        #        password: crbzShopES
 
         logstash:
-          server: logstash-service.lilishop-middleware:4560
+          server: logstash-service.crbzshop-middleware:4560
         rocketmq:
-          promotion-topic: lili_promotion_topic
-          promotion-group: lili_promotion_group
-          msg-ext-topic: lili_msg_topic
-          msg-ext-group: lili_msg_group
-          goods-topic: lili_goods_topic
-          goods-group: lili_goods_group
-          order-topic: lili_order_topic
-          order-group: lili_order_group
-          member-topic: lili_member_topic
-          member-group: lili_member_group
-          other-topic: lili_other_topic
-          other-group: lili_other_group
-          notice-topic: lili_notice_topic
-          notice-group: lili_notice_group
-          notice-send-topic: lili_send_notice_topic
-          notice-send-group: lili_send_notice_group
-          after-sale-topic: lili_after_sale_topic
-          after-sale-group: lili_after_sale_group
+          promotion-topic: shop_crbz_promotion_topic
+          promotion-group: shop_crbz_promotion_group
+          msg-ext-topic: shop_crbz_msg_topic
+          msg-ext-group: shop_crbz_msg_group
+          goods-topic: shop_crbz_goods_topic
+          goods-group: shop_crbz_goods_group
+          order-topic: shop_crbz_order_topic
+          order-group: shop_crbz_order_group
+          member-topic: shop_crbz_member_topic
+          member-group: shop_crbz_member_group
+          other-topic: shop_crbz_other_topic
+          other-group: shop_crbz_other_group
+          notice-topic: shop_crbz_notice_topic
+          notice-group: shop_crbz_notice_group
+          notice-send-topic: shop_crbz_send_notice_topic
+          notice-send-group: shop_crbz_send_notice_group
+          after-sale-topic: shop_crbz_after_sale_topic
+          after-sale-group: shop_crbz_after_sale_group
     rocketmq:
-      name-server: rocketmq.lilishop-middleware:9876
+      name-server: rocketmq.crbzshop-middleware:9876
       isVIPChannel: false
       producer:
-        group: lili_group
+        group: crbz_group
         send-message-timeout: 30000
 
     xxl:
       job:
         admin:
-          addresses: http://xxl-job-service.lilishop-middleware:9001/xxl-job-admin
+          addresses: http://xxl-job-service.crbzshop-middleware:9001/xxl-job-admin
         executor:
-          appname: xxl-job-executor-lilishop
+          appname: xxl-job-executor-crbzshop
           address:
           ip:
           port: 8891
@@ -434,23 +434,23 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: buyer-api
-  namespace: lilishop-service
+  namespace: crbzshop-service
   labels:
     app.kubernetes.io/name: buyer-api-service
     app.kubernetes.io/instance: buyer-api
     app.kubernetes.io/version: "4.2.4.1"
     app.kubernetes.io/component: api
-    app.kubernetes.io/part-of: lilishop
+    app.kubernetes.io/part-of: crbzshop
     tier: "api-service"
 spec:
   replicas: 1
   selector:
     matchLabels:
-      lilishop.service: buyer-api
+      crbzshop.service: buyer-api
   template:
     metadata:
       labels:
-        lilishop.service: buyer-api
+        crbzshop.service: buyer-api
     spec:
       containers:
         - image: 192.168.0.108:31320/buyer-api:4.2.4.1
@@ -479,23 +479,23 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: common-api
-  namespace: lilishop-service
+  namespace: crbzshop-service
   labels:
     app.kubernetes.io/name: common-api-service
     app.kubernetes.io/instance: common-api
     app.kubernetes.io/version: "4.2.4.1"
     app.kubernetes.io/component: api
-    app.kubernetes.io/part-of: lilishop
+    app.kubernetes.io/part-of: crbzshop
     tier: "api-service"
 spec:
   replicas: 1
   selector:
     matchLabels:
-      lilishop.service: common-api
+      crbzshop.service: common-api
   template:
     metadata:
       labels:
-        lilishop.service: common-api
+        crbzshop.service: common-api
     spec:
       containers:
         - image: 192.168.0.108:31320/common-api:4.2.4.1
@@ -524,23 +524,23 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: seller-api
-  namespace: lilishop-service
+  namespace: crbzshop-service
   labels:
     app.kubernetes.io/name: seller-api-service
     app.kubernetes.io/instance: seller-api
     app.kubernetes.io/version: "4.2.4.1"
     app.kubernetes.io/component: api
-    app.kubernetes.io/part-of: lilishop
+    app.kubernetes.io/part-of: crbzshop
     tier: "api-service"
 spec:
   replicas: 1
   selector:
     matchLabels:
-      lilishop.service: seller-api
+      crbzshop.service: seller-api
   template:
     metadata:
       labels:
-        lilishop.service: seller-api
+        crbzshop.service: seller-api
     spec:
       containers:
         - image: 192.168.0.108:31320/seller-api:4.2.4.1
@@ -569,23 +569,23 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: manager-api
-  namespace: lilishop-service
+  namespace: crbzshop-service
   labels:
     app.kubernetes.io/name: manager-api-service
     app.kubernetes.io/instance: manager-api
     app.kubernetes.io/version: "4.2.4.1"
     app.kubernetes.io/component: api
-    app.kubernetes.io/part-of: lilishop
+    app.kubernetes.io/part-of: crbzshop
     tier: "api-service"
 spec:
   replicas: 1
   selector:
     matchLabels:
-      lilishop.service: manager-api
+      crbzshop.service: manager-api
   template:
     metadata:
       labels:
-        lilishop.service: manager-api
+        crbzshop.service: manager-api
     spec:
       containers:
         - image: 192.168.0.108:31320/manager-api:4.2.4.1
@@ -614,23 +614,23 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: consumer
-  namespace: lilishop-service
+  namespace: crbzshop-service
   labels:
     app.kubernetes.io/name: consumer-service
     app.kubernetes.io/instance: buyer-api
     app.kubernetes.io/version: "4.2.4.1"
     app.kubernetes.io/component: api
-    app.kubernetes.io/part-of: lilishop
+    app.kubernetes.io/part-of: crbzshop
     tier: "api-service"
 spec:
   replicas: 1
   selector:
     matchLabels:
-      lilishop.service: consumer
+      crbzshop.service: consumer
   template:
     metadata:
       labels:
-        lilishop.service: consumer
+        crbzshop.service: consumer
     spec:
       containers:
         - image: 192.168.0.108:31320/consumer:4.2.4.1

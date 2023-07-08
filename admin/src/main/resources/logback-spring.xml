@@ -7,7 +7,7 @@
     <springProperty scope="context" name="APP_NAME" source="spring.application.name"/>
     <!--日志文件保存路径-->
     <springProperty scope="context" name="LOG_FILE_PATH" source="logging.file.path"/>
-    <springProperty scope="context" name="LOGSTASH_SERVER" source="lili.data.logstash.server"/>
+    <springProperty scope="context" name="LOGSTASH_SERVER" source="crbz.data.logstash.server"/>
     <contextName>${APP_NAME}</contextName>
 
     <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">

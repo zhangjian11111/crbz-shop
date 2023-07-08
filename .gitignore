@@ -12,8 +12,9 @@ target
 log/
 logs/
 *.factorypath
-lili-shop/src/main/java/cn/lili/generator/CodeGenerator.java
-lili-logs
+crbzshop/src/main/java/cn/crbz/generator/CodeGenerator.java
+logs
+/home/data/programming/crbz/logs
 
 
 ### STS ###

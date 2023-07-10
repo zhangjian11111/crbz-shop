@@ -2,7 +2,7 @@ server:
   port: 9118
 
 spring:
-  mysqlip: 127.0.0.1
+  mysqlip: 192.168.124.11
   mail:
 #    host: smtp.qq.com #发送邮件服务器
     host: smtp.exmail.qq.com #发送邮件服务器
@@ -21,8 +21,8 @@ spring:
     default-encoding: UTF-8
     to1: 1097951193@qq.com
     to2: 18186854165@163.com
-    to3: lixia@coshine.com
-    to4: xiaoyq@coshine.com
+#    to3: lixia@coshine.com
+#    to4: xiaoyq@coshine.com
     nickname: 张建
 
 
@@ -31,13 +31,12 @@ spring:
       driver-class-name: com.mysql.cj.jdbc.Driver
 #      url: jdbc:mysql://192.168.2.200:3306/ssm_db?serverTimezone=UTC
       url: jdbc:mysql://${spring.mysqlip}:3306/zbforcoshine?serverTimezone=UTC
-      username: root
+      username: ZHANGJIAN
       password: 640102
 
 mybatis-plus:
   global-config:
     db-config:
-      table-prefix: tbl_
       id-type: auto
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl

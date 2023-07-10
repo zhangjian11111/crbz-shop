@@ -1,3 +1,4 @@
+#####记得修改ip和xxl-job
 server:
   servlet:
     context-path: /
@@ -20,8 +21,8 @@ management:
       exposure:
         include: '*'
 spring:
-  ip: 192.168.124.11
-  mysqlip: 192.168.124.11
+  ip: 192.168.124.17
+  mysqlip: 192.168.124.17
   # 要在其中注册的Spring Boot Admin Server的URL。
   boot:
     admin:
@@ -187,7 +188,7 @@ logging:
   #    org.springframework: debug
   file:
     # 指定路径
-    path: /home/data/programming/crbz/logs
+    path: logs
   logback:
     rollingpolicy:
       # 最大保存天数
@@ -243,16 +244,16 @@ crbz:
     sk: zhNKVrJK6UPOhqIjn8AQvG37b9sz6
   #域名
   domain:
-    pc: http://www.qgxbm.com
-    wap: http://www.qgxbm.com
-    seller: http://www.qgxbm.com
-    admin: http://www.qgxbm.com
+    pc: https://buyer.qgxbm.com
+    wap: https://www.qgxbm.com
+    seller: https://seller.qgxbm.com
+    admin: https://manager.qgxbm.com
   #api地址
   api:
-    buyer: http://www.qgxbm.com
-    base: http://www.qgxbm.com
-    manager: http://www.qgxbm.com
-    seller: http://www.qgxbm.com
+    buyer: https://www.qgxbm.com
+    base: https://www.qgxbm.com
+    manager: https://www.qgxbm.com
+    seller: https://www.qgxbm.com
 
   # jwt 细节设定
   jwt-setting:
@@ -282,7 +283,7 @@ crbz:
     #        password: LiLiShopES
 
     logstash:
-      server: ${spring.ip}:5044
+      server: ${spring.ip}:4560
     rocketmq:
       promotion-topic: shop_crbz_promotion_topic
       promotion-group: shop_crbz_promotion_group
@@ -316,7 +317,7 @@ xxl:
     admin:
       addresses: http://${spring.ip}:9001/xxl-job-admin
     executor:
-      appname: xxl-job-executor-crbzshop
+      appname: xxl-job-executor-crbzshop-dev
       address:
       ip: ${spring.ip}
       port: 8891

@@ -21,8 +21,8 @@ spring:
     default-encoding: UTF-8
     to1: 1097951193@qq.com
     to2: 18186854165@163.com
-#    to3: lixia@coshine.com
-#    to4: xiaoyq@coshine.com
+    to3:
+    to4:
     nickname: 张建
 
 

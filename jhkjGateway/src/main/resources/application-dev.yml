@@ -12,10 +12,6 @@ spring:
           uri: ws://localhost:9115
           predicates:
             - Path=/lili/**
-        #        - id: zjmall-impage
-        #          uri: http://localhost:10004
-        #          predicates:
-        #            - Path=/message/**
         - id: zjmall-buyer
           uri: http://localhost:9112
           predicates:

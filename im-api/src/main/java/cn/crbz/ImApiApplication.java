@@ -13,6 +13,7 @@ import org.springframework.web.socket.server.standard.ServerEndpointExporter;
 public class ImApiApplication {
 
     public static void main(String[] args) {
+        System.setProperty("rocketmq.client.logUseSlf4j","true");
         SpringApplication.run(ImApiApplication.class, args);
     }
 

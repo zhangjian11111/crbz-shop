@@ -116,7 +116,7 @@ public class OssSetting implements Serializable {
     public String getType() {
         //默认给阿里云oss存储类型
         if (StringUtils.isEmpty(type)) {
-            return OssEnum.Acrbz_OSS.name();
+            return OssEnum.ALI_OSS.name();
         }
         return type;
     }

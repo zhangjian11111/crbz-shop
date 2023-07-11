@@ -31,7 +31,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author liushuai
  */
 @Component
-@ServerEndpoint(value = "/lili/webSocket/{accessToken}", configurator = CustomSpringConfigurator.class)
+@ServerEndpoint(value = "/crbz/webSocket/{accessToken}", configurator = CustomSpringConfigurator.class)
 @Scope("prototype")
 @Slf4j
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))

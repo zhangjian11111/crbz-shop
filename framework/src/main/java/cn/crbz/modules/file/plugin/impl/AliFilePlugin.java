@@ -34,7 +34,7 @@ public class AliFilePlugin implements FilePlugin {
 
     @Override
     public OssEnum pluginName() {
-        return OssEnum.Acrbz_OSS;
+        return OssEnum.ALI_OSS;
     }
 
     /**

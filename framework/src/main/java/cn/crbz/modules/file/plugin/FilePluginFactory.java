@@ -47,7 +47,7 @@ public class FilePluginFactory {
 
                 case MINIO:
                     return new MinioFilePlugin(ossSetting);
-                case Acrbz_OSS:
+                case ALI_OSS:
                     return new AliFilePlugin(ossSetting);
                 case HUAWEI_OBS:
                     return new HuaweiFilePlugin(ossSetting);

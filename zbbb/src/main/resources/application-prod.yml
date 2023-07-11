@@ -2,6 +2,9 @@ server:
   port: 9118
 
 spring:
+  banner:
+    image:
+      location: banner.txt
   mysqlip: 192.168.124.11
   mail:
 #    host: smtp.qq.com #发送邮件服务器

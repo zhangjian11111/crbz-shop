@@ -11,7 +11,7 @@ spring:
         - id: zjmall-imws
           uri: ws://localhost:9115
           predicates:
-            - Path=/lili/**
+            - Path=/crbz/**
         - id: zjmall-buyer
           uri: http://localhost:9112
           predicates:

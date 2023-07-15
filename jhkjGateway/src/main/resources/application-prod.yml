@@ -5,37 +5,37 @@ spring:
     gateway:
       routes:
         - id: zjmall-im
-          uri: http://localhost:9115
+          uri: http://192.168.124.11:9115
           predicates:
             - Path=/im/**
         - id: zjmall-imws
-          uri: ws://localhost:9115
+          uri: ws://192.168.124.11:9115
           predicates:
             - Path=/crbz/**
         - id: zjmall-buyer
-          uri: http://localhost:9112
+          uri: http://192.168.124.11:9112
           predicates:
             - Path=/buyer/**
         - id: zjmall-common
-          uri: http://localhost:9113
+          uri: http://192.168.124.11:9113
           predicates:
             - Path=/common/**
         - id: zjmall-manager
-          uri: http://localhost:9116
+          uri: http://192.168.124.11:9116
           predicates:
             - Path=/manager/**
         - id: zjmall-store
-          uri: http://localhost:9117
+          uri: http://192.168.124.11:9117
           predicates:
             - Path=/store/**
 
         #周报开始
         - id: zjmall-ZBBBBB
-          uri: http://localhost:9118
+          uri: http://192.168.124.11:9118
           predicates:
             - Path=/pages/**
         - id: zjmall-ZB
-          uri: http://localhost:9118
+          uri: http://192.168.124.11:9118
           predicates:
             - Path=/zbfc/**
         #周报结束

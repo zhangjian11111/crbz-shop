@@ -12,6 +12,6 @@ COPY ./docker-buyer-api/buyer-api-4.2.5.jar ${APP_HOME}/
 COPY ./docker-buyer-api/startapi.sh ${APP_HOME}/startapi.sh
 RUN chmod 777 ${APP_HOME}/*
 RUN chmod 777 /data/crbz/logs
-EXPOSE 8891 9112
+EXPOSE 9112
 ENTRYPOINT ["sh","startapi.sh"]
 

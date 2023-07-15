@@ -93,18 +93,47 @@
                 <groupId>com.spotify</groupId>
                 <artifactId>docker-maven-plugin</artifactId>
                 <version>${spotify}</version>
+<!--                <executions>-->
+<!--                    <execution>-->
+<!--                        <id>build-image</id>-->
+<!--                        <phase>package</phase>-->
+<!--                        <goals>-->
+<!--                            <goal>build</goal>-->
+<!--                            <goal>push</goal>-->
+<!--                        </goals>-->
+<!--                    </execution>-->
+<!--                </executions>-->
                 <configuration>
-                    <imageName>${docker-registry}/${project.artifactId}:${revision}.${images-version}</imageName>
-                    <baseImage>java</baseImage>
-                    <entryPoint>["java", "-jar", "/${project.build.finalName}.jar"]</entryPoint>
-                    <resources>
-                        <resource>
-                            <targetPath>/</targetPath>
-                            <directory>${project.build.directory}</directory>
-                            <include>${project.build.finalName}.jar</include>
-                        </resource>
-                    </resources>
+<!--                    <dockerDirectory>${project.name}</dockerDirectory>-->
+                    <!--仓库地址-->
+<!--                    <registryUrl>192.168.124.11:5000</registryUrl>-->
+                    <!--docker api地址，构建镜像是通过api调用在192.168.124.11上构建，并推送到registryUrl上-->
+<!--                    <dockerHost>http://192.168.124.11:2375</dockerHost>-->
+                    <!--镜像名称-->
+<!--                    <imageName>192.168.124.11:5000/xbm/${project.name}:${project.version}</imageName>-->
+<!--                    <imageTags>-->
+<!--                        <imageTag>${project.version}</imageTag>-->
+<!--                    </imageTags>-->
+                    <!--基础镜像-指定dockerfile后不用此配置-->
+<!--                    <baseImage>openjdk:8u342-oraclelinux8</baseImage>-->
+                    <!--是否推送镜像-->
+<!--                    <pushImage>true</pushImage>-->
+                    <!--推送后是否覆盖已存在的标签镜像-->
+<!--                    <forceTags>true</forceTags>-->
+<!--                    <exposes>8891,9110,9111,9112,9113,9114,9115,9116,9117,9118</exposes>-->
+                    <!--资源，类似Dockerfile里的 ADD -->
+<!--                    <resources>-->
+<!--                        <resource>-->
+<!--                            <targetPath>/data/crbz/</targetPath>-->
+<!--                            <directory>${project.build.directory}</directory>-->
+<!--                            <include>${project.build.finalName}.jar</include>-->
+<!--                        </resource>-->
+<!--                    </resources>-->
+                    <!--启动容器里执行的命令-->
+                    <!--                    <entryPoint>["java", "-version"]</entryPoint>-->
+<!--                    <entryPoint>["java", "-jar","/${project.build.finalName}.jar"]</entryPoint>-->
                 </configuration>
+                <!--docker-maven-plugin end-->
             </plugin>
 
             <plugin>

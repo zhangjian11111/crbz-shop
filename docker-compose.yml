@@ -1,0 +1,106 @@
+version: '3.3'
+services:
+  crbz-shop:
+    depends_on:
+      - elasticsearch
+      - xxljob
+      - logstash
+      - mqbroker
+      - mqnamesrv
+      - redis
+    container_name: crbz-shop
+    restart: always
+    ports:
+      - '9110-9118:9110-9118/tcp'
+      - '8891:8891'
+    volumes:
+      - '/home/data/programming/crbz/runapi/backend/logs:/data/crbz/logs'
+      - '/home/data/programming/cert/wechatcert/xbm:/data/crbz/cert/wechatcert/xbm'
+    image: '192.168.124.11:5000/crbz-shop:4.2.5'
+  elasticsearch:
+    container_name: elasticsearch8.7.0
+    ports:
+      - '9200:9200'
+      - '9300:9300'
+    environment:
+      - discovery.type=single-node
+      - ES_JAVA_OPTS=-Xms4096m
+    volumes:
+      - '/home/data/installedApps/elasticsearch8.7.0/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml'
+      - '/home/data/installedApps/elasticsearch8.7.0/data/:/usr/share/elasticsearch/data'
+      - '/home/data/installedApps/elasticsearch8.7.0/plugins:/usr/share/elasticsearch/plugins'
+    image: '192.168.124.11:5000/elasticsearch:8.7.0'
+  logstash:
+    container_name: logstash8
+    restart: always
+    ports:
+      - '5044:5044'
+    volumes:
+      - '/home/data/installedApps/logstash8:/usr/share/logstash'
+      - '/var/log/messages:/var/log/messages'
+    image: '192.168.124.11:5000/logstash:8.7.0'
+  redis:
+    restart: always
+    logging:
+      options: 'max-size=100m,max-file=2'
+    ports:
+      - '6379:6379'
+    container_name: myredis
+    volumes:
+      - '/home/data/installedApps/myredis/myredis.conf:/etc/redis/redis.conf'
+      - '/home/data/installedApps/myredis/data:/data'
+    image: '192.168.124.11:5000/redis'
+  mqnamesrv:
+    restart: always
+    container_name: rmqnamesrv
+    ports:
+      - '9876:9876'
+    volumes:
+      - '/home/data/installedApps/rocketmq5.1.3/data/namesrv/logs:/root/logs'
+      - '/home/data/installedApps/rocketmq5.1.3/data/namesrv/store:/root/store'
+    environment:
+      - MAX_POSSIBLE_HEAP=100000000
+    image: '192.168.124.11:5000/apache/rocketmq'
+  mqbroker:
+    restart: always
+    container_name: rmqbroker
+    links:
+      - 'rmqnamesrv:namesrv'
+    ports:
+      - '10911:10911'
+      - '10909:10909'
+    volumes:
+      - '/home/data/installedApps/rocketmq5.1.3/data/broker/logs:/root/logs'
+      - '/home/data/installedApps/rocketmq5.1.3/data/broker/store:/root/store'
+      - '/home/data/installedApps/rocketmq5.1.3/conf/broker.conf:/opt/rocketmq/conf/broker.conf'
+    environment:
+      - 'NAMESRV_ADDR=namesrv:9876'
+      - 'MAX_POSSIBLE_HEAP=200000000'
+    image: '192.168.124.11:5000/apache/rocketmq'
+  rocketmq-console-ng:
+    restart: always
+    container_name: rmqadmin
+    environment:
+      - 'JAVA_OPTS=-Drocketmq.namesrv.addr=192.168.124.11:9876'
+    ports:
+      - '9999:8080'
+    image: '192.168.124.11:5000/pangliang/rocketmq-console-ng'
+  portainer-ce:
+    container_name: portainerce
+    ports:
+      - '8000:8000'
+      - '9000:9000'
+    restart: always
+    volumes:
+      - '/var/run/docker.sock:/var/run/docker.sock'
+      - '/home/data/installedApps/portainerce_data:/data'
+    image: '192.168.124.11:5000/6053537/portainer-ce'
+  xxljob:
+    container_name: xxljob
+    restart: always
+    ports:
+      - '9001:9001'
+    volumes:
+      - '/home/data/programming/crbz/runapi/backend/xxl-job/logs:/xxl-job'
+    image: '192.168.124.11:5000/xxljob:2.3.0'
+

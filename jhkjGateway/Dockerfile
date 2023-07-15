@@ -8,8 +8,8 @@ RUN echo 'Asia/Shanghai' >/etc/timezone
 RUN mkdir -p ${APP_HOME}/logs
 RUN mkdir -p ${APP_HOME}/cert/wechatcert/xbm
 WORKDIR ${APP_HOME}
-COPY jhkjGateway-4.2.5.jar ${APP_HOME}/
-COPY startapi.sh ${APP_HOME}/startapi.sh
+COPY ./jhkjGateway-4.2.5.jar ${APP_HOME}/
+COPY ./startapi.sh ${APP_HOME}/startapi.sh
 RUN chmod 777 ${APP_HOME}/*
 RUN chmod 777 /data/crbz/logs
 EXPOSE 8891 9111

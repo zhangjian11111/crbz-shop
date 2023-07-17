@@ -486,7 +486,13 @@ public class EsGoodsIndexServiceImpl extends BaseElasticsearchService implements
      */
     @Override
     public void deleteIndexById(String id) {
-        goodsIndexRepository.deleteById(id);
+        try {
+            goodsIndexRepository.deleteById(id);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+//        goodsIndexRepository.deleteById(id);
     }
 
     /**

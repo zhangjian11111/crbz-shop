@@ -246,14 +246,14 @@ crbz:
   domain:
     pc: https://buyer.qgxbm.com
     wap: https://www.qgxbm.com
-    seller: https://seller.qgxbm.com
+    store: https://seller.qgxbm.com
     admin: https://manager.qgxbm.com
   #api地址
   api:
-    buyer: https://www.qgxbm.com
-    base: https://www.qgxbm.com
-    manager: https://www.qgxbm.com
-    seller: https://www.qgxbm.com
+    buyer: https://yqswgjz.mynatapp.cc
+    common: https://yqswgjz.mynatapp.cc
+    manager: https://yqswgjz.mynatapp.cc
+    store: https://yqswgjz.mynatapp.cc
 
   # jwt 细节设定
   jwt-setting:
@@ -283,7 +283,7 @@ crbz:
     #        password: LiLiShopES
 
     logstash:
-      server: ${spring.ip}:4560
+      server: ${spring.ip}:5044
     rocketmq:
       promotion-topic: shop_crbz_promotion_topic
       promotion-group: shop_crbz_promotion_group

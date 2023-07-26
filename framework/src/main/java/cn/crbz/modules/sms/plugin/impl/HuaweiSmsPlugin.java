@@ -48,7 +48,7 @@ public class HuaweiSmsPlugin implements SmsPlugin {
     @Override
     public void sendSmsCode(String signName, String mobile, Map<String, String> param, String templateCode) {
         try {
-            this.sendSms(signName, mobile, "[" + param.values() + "]", templateCode);
+            this.sendSms(signName, mobile, param.values() + "", templateCode);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -107,7 +107,7 @@ public class HuaweiSmsPlugin implements SmsPlugin {
 
     private void sendSms(String signName, String mobile, String param, String templateCode) throws Exception {
         //必填,请参考"开发准备"获取如下数据,替换为实际值
-        String url = "https://smsapi.cn-north-4.myhuaweicloud.com:443/sms/batchSendSms/v1"; //APP接入地址(在控制台"应用管理"页面获取)+接口访问URI
+        String url = ""; //APP接入地址(在控制台"应用管理"页面获取)+接口访问URI
         String appKey = smsSetting.getHuaweiAppKey(); //APP_Key
         String appSecret = smsSetting.getHuaweiAppSecret(); //APP_Secret
         String sender = smsSetting.getHuaweiSender(); //国内短信签名通道号或国际/港澳台短信通道号
@@ -115,7 +115,7 @@ public class HuaweiSmsPlugin implements SmsPlugin {
 
         //条件必填,国内短信关注,当templateId指定的模板类型为通用模板时生效且必填,必须是已审核通过的,与模板类型一致的签名名称
         //国际/港澳台短信不用关注该参数
-        String signature = signName; //签名名称
+        String signature = smsSetting.getHuaweiSignature(); //签名名称
 
         //必填,全局号码格式(包含国家码),示例:+8615123456789,多个号码之间用英文逗号分隔
         String receiver = mobile; //短信接收人号码

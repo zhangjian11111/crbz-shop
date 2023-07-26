@@ -34,7 +34,7 @@ public class OssSetting implements Serializable {
     /**
      * 阿里云-存放路径路径
      */
-    private String aliyunOSSPicLocation = "";
+//    private String aliyunOSSPicLocation = "";
     /**
      * 阿里云-密钥id
      */

@@ -31,7 +31,7 @@ public class RegionServiceImpl extends ServiceImpl<RegionMapper, Region> impleme
     /**
      * 同步请求地址
      */
-    private final String syncUrl = "https://restapi.amap.com/v3/config/district?subdistrict=4&key=e456d77800e2084a326f7b777278f89d";
+    private final String syncUrl = "https://restapi.amap.com/v3/config/district?subdistrict=4&key=8e77ce1de5070e3b216d42f88d236e77";
 
     @Autowired
     private Cache cache;

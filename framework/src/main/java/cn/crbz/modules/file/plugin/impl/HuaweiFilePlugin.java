@@ -5,11 +5,13 @@ import cn.crbz.common.exception.ServiceException;
 import cn.crbz.modules.file.entity.enums.OssEnum;
 import cn.crbz.modules.file.plugin.FilePlugin;
 import cn.crbz.modules.system.entity.dto.OssSetting;
-
 import com.obs.services.ObsClient;
 import com.obs.services.exception.ObsException;
-import com.obs.services.model.*;
 import lombok.extern.slf4j.Slf4j;
+import com.obs.services.model.DeleteObjectsRequest;
+import com.obs.services.model.DeleteObjectsResult;
+import com.obs.services.model.ListVersionsResult;
+import com.obs.services.model.PutObjectRequest;
 
 import java.io.File;
 import java.io.IOException;
@@ -19,9 +21,7 @@ import java.util.List;
 /**
  * 华为obs 文件操作
  *
- * @author Bulbasaur
- *
- *
+ * @author jianjian
  */
 
 @Slf4j
@@ -72,7 +72,7 @@ public class HuaweiFilePlugin implements FilePlugin {
     public String inputStreamUpload(InputStream inputStream, String key) {
         ObsClient obsClient = getObsClient();
         try {
-            PutObjectRequest putObjectRequest=new PutObjectRequest(ossSetting.getHuaweicloudOBSBucketName(), key, inputStream);
+            PutObjectRequest putObjectRequest = new PutObjectRequest(ossSetting.getHuaweicloudOBSBucketName(), key, inputStream);
             obsClient.putObject(putObjectRequest);
         } catch (ObsException obsException) {
             obsException.printStackTrace();

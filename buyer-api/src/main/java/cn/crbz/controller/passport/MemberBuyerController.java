@@ -216,6 +216,7 @@ public class MemberBuyerController {
     @ApiOperation(value = "修改用户自己资料")
     @PutMapping("/editOwn")
     public ResultMessage<Member> editOwn(MemberEditDTO memberEditDTO) {
+        log.info("memberEditDTO:::用户信息修改"+memberEditDTO.toString());
 
         return ResultUtil.data(memberService.editOwn(memberEditDTO));
     }

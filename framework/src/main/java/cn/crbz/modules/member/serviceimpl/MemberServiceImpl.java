@@ -47,6 +47,7 @@ import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.rocketmq.spring.core.RocketMQTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
@@ -66,6 +67,7 @@ import java.util.concurrent.TimeUnit;
  * @author Chopper
  * @since 2021-03-29 14:10:16
  */
+@Slf4j
 @Service
 public class MemberServiceImpl extends ServiceImpl<MemberMapper, Member> implements MemberService {
 
@@ -318,6 +320,7 @@ public class MemberServiceImpl extends ServiceImpl<MemberMapper, Member> impleme
         Member member = this.findByUsername(Objects.requireNonNull(UserContext.getCurrentUser()).getUsername());
         //传递修改会员信息
         BeanUtil.copyProperties(memberEditDTO, member);
+        log.info("复制后的member："+member.toString());
         //修改会员
         this.updateById(member);
         String destination = rocketmqCustomProperties.getMemberTopic() + ":" + MemberTagsEnum.MEMBER_INFO_EDIT.name();

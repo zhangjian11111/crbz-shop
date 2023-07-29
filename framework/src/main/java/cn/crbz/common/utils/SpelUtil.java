@@ -1,11 +1,14 @@
 package cn.crbz.common.utils;
 
+import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.core.DefaultParameterNameDiscoverer;
 import org.springframework.expression.EvaluationContext;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
 import org.springframework.expression.spel.support.StandardEvaluationContext;
+
+import java.util.Arrays;
 
 /**
  * SpelUtil
@@ -14,6 +17,7 @@ import org.springframework.expression.spel.support.StandardEvaluationContext;
  * @version v1.0
  * 2021-01-11 10:45
  */
+@Slf4j
 public class SpelUtil {
 
 
@@ -38,6 +42,7 @@ public class SpelUtil {
         MethodSignature signature = (MethodSignature) joinPoint.getSignature();
 
         String[] parameterNames = parameterNameDiscoverer.getParameterNames(signature.getMethod());
+        log.info("parameterNames:::"+ Arrays.toString(parameterNames));
         if (parameterNames != null && parameterNames.length > 0) {
             EvaluationContext context = new StandardEvaluationContext();
 

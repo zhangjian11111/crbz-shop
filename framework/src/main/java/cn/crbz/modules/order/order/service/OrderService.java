@@ -200,6 +200,16 @@ public interface OrderService extends IService<Order> {
 
 
     /**
+     * 从小程序中订单核验-手机号为18186854165和18393706596才可以
+     *
+     * @param verificationCode 验证码
+     * @param orderSn          订单编号
+     * @return 订单
+     */
+    Order mpTake(String orderSn, String verificationCode);
+
+
+    /**
      * 订单核验
      *
      * @param verificationCode 验证码
@@ -221,6 +231,13 @@ public interface OrderService extends IService<Order> {
      * @param orderSn 订单编号
      */
     void complete(String orderSn);
+
+    /**
+     * 订单完成(小程序核销专用)
+     *
+     * @param orderSn 订单编号
+     */
+    void mpComplete(String orderSn);
 
     /**
      * 系统定时完成订单

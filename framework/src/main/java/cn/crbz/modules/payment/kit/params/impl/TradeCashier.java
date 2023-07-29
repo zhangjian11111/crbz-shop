@@ -90,7 +90,7 @@ public class TradeCashier implements CashierExecute {
             } catch (Exception e) {
                 cashierParam.setTitle("多用户商城，在线支付");
             }
-            String subject = "在线支付";
+            String subject = "西部手工牛肉面";
             cashierParam.setDetail(subject);
 
             cashierParam.setCreateTime(trade.getCreateTime());

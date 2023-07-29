@@ -581,17 +581,20 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public List<String> shippingMethodList(String way) {
+        log.info("购买方式：：："+way);
         List<String> list = new ArrayList<String>();
-        list.add(DeliveryMethodEnum.LOGISTICS.name());
         TradeDTO tradeDTO = this.getCheckedTradeDTO(CartTypeEnum.valueOf(way));
         if(tradeDTO.getCartList().size()==1){
             for (CartVO cartVO : tradeDTO.getCartList()) {
                 Store store = storeService.getById(cartVO.getStoreId());
+                //暂时将自提和同城配送设置为同一个开关
                 if(store.getSelfPickFlag() != null && store.getSelfPickFlag()){
                     list.add(DeliveryMethodEnum.SELF_PICK_UP.name());
+                    list.add(DeliveryMethodEnum.LOCAL_TOWN_DELIVERY.name());
                 }
             }
         }
+        list.add(DeliveryMethodEnum.LOGISTICS.name());
         return list;
     }
 

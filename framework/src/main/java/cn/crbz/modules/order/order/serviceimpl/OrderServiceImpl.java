@@ -495,6 +495,28 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         return order;
     }
 
+
+    /**
+     * 为了快速核销,允许两位手机号在小程序核销
+     * @param orderSn          订单编号
+     * @param verificationCode 验证码
+     * @return
+     */
+    @Override
+    @OrderLogPoint(description = "'订单['+#orderSn+']核销，核销码['+#verificationCode+']'", orderSn = "#orderSn")
+    @Transactional(rollbackFor = Exception.class)
+    public Order mpTake(String orderSn, String verificationCode) {
+
+        //获取订单信息
+        Order order = this.getBySn(orderSn);
+        //检测虚拟订单信息
+        checkVerificationOrder(order, verificationCode);
+        order.setOrderStatus(OrderStatusEnum.COMPLETED.name());
+        //订单完成
+        this.mpComplete(orderSn);
+        return order;
+    }
+
     @Override
     public Order take(String verificationCode) {
         String storeId = OperationalJudgment.judgment(UserContext.getCurrentUser()).getStoreId();
@@ -523,6 +545,16 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
     public void complete(String orderSn) {
         //是否可以查询到订单
         Order order = OperationalJudgment.judgment(this.getBySn(orderSn));
+        complete(order, orderSn);
+    }
+
+
+    @Override
+    @OrderLogPoint(description = "'订单['+#orderSn+']完成'", orderSn = "#orderSn")
+    @Transactional(rollbackFor = Exception.class)
+    public void mpComplete(String orderSn) {
+        //是否可以查询到订单
+        Order order = OperationalJudgment.judgmentCav(this.getBySn(orderSn));
         complete(order, orderSn);
     }
 

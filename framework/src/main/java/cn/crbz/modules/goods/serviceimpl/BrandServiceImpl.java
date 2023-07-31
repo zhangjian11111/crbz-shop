@@ -104,7 +104,7 @@ public class BrandServiceImpl extends ServiceImpl<BrandMapper, Brand> implements
             ids.add(brandId);
             checkBind(ids);
         }
-        brand.setDeleteFlag(disable);
+        brand.setDeleteFlag(1);
         return updateById(brand);
     }
 

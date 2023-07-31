@@ -50,7 +50,7 @@ public class StoreAddressController {
         return ResultUtil.data(address);
     }
 
-    @ApiOperation(value = "添加")
+    @ApiOperation(value = "添加商家自提点")
     @PostMapping
     public ResultMessage<StoreAddress> add(@Valid StoreAddress storeAddress) {
         String storeId = Objects.requireNonNull(UserContext.getCurrentUser()).getStoreId();
@@ -59,7 +59,7 @@ public class StoreAddressController {
         return ResultUtil.data(storeAddress);
     }
 
-    @ApiOperation(value = "编辑")
+    @ApiOperation(value = "编辑商家自提点")
     @ApiImplicitParam(name = "id", value = "自提点ID", required = true, paramType = "path")
     @PutMapping("/{id}")
     public ResultMessage<StoreAddress> edit(@PathVariable String id, @Valid StoreAddress storeAddress) {
@@ -71,7 +71,7 @@ public class StoreAddressController {
         return ResultUtil.data(storeAddress);
     }
 
-    @ApiOperation(value = "删除")
+    @ApiOperation(value = "删除商家自提点")
     @ApiImplicitParam(name = "id", value = "自提点ID", required = true, paramType = "path")
     @DeleteMapping(value = "/{id}")
     public ResultMessage<Object> delByIds(@PathVariable String id) {

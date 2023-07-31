@@ -843,7 +843,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
                 order.setParentOrderSn(paidOrders.get(0).getParentOrderSn());
                 order.setMemberId("-1");
                 order.setMemberName("参团人员");
-                order.setDeleteFlag(true);
+                order.setDeleteFlag(1);
                 this.save(order);
                 paidOrders.add(order);
             }

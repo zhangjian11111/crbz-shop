@@ -69,8 +69,8 @@ public abstract class BaseEntity implements Serializable {
     @Field(type = FieldType.Date, format = DateFormat.custom, pattern = "yyyy-MM-dd HH:mm:ss || yyyy-MM-dd || yyyy/MM/dd HH:mm:ss|| yyyy/MM/dd ||epoch_millis")
     private Date updateTime;
 
-    @TableField(fill = FieldFill.INSERT)
+    @TableField(fill = FieldFill.INSERT_UPDATE)
     @ApiModelProperty(value = "删除标志 true/false 删除/未删除", hidden = true)
-    private Boolean deleteFlag;
+    private Integer deleteFlag;
 
 }

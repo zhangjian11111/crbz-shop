@@ -56,7 +56,7 @@ public class Category extends BaseEntity {
     @ApiModelProperty(value = "是否支持频道")
     private Boolean supportChannel;
 
-    public Category(String id, String createBy, Date createTime, String updateBy, Date updateTime, Boolean deleteFlag, String name, String parentId, Integer level, BigDecimal sortOrder, Double commissionRate, String image, Boolean supportChannel) {
+    public Category(String id, String createBy, Date createTime, String updateBy, Date updateTime, Integer deleteFlag, String name, String parentId, Integer level, BigDecimal sortOrder, Double commissionRate, String image, Boolean supportChannel) {
         super(id, createBy, createTime, updateBy, updateTime, deleteFlag);
         this.name = name;
         this.parentId = parentId;

@@ -110,7 +110,7 @@ public class FootprintServiceImpl extends ServiceImpl<FootprintMapper, FootPrint
     public long getFootprintNum() {
         LambdaQueryWrapper<FootPrint> lambdaQueryWrapper = Wrappers.lambdaQuery();
         lambdaQueryWrapper.eq(FootPrint::getMemberId, Objects.requireNonNull(UserContext.getCurrentUser()).getId());
-        lambdaQueryWrapper.eq(FootPrint::getDeleteFlag, false);
+        lambdaQueryWrapper.eq(FootPrint::getDeleteFlag, 0);
         return this.count(lambdaQueryWrapper);
     }
 }

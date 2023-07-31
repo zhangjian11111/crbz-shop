@@ -118,7 +118,7 @@ public class CategoryManagerController {
     })
     @DemoSite
     @ApiOperation(value = "后台 禁用/启用 分类")
-    public ResultMessage<Object> disable(@PathVariable String id, @RequestParam Boolean enableOperations) {
+    public ResultMessage<Object> disable(@PathVariable String id, @RequestParam Integer enableOperations) {
 
         Category category = categoryService.getById(id);
         if (category == null) {

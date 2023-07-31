@@ -28,7 +28,7 @@ public class GoodsOperateAllowable implements Serializable {
     /**
      * 删除状态 true 已删除 false 未删除
      */
-    private Boolean deleteFlag;
+    private Integer deleteFlag;
 
     /**
      * 是否允许下架
@@ -57,7 +57,7 @@ public class GoodsOperateAllowable implements Serializable {
      * @param marketEnable
      * @param deleteFlag
      */
-    public GoodsOperateAllowable(String marketEnable, Boolean deleteFlag) {
+    public GoodsOperateAllowable(String marketEnable, Integer deleteFlag) {
         this.marketEnable = marketEnable;
         this.deleteFlag = deleteFlag;
     }
@@ -65,27 +65,27 @@ public class GoodsOperateAllowable implements Serializable {
 
     public Boolean getAllowDown() {
         //上架状态 不在回收站的商品可以下架
-        return marketEnable == GoodsStatusEnum.UPPER.name() && deleteFlag == false;
+        return marketEnable == GoodsStatusEnum.UPPER.name() && deleteFlag == 0;
     }
 
     public Boolean getAllowReduction() {
         //下架状态 在回收站的商品可以还原
-        return marketEnable == GoodsStatusEnum.DOWN.name() && deleteFlag == true;
+        return marketEnable == GoodsStatusEnum.DOWN.name() && deleteFlag == 1;
     }
 
     public Boolean getAllowClear() {
         //下架状态 在回收站的商品可以彻底删除
-        return marketEnable == GoodsStatusEnum.DOWN.name() && deleteFlag == true;
+        return marketEnable == GoodsStatusEnum.DOWN.name() && deleteFlag == 1;
     }
 
     public Boolean getAllowUpper() {
         //下架状态 未删除的商品可以上架
-        return marketEnable == GoodsStatusEnum.DOWN.name() && deleteFlag == false;
+        return marketEnable == GoodsStatusEnum.DOWN.name() && deleteFlag == 0;
     }
 
     public Boolean getAllowDelete() {
         //下架状态 未删除的商品可以删除
-        return marketEnable == GoodsStatusEnum.DOWN.name() && deleteFlag == false;
+        return marketEnable == GoodsStatusEnum.DOWN.name() && deleteFlag == 0;
     }
 
 }

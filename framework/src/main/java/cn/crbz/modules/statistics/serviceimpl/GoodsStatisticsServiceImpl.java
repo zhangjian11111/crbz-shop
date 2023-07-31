@@ -31,7 +31,7 @@ public class GoodsStatisticsServiceImpl extends ServiceImpl<GoodsStatisticsMappe
     public long goodsNum(GoodsStatusEnum goodsStatusEnum, GoodsAuthEnum goodsAuthEnum) {
         LambdaQueryWrapper<Goods> queryWrapper = Wrappers.lambdaQuery();
 
-        queryWrapper.eq(Goods::getDeleteFlag, false);
+        queryWrapper.eq(Goods::getDeleteFlag, 0);
 
         if (goodsStatusEnum != null) {
             queryWrapper.eq(Goods::getMarketEnable, goodsStatusEnum.name());

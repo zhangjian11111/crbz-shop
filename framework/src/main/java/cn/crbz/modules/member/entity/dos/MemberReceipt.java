@@ -52,7 +52,7 @@ public class MemberReceipt extends BaseIdEntity {
 
     @TableField(fill = FieldFill.INSERT)
     @ApiModelProperty(value = "删除标志 true/false 删除/未删除", hidden = true)
-    private Boolean deleteFlag;
+    private Integer deleteFlag;
 
 
     @CreatedDate

@@ -57,7 +57,7 @@ public class OrderComplaintSearchParams {
         if (StrUtil.isNotEmpty(memberId)) {
             queryWrapper.eq(OrderComplaint::getMemberId, memberId);
         }
-        queryWrapper.eq(OrderComplaint::getDeleteFlag, false);
+        queryWrapper.eq(OrderComplaint::getDeleteFlag, 0);
         queryWrapper.orderByDesc(OrderComplaint::getCreateTime);
         return queryWrapper;
     }

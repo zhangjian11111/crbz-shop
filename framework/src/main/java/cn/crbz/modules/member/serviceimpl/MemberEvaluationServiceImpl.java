@@ -154,7 +154,7 @@ public class MemberEvaluationServiceImpl extends ServiceImpl<MemberEvaluationMap
     @Override
     public boolean delete(String id) {
         LambdaUpdateWrapper<MemberEvaluation> updateWrapper = Wrappers.lambdaUpdate();
-        updateWrapper.set(MemberEvaluation::getDeleteFlag, true);
+        updateWrapper.set(MemberEvaluation::getDeleteFlag, 1);
         updateWrapper.eq(MemberEvaluation::getId, id);
         return this.update(updateWrapper);
     }

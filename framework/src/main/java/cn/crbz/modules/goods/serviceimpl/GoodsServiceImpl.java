@@ -390,7 +390,7 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements
 
         LambdaUpdateWrapper<Goods> updateWrapper = this.getUpdateWrapperByStoreAuthority();
         updateWrapper.set(Goods::getMarketEnable, GoodsStatusEnum.DOWN.name());
-        updateWrapper.set(Goods::getDeleteFlag, true);
+        updateWrapper.set(Goods::getDeleteFlag, 1);
         updateWrapper.in(Goods::getId, goodsIds);
         this.update(updateWrapper);
 
@@ -488,7 +488,7 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements
         return this.count(
                 new LambdaQueryWrapper<Goods>()
                         .eq(Goods::getStoreId, storeId)
-                        .eq(Goods::getDeleteFlag, Boolean.FALSE)
+                        .eq(Goods::getDeleteFlag, 0)
                         .eq(Goods::getAuthFlag, GoodsAuthEnum.PASS.name())
                         .eq(Goods::getMarketEnable, GoodsStatusEnum.UPPER.name()));
     }

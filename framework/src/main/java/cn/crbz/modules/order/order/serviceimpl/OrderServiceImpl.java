@@ -626,10 +626,10 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
             throw new ServiceException();
         }
         LambdaUpdateWrapper<Order> updateWrapper = new LambdaUpdateWrapper<>();
-        updateWrapper.eq(Order::getSn, sn).set(Order::getDeleteFlag, true);
+        updateWrapper.eq(Order::getSn, sn).set(Order::getDeleteFlag, 1);
         this.update(updateWrapper);
         LambdaUpdateWrapper<OrderItem> orderItemLambdaUpdateWrapper = new LambdaUpdateWrapper<>();
-        orderItemLambdaUpdateWrapper.eq(OrderItem::getOrderSn, sn).set(OrderItem::getDeleteFlag, true);
+        orderItemLambdaUpdateWrapper.eq(OrderItem::getOrderSn, sn).set(OrderItem::getDeleteFlag, 1);
         this.orderItemService.update(orderItemLambdaUpdateWrapper);
     }
 

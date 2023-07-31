@@ -114,7 +114,7 @@ public class MemberReceiptServiceImpl extends ServiceImpl<MemberReceiptMapper, M
         MemberReceipt memberReceiptDb = this.baseMapper.selectById(id);
         if (memberReceiptDb != null) {
             //如果会员发票信息不为空 则逻辑删除此发票信息
-            memberReceiptDb.setDeleteFlag(false);
+            memberReceiptDb.setDeleteFlag(0);
             this.baseMapper.updateById(memberReceiptDb);
         }
         return true;

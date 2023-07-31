@@ -37,7 +37,7 @@ public class SliderImageController {
     @LimitPoint(name = "slider_image", key = "verification_pre_check", limit = 600)
     @PostMapping("/{verificationEnums}")
     @ApiOperation(value = "验证码预校验")
-    public ResultMessage verificationImage(Integer xPos, @RequestHeader String uuid, @PathVariable VerificationEnums verificationEnums) {
+    public ResultMessage verificationImage(String xPos, @RequestHeader String uuid, @PathVariable VerificationEnums verificationEnums) {
         return ResultUtil.data(verificationService.preCheck(xPos, uuid, verificationEnums));
     }
 }

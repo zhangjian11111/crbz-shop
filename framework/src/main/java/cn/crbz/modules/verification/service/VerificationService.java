@@ -30,7 +30,7 @@ public interface VerificationService {
      * @param verificationEnums 校验枚举
      * @return
      */
-    boolean preCheck(Integer xPos, String uuid, VerificationEnums verificationEnums);
+    boolean preCheck(String xPos, String uuid, VerificationEnums verificationEnums);
 
     /**
      * 验证码校验

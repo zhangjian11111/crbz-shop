@@ -40,3 +40,6 @@ build/
 
 ### VS Code ###
 .vscode/
+/jhkjGateway/src/main/resources/bootstrap.yaml
+/zbbb/src/main/resources/bootstrap.yaml
+/DB/version4.2.5toMASTER.sql

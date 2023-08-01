@@ -21,8 +21,8 @@ management:
       exposure:
         include: '*'
 spring:
-  ip: 192.168.124.17
-  mysqlip: 192.168.124.17
+  ip: 192.168.124.25
+  mysqlip: 192.168.124.25
   # 要在其中注册的Spring Boot Admin Server的URL。
   boot:
     admin:

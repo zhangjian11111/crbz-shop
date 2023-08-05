@@ -390,7 +390,7 @@ data:
         #        password: crbzShopES
 
         logstash:
-          server: logstash-service.crbzshop-middleware:4560
+          server: logstash-service.crbzshop-middleware:5044
         rocketmq:
           promotion-topic: shop_crbz_promotion_topic
           promotion-group: shop_crbz_promotion_group

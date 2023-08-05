@@ -9,6 +9,7 @@ import cn.crbz.modules.store.entity.vos.StoreBasicInfoVO;
 import cn.crbz.modules.store.entity.vos.StoreDetailVO;
 import cn.crbz.modules.store.entity.vos.StoreOtherVO;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
@@ -89,7 +90,7 @@ public interface StoreDetailMapper extends BaseMapper<StoreDetail> {
      * @return 店铺营业执照
      */
     @Select("SELECT * FROM crbz_store_detail WHERE store_id=#{storeId}")
-    StoreOtherVO getLicencePhoto(String storeId);
+    StoreOtherVO getLicencePhoto(@Param("storeId") String storeId);
 
     /***
      * 获取店铺发货地址

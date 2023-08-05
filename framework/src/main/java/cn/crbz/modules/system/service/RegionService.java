@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
@@ -18,6 +19,16 @@ import java.util.Map;
  */
 @CacheConfig(cacheNames = "{regions}")
 public interface RegionService extends IService<Region> {
+
+
+    /**
+     * 更新地区
+     *
+     * @param region 地区
+     * @return
+     */
+    @CacheEvict(allEntries = true)
+    boolean updateById(Region region);
 
     /**
      * 同步行政数据

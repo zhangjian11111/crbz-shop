@@ -3,6 +3,7 @@ package cn.crbz;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Primary;
 import org.springframework.core.task.TaskExecutor;
@@ -18,6 +19,7 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 @SpringBootApplication
 @EnableCaching
 @EnableAsync
+@EnableDiscoveryClient
 public class ManagerApiApplication {
 
     @Primary
@@ -27,6 +29,7 @@ public class ManagerApiApplication {
     }
 
     public static void main(String[] args) {
+        System.setProperty("nacos.logging.default.config.enabled","false");
         System.setProperty("es.set.netty.runtime.available.processors", "false");
         System.setProperty("rocketmq.client.logUseSlf4j","true");
         SpringApplication.run(ManagerApiApplication.class, args);

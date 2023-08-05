@@ -29,7 +29,7 @@ public interface OrderMapper extends BaseMapper<Order> {
      * @param orderSn 订单编号
      */
     @Update({"update crbz_order set order_status = #{status} where sn = #{orderSn}"})
-    void updateStatus(String status, String orderSn);
+    void updateStatus(@Param("status") String status, @Param("orderSn") String orderSn);
 
     /**
      * 查询导出订单DTO列表

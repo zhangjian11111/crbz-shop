@@ -27,7 +27,7 @@ public interface GoodsSkuMapper extends BaseMapper<GoodsSku> {
      * @return 全部skuId的集合
      */
     @Select("SELECT id FROM crbz_goods_sku WHERE goods_id = #{goodsId}")
-    List<String> getGoodsSkuIdByGoodsId(String goodsId);
+    List<String> getGoodsSkuIdByGoodsId(@Param("goodsId") String goodsId);
 
 
     @Insert("replace into crbz_goods_sku (\n" +

@@ -240,7 +240,7 @@ lili:
     #        username: elastic
     #        password: LiLiShopES
     logstash:
-      server: 127.0.0.1:4560
+      server: 192.168.124.25:5044
     rocketmq:
       promotion-topic: shop_crbz_promotion_topic
       promotion-group: shop_crbz_promotion_group

@@ -42,8 +42,8 @@ public class CancelAfterVerificaionController {
     })
     @PutMapping(value = "/mpTake/{orderSn}/{verificationCode}")
     public ResultMessage<Object> mpTake(@PathVariable String orderSn, @PathVariable String verificationCode) {
-        log.info("核销参数：：："+orderSn+"***"+verificationCode);
-        return ResultUtil.data(orderService.mpTake(orderSn, verificationCode));
+        log.info("核销参数---注意参数检查是否有空格：：："+orderSn+"***"+verificationCode);
+        return ResultUtil.data(orderService.mpTake(orderSn,verificationCode));
     }
 
 

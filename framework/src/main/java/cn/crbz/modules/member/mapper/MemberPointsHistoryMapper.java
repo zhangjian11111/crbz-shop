@@ -2,6 +2,7 @@ package cn.crbz.modules.member.mapper;
 
 import cn.crbz.modules.member.entity.dos.MemberPointsHistory;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
 /**
@@ -29,7 +30,7 @@ public interface MemberPointsHistoryMapper extends BaseMapper<MemberPointsHistor
      * @return 积分数量
      */
     @Select("SELECT SUM( variable_point ) FROM crbz_member_points_history WHERE point_type = #{pointType} AND member_id=#{memberId}")
-    Long getMemberPointsHistoryVO(String pointType, String memberId);
+    Long getMemberPointsHistoryVO(@Param("pointType") String pointType,@Param("memberId") String memberId);
 
 
 }

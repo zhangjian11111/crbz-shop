@@ -7,6 +7,7 @@ import com.itheima.mapper.ZbforcoshineMapper;
 import com.itheima.domain.dto.TimeDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
 import com.itheima.domain.ZbforcoshineEntity;
@@ -35,6 +36,15 @@ public class ZbforcoshineController {
 
     @Autowired
     ZbforcoshineMapper zbforcoshineMapper;
+
+    @Value("${zbbb.nacos.namespace}")
+    public String nacosnamespace;
+
+    @GetMapping("/configup")
+    public String getUpConfig() {
+        System.out.println("看看更新了吗："+nacosnamespace);
+        return nacosnamespace;
+    }
 
     @GetMapping("/all")
     public List<HashMap<Object, Object>> getAll() {

@@ -17,6 +17,7 @@ import cn.crbz.modules.order.trade.entity.enums.AfterSaleStatusEnum;
 import cn.crbz.modules.order.trade.entity.enums.AfterSaleTypeEnum;
 import cn.crbz.modules.wallet.entity.dto.MemberWithdrawalMessage;
 import cn.crbz.modules.wallet.entity.enums.WithdrawStatusEnum;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -31,6 +32,7 @@ import java.util.Map;
  * @since 2020-07-03 11:20
  **/
 @Service
+@Slf4j
 public class NoticeMessageExecute implements TradeEvent, OrderStatusChangeEvent, AfterSaleStatusChangeEvent, MemberPointChangeEvent, MemberWithdrawalEvent {
 
     @Autowired
@@ -54,11 +56,13 @@ public class NoticeMessageExecute implements TradeEvent, OrderStatusChangeEvent,
 
     @Override
     public void orderChange(OrderMessage orderMessage) {
+        log.info("尼玛订单状态变成啥了：：："+orderMessage);
+
         //查询订单信息
         OrderDetailVO orderDetailVO = orderService.queryDetail(orderMessage.getOrderSn());
         NoticeMessageDTO noticeMessageDTO = new NoticeMessageDTO();
         //如果订单状态不为空
-        if (orderDetailVO != null) {
+        if (orderDetailVO != null && orderDetailVO.getOrderItems() != null && !orderDetailVO.getOrderItems().isEmpty()) {
             Map<String, String> params = new HashMap<>(2);
             switch (orderMessage.getNewStatus()) {
                 //如果订单新的状态为已取消 则发送取消订单站内信

@@ -336,7 +336,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
      */
     @Override
     public Order getBySn(String orderSn) {
-        return this.getOne(new LambdaQueryWrapper<Order>().eq(Order::getSn, orderSn));
+        return this.getOne(new LambdaQueryWrapper<Order>().eq(Order::getSn,orderSn.trim()));
     }
 
 
@@ -506,7 +506,6 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
     @OrderLogPoint(description = "'订单['+#orderSn+']核销，核销码['+#verificationCode+']'", orderSn = "#orderSn")
     @Transactional(rollbackFor = Exception.class)
     public Order mpTake(String orderSn, String verificationCode) {
-
         //获取订单信息
         Order order = this.getBySn(orderSn);
         //检测虚拟订单信息

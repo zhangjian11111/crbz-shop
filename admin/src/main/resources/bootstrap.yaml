@@ -1,0 +1,31 @@
+server:
+  port: 9110
+spring:
+  profiles:
+    active: prod
+  application:
+    name: admin
+  nacos-ip: 192.168.124.11:8848
+  cloud:
+    nacos:
+      discovery:
+        server-addr: ${spring.nacos-ip}
+        #本服务所属的命名空间的ID，默认是空，也就是public
+        namespace: xbmall-prod
+        group: CRBZSHOP_GROUP
+      config:
+        server-addr: ${spring.nacos-ip}
+        file-extension: properties
+        namespace: xbmall-prod
+        group: CRBZSHOP_GROUP
+        refresh-enabled: true
+
+
+logging:
+  config: classpath:logback-nacos.xml
+
+
+
+
+
+

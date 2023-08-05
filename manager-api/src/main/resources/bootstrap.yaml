@@ -1,0 +1,33 @@
+server:
+  port: 9116
+spring:
+  profiles:
+    active: prod
+  application:
+    name: manager-api
+  nacos-ip: 192.168.124.11:8848
+  cloud:
+    nacos:
+      discovery:
+        server-addr: ${spring.nacos-ip}
+        namespace: xbmall-prod
+        group: CRBZSHOP_GROUP
+      config:
+        server-addr: ${spring.nacos-ip}
+        file-extension: yaml
+        namespace: xbmall-prod
+        group: CRBZSHOP_GROUP
+        shared-configs:
+          - data-id: xbmall-common-prod-config.yaml
+            group: XBMALL_COMMON_GROUP
+            refresh: true
+        refresh-enabled: true
+
+logging:
+  config: classpath:logback-nacos.xml
+
+
+
+
+
+

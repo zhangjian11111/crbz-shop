@@ -1,0 +1,27 @@
+spring:
+  profiles:
+    active: dev
+  nacos-ip: 192.168.124.11:8848
+  cloud:
+    nacos:
+      discovery:
+        server-addr: ${spring.nacos-ip}
+        namespace: xbmall-dev
+        group: CRBZSHOP_GROUP
+      config:
+        server-addr: ${spring.nacos-ip}
+        file-extension: yaml
+        namespace: xbmall-dev
+        group: CRBZSHOP_GROUP
+        shared-configs:
+          - data-id: xbmall-common-dev-config.yaml
+            group: XBMALL_COMMON_DEV_GROUP
+            refresh: true
+        refresh-enabled: true
+
+
+
+
+
+
+

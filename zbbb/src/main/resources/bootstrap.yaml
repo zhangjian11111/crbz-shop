@@ -1,0 +1,28 @@
+server:
+  port: 9118
+spring:
+  profiles:
+    active: prod
+  application:
+    name: zbbb
+  nacos-ip: 192.168.124.11:8848
+  cloud:
+    nacos:
+      discovery:
+        server-addr: ${spring.nacos-ip}
+        namespace: xbmall-prod
+        group: CRBZSHOP_GROUP
+      config:
+        server-addr: ${spring.nacos-ip}
+        file-extension: yaml
+        namespace: xbmall-prod
+        group: CRBZSHOP_GROUP
+        refresh-enabled: true
+
+
+
+
+
+
+
+

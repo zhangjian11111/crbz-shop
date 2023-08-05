@@ -10,8 +10,7 @@ RUN mkdir -p ${APP_HOME}/cert/wechatcert/xbm
 WORKDIR ${APP_HOME}
 COPY ./docker-jhkjGateway/jhkjGateway-4.2.5.jar ${APP_HOME}/
 COPY ./docker-jhkjGateway/startapi.sh ${APP_HOME}/startapi.sh
-RUN chmod 777 ${APP_HOME}/*
-RUN chmod 777 /data/crbz/logs
+RUN chmod -R 777 ${APP_HOME}
 EXPOSE 9111
 ENTRYPOINT ["sh","startapi.sh"]
 

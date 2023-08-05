@@ -7,11 +7,12 @@ RUN ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
 RUN echo 'Asia/Shanghai' >/etc/timezone
 RUN mkdir -p ${APP_HOME}/logs
 RUN mkdir -p ${APP_HOME}/cert/wechatcert/xbm
+RUN mkdir -p ${APP_HOME}/cert/alipay/xbm/webapp
+RUN mkdir -p ${APP_HOME}/cert/alipay/xbm/basicapp
 WORKDIR ${APP_HOME}
 COPY ./docker-buyer-api/buyer-api-4.2.5.jar ${APP_HOME}/
 COPY ./docker-buyer-api/startapi.sh ${APP_HOME}/startapi.sh
-RUN chmod 777 ${APP_HOME}/*
-RUN chmod 777 /data/crbz/logs
+RUN chmod -R 777 ${APP_HOME}
 EXPOSE 9112
 ENTRYPOINT ["sh","startapi.sh"]
 

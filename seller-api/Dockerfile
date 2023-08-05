@@ -10,8 +10,7 @@ RUN mkdir -p ${APP_HOME}/cert/wechatcert/xbm
 WORKDIR ${APP_HOME}
 COPY ./docker-seller-api/seller-api-4.2.5.jar ${APP_HOME}/
 COPY ./docker-seller-api/startapi.sh ${APP_HOME}/startapi.sh
-RUN chmod 777 ${APP_HOME}/*
-RUN chmod 777 /data/crbz/logs
+RUN chmod -R 777 ${APP_HOME}
 EXPOSE 9117
 ENTRYPOINT ["sh","startapi.sh"]
 

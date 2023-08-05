@@ -1,287 +1,96 @@
-version: '3.3'
+version: "3.3"
+
 services:
-  admin:
-    image: '192.168.124.11:5000/admin:4.2.5'
-#    depends_on:
-#      - elasticsearch
-#      - xxljob
-#      - logstash
-#      - rmqbroker
-#      - rmqnamesrv
-#      - redis
-    container_name: admin
-    restart: always
-    ports:
-      - '9110/tcp'
-    volumes:
-      - '/home/data/programming/crbz/runapi/backend/logs:/data/crbz/logs'
-      - '/home/data/programming/cert/wechatcert/xbm:/data/crbz/cert/wechatcert/xbm'
-    networks:
-      - xbm_net
-
-
   buyer-api:
-    image: '192.168.124.11:5000/buyer-api:4.2.5'
-#    depends_on:
-#      - elasticsearch
-#      - xxljob
-#      - logstash
-#      - rmqbroker
-#      - rmqnamesrv
-#      - redis
+    image: 192.168.124.11:5000/buyer-api:4.2.5
     container_name: buyer-api
     restart: always
     ports:
-      - '9112/tcp'
-      - '8891:8891'
+      - "9112:9112"
     volumes:
-      - '/home/data/programming/crbz/runapi/backend/logs:/data/crbz/logs'
-      - '/home/data/programming/cert/wechatcert/xbm:/data/crbz/cert/wechatcert/xbm'
-    networks:
-      - xbm_net
+      - /home/data/programming/crbz/runapi/backend/logs:/data/crbz/logs
+      - /home/data/programming/cert/wechatcert/xbm:/data/crbz/cert/wechatcert/xbm
+      - /home/data/programming/cert/alipaycert/xbm/webapp:/data/crbz/cert/alipay/xbm/webapp
+      - /home/data/programming/cert/alipaycert/xbm/basicapp:/data/crbz/cert/alipay/xbm/basicapp
 
   seller-api:
-    image: '192.168.124.11:5000/seller-api:4.2.5'
-#    depends_on:
-#      - elasticsearch
-#      - xxljob
-#      - logstash
-#      - rmqbroker
-#      - rmqnamesrv
-#      - redis
+    image: 192.168.124.11:5000/seller-api:4.2.5
     container_name: seller-api
     restart: always
     ports:
-      - '9110-9118:9110-9118/tcp'
-      - '8891:8891'
+      - "9117:9117"
     volumes:
-      - '/home/data/programming/crbz/runapi/backend/logs:/data/crbz/logs'
-      - '/home/data/programming/cert/wechatcert/xbm:/data/crbz/cert/wechatcert/xbm'
-    networks:
-      - xbm_net
+      - /home/data/programming/crbz/runapi/backend/logs:/data/crbz/logs
+      - /home/data/programming/cert/wechatcert/xbm:/data/crbz/cert/wechatcert/xbm
 
   manager-api:
-    image: '192.168.124.11:5000/manager-api:4.2.5'
-#    depends_on:
-#      - elasticsearch
-#      - xxljob
-#      - logstash
-#      - rmqbroker
-#      - rmqnamesrv
-#      - redis
+    image: 192.168.124.11:5000/manager-api:4.2.5
     container_name: manager-api
     restart: always
     ports:
-      - '9110-9118:9110-9118/tcp'
-      - '8891:8891'
+      - "9116:9116"
     volumes:
-      - '/home/data/programming/crbz/runapi/backend/logs:/data/crbz/logs'
-      - '/home/data/programming/cert/wechatcert/xbm:/data/crbz/cert/wechatcert/xbm'
-    networks:
-      - xbm_net
-
-  consumer:
-    image: '192.168.124.11:5000/consumer:4.2.5'
-#    depends_on:
-#      - elasticsearch
-#      - xxljob
-#      - logstash
-#      - rmqbroker
-#      - rmqnamesrv
-#      - redis
-    container_name: consumer
-    restart: always
-    ports:
-      - '9110-9118:9110-9118/tcp'
-      - '8891:8891'
-    volumes:
-      - '/home/data/programming/crbz/runapi/backend/logs:/data/crbz/logs'
-      - '/home/data/programming/cert/wechatcert/xbm:/data/crbz/cert/wechatcert/xbm'
-    networks:
-      - xbm_net
-
-  zbbb:
-    image: '192.168.124.11:5000/zbbb:4.2.5'
-    container_name: zbbb
-    restart: always
-    ports:
-      - '9110-9118:9110-9118/tcp'
-      - '8891:8891'
-    volumes:
-      - '/home/data/programming/crbz/runapi/backend/logs:/data/crbz/logs'
-      - '/home/data/programming/cert/wechatcert/xbm:/data/crbz/cert/wechatcert/xbm'
-    networks:
-      - xbm_net
-
-  jhkjgateway:
-    image: '192.168.124.11:5000/jhkjgateway:4.2.5'
-    container_name: jhkjgateway
-    restart: always
-    ports:
-      - '9110-9118:9110-9118/tcp'
-      - '8891:8891'
-    volumes:
-      - '/home/data/programming/crbz/runapi/backend/logs:/data/crbz/logs'
-      - '/home/data/programming/cert/wechatcert/xbm:/data/crbz/cert/wechatcert/xbm'
-    networks:
-      - xbm_net
+      - /home/data/programming/crbz/runapi/backend/logs:/data/crbz/logs
+      - /home/data/programming/cert/wechatcert/xbm:/data/crbz/cert/wechatcert/xbm
 
   common-api:
-    image: '192.168.124.11:5000/common-api:4.2.5'
-#    depends_on:
-#      - elasticsearch
-#      - xxljob
-#      - logstash
-#      - rmqbroker
-#      - rmqnamesrv
-#      - redis
+    image: 192.168.124.11:5000/common-api:4.2.5
     container_name: common-api
     restart: always
     ports:
-      - '9110-9118:9110-9118/tcp'
-      - '8891:8891'
+      - "9113:9113"
     volumes:
-      - '/home/data/programming/crbz/runapi/backend/logs:/data/crbz/logs'
-      - '/home/data/programming/cert/wechatcert/xbm:/data/crbz/cert/wechatcert/xbm'
-    networks:
-      - xbm_net
-
+      - /home/data/programming/crbz/runapi/backend/logs:/data/crbz/logs
+      - /home/data/programming/cert/wechatcert/xbm:/data/crbz/cert/wechatcert/xbm
 
   im-api:
-    image: '192.168.124.11:5000/im-api:4.2.5'
-#    depends_on:
-#      - elasticsearch
-#      - xxljob
-#      - logstash
-#      - rmqbroker
-#      - rmqnamesrv
-#      - redis
-    container_name: crbz-shop
+    image: 192.168.124.11:5000/im-api:4.2.5
+    container_name: im-api
     restart: always
     ports:
-      - '9110-9118:9110-9118/tcp'
-      - '8891:8891'
+      - "9115:9115"
     volumes:
-      - '/home/data/programming/crbz/runapi/backend/logs:/data/crbz/logs'
-      - '/home/data/programming/cert/wechatcert/xbm:/data/crbz/cert/wechatcert/xbm'
-    networks:
-      - xbm_net
+      - /home/data/programming/crbz/runapi/backend/logs:/data/crbz/logs
+      - /home/data/programming/cert/wechatcert/xbm:/data/crbz/cert/wechatcert/xbm
 
-  elasticsearch:
-    image: '192.168.124.11:5000/elasticsearch:8.7.0'
-    container_name: elasticsearch8.7.0
-    ports:
-      - '9200:9200'
-      - '9300:9300'
-    environment:
-      - discovery.type=single-node
-      - ES_JAVA_OPTS=-Xms4096m
-    volumes:
-      - '/home/data/installedApps/elasticsearch8.7.0/config:/usr/share/elasticsearch/config'
-      - '/home/data/installedApps/elasticsearch8.7.0/data/:/usr/share/elasticsearch/data'
-      - '/home/data/installedApps/elasticsearch8.7.0/plugins:/usr/share/elasticsearch/plugins'
-    networks:
-      - xbm_net
-
-  logstash:
-    image: '192.168.124.11:5000/logstash:8.7.0'
-    container_name: logstash8
+  consumer:
+    image: 192.168.124.11:5000/consumer:4.2.5
+    container_name: consumer
     restart: always
     ports:
-      - '5044:5044'
+      - "9114:9114"
+      - "8891:8891"
     volumes:
-      - '/home/data/installedApps/logstash8:/usr/share/logstash'
-      - '/var/log/messages:/var/log/messages'
-    networks:
-      - xbm_net
+      - /home/data/programming/crbz/runapi/backend/logs:/data/crbz/logs
+      - /home/data/programming/cert/wechatcert/xbm:/data/crbz/cert/wechatcert/xbm
 
-  redis:
-    image: '192.168.124.11:5000/redis:7.0.11'
-    restart: always
-    logging:
-      options:
-        max-size: 100m
-        max-file: 2
-    ports:
-      - '6379:6379'
-    container_name: myredis
-    volumes:
-      - '/home/data/installedApps/myredis/myredis.conf:/etc/redis/redis.conf'
-      - '/home/data/installedApps/myredis/data:/data'
-    networks:
-      - xbm_net
-    command: redis-server /etc/redis/redis.conf
-
-  rmqnamesrv:
-    image: '192.168.124.11:5000/rocketmq:5.1.13'
-    restart: always
-    container_name: rmqnamesrv
-    ports:
-      - '9876:9876'
-    volumes:
-      - '/home/data/installedApps/rocketmq5.1.3/data/namesrv/logs:/root/logs'
-      - '/home/data/installedApps/rocketmq5.1.3/data/namesrv/store:/root/store'
-    networks:
-      - xbm_net
-    environment:
-      - MAX_POSSIBLE_HEAP=100000000
-    command: sh mqnamesrv
-
-  rmqbroker:
-    image: '192.168.124.11:5000/rocketmq:5.1.13'
-    restart: always
-    container_name: rmqbroker
-    links:
-      - 'rmqnamesrv:namesrv'
-    ports:
-      - '10911:10911'
-      - '10909:10909'
-    volumes:
-      - '/home/data/installedApps/rocketmq5.1.3/data/broker/logs:/root/logs'
-      - '/home/data/installedApps/rocketmq5.1.3/data/broker/store:/root/store'
-      - '/home/data/installedApps/rocketmq5.1.3/conf/broker.conf:/opt/rocketmq/conf/broker.conf'
-    networks:
-      - xbm_net
-    environment:
-      - 'NAMESRV_ADDR=namesrv:9876'
-      - 'MAX_POSSIBLE_HEAP=200000000'
-    command: sh mqbroker -c /opt/rocketmq/conf/broker.conf
-
-  rocketmq-console-ng:
-    image: '192.168.124.11:5000/pangliang/rocketmq-console-ng'
-    restart: always
-    container_name: rmqadmin
-    environment:
-      - 'JAVA_OPTS=-Drocketmq.namesrv.addr=192.168.124.11:9876'
-    ports:
-      - '9999:8080'
-    networks:
-      - xbm_net
-
-  portainer-ce:
-    image: '192.168.124.11:5000/cnportainer-ce'
-    container_name: portainerce
-    ports:
-      - '8000:8000'
-      - '9000:9000'
-    restart: always
-    volumes:
-      - '/var/run/docker.sock:/var/run/docker.sock'
-      - '/home/data/installedApps/portainerce_data:/data'
-    networks:
-      - xbm_net
-
-  xxljob:
-    image: '192.168.124.11:5000/xxljob:2.3.0'
-    container_name: xxljob
+  zbbb:
+    image: 192.168.124.11:5000/zbbb:4.2.5
+    container_name: zbbb
     restart: always
     ports:
-      - '9001:9001'
+      - "9118:9118"
     volumes:
-      - '/home/data/programming/crbz/runapi/backend/xxl-job/logs:/xxl-job'
-    networks:
-      - xbm_net
-networks:
-  xbm_net:
-    driver: bridge
+      - /home/data/programming/crbz/runapi/backend/logs:/data/crbz/logs
+      - /home/data/programming/cert/wechatcert/xbm:/data/crbz/cert/wechatcert/xbm
+
+  jhkjgateway:
+    image: 192.168.124.11:5000/jhkjgateway:4.2.5
+    container_name: jhkjgateway
+    restart: always
+    ports:
+      - "9111:9111"
+    volumes:
+      - /home/data/programming/crbz/runapi/backend/logs:/data/crbz/logs
+      - /home/data/programming/cert/wechatcert/xbm:/data/crbz/cert/wechatcert/xbm
+
+  admin:
+    image: 192.168.124.11:5000/admin:4.2.5
+    container_name: admin
+    restart: always
+    ports:
+      - "9110:9110"
+    volumes:
+      - /home/data/programming/crbz/runapi/backend/logs:/data/crbz/logs
+      - /home/data/programming/cert/wechatcert/xbm:/data/crbz/cert/wechatcert/xbm
 

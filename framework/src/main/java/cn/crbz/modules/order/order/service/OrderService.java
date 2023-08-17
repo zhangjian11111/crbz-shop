@@ -3,6 +3,7 @@ package cn.crbz.modules.order.order.service;
 import cn.crbz.modules.member.entity.dto.MemberAddressDTO;
 import cn.crbz.modules.order.cart.entity.dto.TradeDTO;
 import cn.crbz.modules.order.order.entity.dos.Order;
+import cn.crbz.modules.order.order.entity.dto.AllOrderSearchParams;
 import cn.crbz.modules.order.order.entity.dto.OrderExportDTO;
 import cn.crbz.modules.order.order.entity.dto.OrderMessage;
 import cn.crbz.modules.order.order.entity.dto.OrderSearchParams;
@@ -50,6 +51,14 @@ public interface OrderService extends IService<Order> {
      * @return 简短订单分页
      */
     IPage<OrderSimpleVO> queryByParams(OrderSearchParams orderSearchParams);
+
+    /**
+     * 订单查询--小程序管理员可见查询全部订单
+     *
+     * @param allorderSearchParams 查询参数
+     * @return 简短订单分页
+     */
+    IPage<OrderSimpleVO> queryByParams(AllOrderSearchParams allorderSearchParams);
 
     /**
      * 订单信息

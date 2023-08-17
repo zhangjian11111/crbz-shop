@@ -3,6 +3,7 @@ package cn.crbz.controller.order;
 import cn.crbz.common.aop.annotation.PreventDuplicateSubmissions;
 import cn.crbz.common.enums.ResultUtil;
 import cn.crbz.common.vo.ResultMessage;
+import cn.crbz.modules.order.order.entity.dto.AllOrderSearchParams;
 import cn.crbz.modules.order.order.entity.dto.OrderSearchParams;
 import cn.crbz.modules.order.order.entity.vo.OrderSimpleVO;
 import cn.crbz.modules.order.order.service.OrderService;
@@ -49,8 +50,9 @@ public class CancelAfterVerificaionController {
 
     @ApiOperation(value = "查询所有订单列表")
     @GetMapping(value = "/showAllOrders")
-    public ResultMessage<IPage<OrderSimpleVO>> queryAllOrder(OrderSearchParams orderSearchParams) {
-        return ResultUtil.data(orderService.queryByParams(orderSearchParams));
+    public ResultMessage<IPage<OrderSimpleVO>> queryAllOrder(AllOrderSearchParams allorderSearchParams) {
+        log.info("allorderSearchParams::"+allorderSearchParams.toString());
+        return ResultUtil.data(orderService.queryByParams(allorderSearchParams));
     }
 
 

@@ -1,5 +1,6 @@
 package cn.crbz.modules.order.order.serviceimpl;
 
+import cn.crbz.modules.order.order.entity.dto.*;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.io.IoUtil;
@@ -23,10 +24,6 @@ import cn.crbz.modules.order.cart.entity.dto.TradeDTO;
 import cn.crbz.modules.order.cart.entity.enums.DeliveryMethodEnum;
 import cn.crbz.modules.order.order.aop.OrderLogPoint;
 import cn.crbz.modules.order.order.entity.dos.*;
-import cn.crbz.modules.order.order.entity.dto.OrderBatchDeliverDTO;
-import cn.crbz.modules.order.order.entity.dto.OrderExportDTO;
-import cn.crbz.modules.order.order.entity.dto.OrderMessage;
-import cn.crbz.modules.order.order.entity.dto.OrderSearchParams;
 import cn.crbz.modules.order.order.entity.enums.*;
 import cn.crbz.modules.order.order.entity.vo.OrderDetailVO;
 import cn.crbz.modules.order.order.entity.vo.OrderSimpleVO;
@@ -200,6 +197,14 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         return this.baseMapper.queryByParams(PageUtil.initPage(orderSearchParams), queryWrapper);
     }
 
+    @Override
+    public IPage<OrderSimpleVO> queryByParams(AllOrderSearchParams allOrderSearchParams) {
+        QueryWrapper queryWrapper = allOrderSearchParams.queryWrapper();
+        queryWrapper.groupBy("o.id");
+        queryWrapper.orderByDesc("o.id");
+        return this.baseMapper.queryByParams(PageUtil.initPage(allOrderSearchParams), queryWrapper);
+    }
+
     /**
      * 订单信息
      *
@@ -336,7 +341,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
      */
     @Override
     public Order getBySn(String orderSn) {
-        return this.getOne(new LambdaQueryWrapper<Order>().eq(Order::getSn,orderSn.trim()));
+        return this.getOne(new LambdaQueryWrapper<Order>().eq(Order::getSn,orderSn));
     }
 
 

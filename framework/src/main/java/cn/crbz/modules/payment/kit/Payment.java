@@ -54,7 +54,7 @@ public interface Payment {
     }
 
     /**
-     * 展示二维码扫描支付
+     * 当面付--展示二维码扫描支付
      *
      * @param request  HttpServletRequest
      * @param payParam 支付参数

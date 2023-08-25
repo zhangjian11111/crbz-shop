@@ -88,7 +88,7 @@ public class AliPayRequest {
 
     /**
      * 统一收单线下交易预创建 <br>
-     * 适用于：扫码支付等 <br>
+     * 适用于：当面付--扫码支付等 <br>
      *
      * @param model     {@link AlipayTradePrecreateModel}
      * @param notifyUrl 异步通知URL
@@ -96,6 +96,7 @@ public class AliPayRequest {
      * @throws AlipayApiException 支付宝 Api 异常
      */
     public static AlipayTradePrecreateResponse tradePrecreatePayToResponse(AlipayTradePrecreateModel model, String notifyUrl) throws AlipayApiException {
+        //这个创建的是当面付
         AlipayTradePrecreateRequest request = new AlipayTradePrecreateRequest();
         request.setBizModel(model);
         request.setNotifyUrl(notifyUrl);

@@ -5,7 +5,7 @@ spring:
     active: prod
   application:
     name: zbbb
-  nacos-ip: 192.168.124.11:8848
+  nacos-ip: 192.168.124.9:8848
   cloud:
     nacos:
       discovery:

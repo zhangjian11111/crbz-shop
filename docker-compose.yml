@@ -2,7 +2,7 @@ version: "3.3"
 
 services:
   buyer-api:
-    image: 192.168.124.11:5000/buyer-api:4.2.5
+    image: 192.168.124.9:5000/buyer-api:4.2.5
     container_name: buyer-api
     restart: always
     ports:
@@ -14,7 +14,7 @@ services:
       - /home/data/programming/cert/alipaycert/xbm/basicapp:/data/crbz/cert/alipay/xbm/basicapp
 
   seller-api:
-    image: 192.168.124.11:5000/seller-api:4.2.5
+    image: 192.168.124.9:5000/seller-api:4.2.5
     container_name: seller-api
     restart: always
     ports:
@@ -24,7 +24,7 @@ services:
       - /home/data/programming/cert/wechatcert/xbm:/data/crbz/cert/wechatcert/xbm
 
   manager-api:
-    image: 192.168.124.11:5000/manager-api:4.2.5
+    image: 192.168.124.9:5000/manager-api:4.2.5
     container_name: manager-api
     restart: always
     ports:
@@ -34,7 +34,7 @@ services:
       - /home/data/programming/cert/wechatcert/xbm:/data/crbz/cert/wechatcert/xbm
 
   common-api:
-    image: 192.168.124.11:5000/common-api:4.2.5
+    image: 192.168.124.9:5000/common-api:4.2.5
     container_name: common-api
     restart: always
     ports:
@@ -44,7 +44,7 @@ services:
       - /home/data/programming/cert/wechatcert/xbm:/data/crbz/cert/wechatcert/xbm
 
   im-api:
-    image: 192.168.124.11:5000/im-api:4.2.5
+    image: 192.168.124.9:5000/im-api:4.2.5
     container_name: im-api
     restart: always
     ports:
@@ -54,7 +54,7 @@ services:
       - /home/data/programming/cert/wechatcert/xbm:/data/crbz/cert/wechatcert/xbm
 
   consumer:
-    image: 192.168.124.11:5000/consumer:4.2.5
+    image: 192.168.124.9:5000/consumer:4.2.5
     container_name: consumer
     restart: always
     ports:
@@ -65,7 +65,7 @@ services:
       - /home/data/programming/cert/wechatcert/xbm:/data/crbz/cert/wechatcert/xbm
 
   zbbb:
-    image: 192.168.124.11:5000/zbbb:4.2.5
+    image: 192.168.124.9:5000/zbbb:4.2.5
     container_name: zbbb
     restart: always
     ports:
@@ -75,7 +75,7 @@ services:
       - /home/data/programming/cert/wechatcert/xbm:/data/crbz/cert/wechatcert/xbm
 
   jhkjgateway:
-    image: 192.168.124.11:5000/jhkjgateway:4.2.5
+    image: 192.168.124.9:5000/jhkjgateway:4.2.5
     container_name: jhkjgateway
     restart: always
     ports:
@@ -85,7 +85,7 @@ services:
       - /home/data/programming/cert/wechatcert/xbm:/data/crbz/cert/wechatcert/xbm
 
   admin:
-    image: 192.168.124.11:5000/admin:4.2.5
+    image: 192.168.124.9:5000/admin:4.2.5
     container_name: admin
     restart: always
     ports:

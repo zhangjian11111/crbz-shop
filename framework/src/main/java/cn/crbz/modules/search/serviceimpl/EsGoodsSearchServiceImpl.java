@@ -280,20 +280,18 @@ public class EsGoodsSearchServiceImpl implements EsGoodsSearchService {
             ParsedStringTerms categoryNameAgg = categoryBucket.getAggregations().get("categoryNameAgg");
             List<? extends Terms.Bucket> categoryNameBuckets = categoryNameAgg.getBuckets();
 
-
-            String categoryNamePath = categoryPath;
             if (!categoryNameBuckets.isEmpty()) {
-                categoryNamePath = categoryNameBuckets.get(0).getKey().toString();
-            }
-            String[] split = ArrayUtil.distinct(categoryPath.split(","));
-            String[] nameSplit = categoryNamePath.split(",");
-            if (split.length == nameSplit.length) {
-                for (int i = 0; i < split.length; i++) {
-                    SelectorOptions so = new SelectorOptions();
-                    so.setName(nameSplit[i]);
-                    so.setValue(split[i]);
-                    if (!categoryOptions.contains(so)) {
-                        categoryOptions.add(so);
+                String categoryNamePath = categoryNameBuckets.get(0).getKey().toString();
+                String[] split = ArrayUtil.distinct(categoryPath.split(","));
+                String[] nameSplit = categoryNamePath.split(",");
+                if (split.length == nameSplit.length) {
+                    for (int i = 0; i < split.length; i++) {
+                        SelectorOptions so = new SelectorOptions();
+                        so.setName(nameSplit[i]);
+                        so.setValue(split[i]);
+                        if (!categoryOptions.contains(so)) {
+                            categoryOptions.add(so);
+                        }
                     }
                 }
             }

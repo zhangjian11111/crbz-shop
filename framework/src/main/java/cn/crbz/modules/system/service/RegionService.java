@@ -31,6 +31,19 @@ public interface RegionService extends IService<Region> {
     boolean updateById(Region region);
 
     /**
+     * 更新地区
+     *
+     * @param region 地区
+     * @return
+     */
+    @CacheEvict(allEntries = true)
+    boolean save(Region region);
+
+
+    @CacheEvict(allEntries = true)
+    boolean removeByIds(List<String> idList);
+
+    /**
      * 同步行政数据
      *
      * @param url

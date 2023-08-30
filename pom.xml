@@ -140,11 +140,11 @@
                 <configuration>
 <!--                    <dockerDirectory>${project.name}</dockerDirectory>-->
                     <!--仓库地址-->
-<!--                    <registryUrl>192.168.124.11:5000</registryUrl>-->
-                    <!--docker api地址，构建镜像是通过api调用在192.168.124.11上构建，并推送到registryUrl上-->
-<!--                    <dockerHost>http://192.168.124.11:2375</dockerHost>-->
+<!--                    <registryUrl>192.168.124.9:5000</registryUrl>-->
+                    <!--docker api地址，构建镜像是通过api调用在192.168.124.9上构建，并推送到registryUrl上-->
+<!--                    <dockerHost>http://192.168.124.9:2375</dockerHost>-->
                     <!--镜像名称-->
-<!--                    <imageName>192.168.124.11:5000/xbm/${project.name}:${project.version}</imageName>-->
+<!--                    <imageName>192.168.124.9:5000/xbm/${project.name}:${project.version}</imageName>-->
 <!--                    <imageTags>-->
 <!--                        <imageTag>${project.version}</imageTag>-->
 <!--                    </imageTags>-->

@@ -6,6 +6,7 @@ import cn.hutool.core.text.CharSequenceUtil;
 import cn.hutool.json.JSONUtil;
 import cn.crbz.common.enums.ResultCode;
 import cn.crbz.common.enums.SwitchEnum;
+import cn.crbz.common.event.TransactionCommitSendMQEvent;
 import cn.crbz.common.exception.ServiceException;
 import cn.crbz.common.properties.RocketmqCustomProperties;
 import cn.crbz.common.security.context.UserContext;
@@ -31,7 +32,6 @@ import cn.crbz.modules.order.order.entity.enums.CommentStatusEnum;
 import cn.crbz.modules.order.order.service.OrderItemService;
 import cn.crbz.modules.order.order.service.OrderService;
 import cn.crbz.mybatis.util.PageUtil;
-import cn.crbz.rocketmq.RocketmqSendCallbackBuilder;
 import cn.crbz.rocketmq.tags.GoodsTagsEnum;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -40,8 +40,8 @@ import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import org.apache.rocketmq.spring.core.RocketMQTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -78,15 +78,13 @@ public class MemberEvaluationServiceImpl extends ServiceImpl<MemberEvaluationMap
     @Autowired
     private GoodsSkuService goodsSkuService;
     /**
-     * rocketMq
-     */
-    @Autowired
-    private RocketMQTemplate rocketMQTemplate;
-    /**
      * rocketMq配置
      */
     @Autowired
     private RocketmqCustomProperties rocketmqCustomProperties;
+
+    @Autowired
+    private ApplicationEventPublisher applicationEventPublisher;
 
     @Override
     public IPage<MemberEvaluation> managerQuery(EvaluationQueryParams queryParams) {
@@ -133,8 +131,8 @@ public class MemberEvaluationServiceImpl extends ServiceImpl<MemberEvaluationMap
         //修改订单货物评价状态为已评价
         orderItemService.updateCommentStatus(orderItem.getSn(), CommentStatusEnum.FINISHED);
         //发送商品评价消息
-        String destination = rocketmqCustomProperties.getGoodsTopic() + ":" + GoodsTagsEnum.GOODS_COMMENT_COMPLETE.name();
-        rocketMQTemplate.asyncSend(destination, JSONUtil.toJsonStr(memberEvaluation), RocketmqSendCallbackBuilder.commonCallback());
+        applicationEventPublisher.publishEvent(new TransactionCommitSendMQEvent("同步商品评价消息",
+                rocketmqCustomProperties.getGoodsTopic(), GoodsTagsEnum.GOODS_COMMENT_COMPLETE.name(), JSONUtil.toJsonStr(memberEvaluation)));
         return memberEvaluationDTO;
     }
 
@@ -154,7 +152,7 @@ public class MemberEvaluationServiceImpl extends ServiceImpl<MemberEvaluationMap
     @Override
     public boolean delete(String id) {
         LambdaUpdateWrapper<MemberEvaluation> updateWrapper = Wrappers.lambdaUpdate();
-        updateWrapper.set(MemberEvaluation::getDeleteFlag, 1);
+        updateWrapper.set(MemberEvaluation::getDeleteFlag, true);
         updateWrapper.eq(MemberEvaluation::getId, id);
         return this.update(updateWrapper);
     }

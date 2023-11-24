@@ -1,5 +1,6 @@
 package cn.crbz.modules.goods.serviceimpl;
 
+import cn.crbz.modules.goods.entity.dto.CategorySearchParams;
 import cn.hutool.core.text.CharSequenceUtil;
 import cn.crbz.cache.Cache;
 import cn.crbz.cache.CachePrefix;
@@ -113,7 +114,7 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
 
         //获取全部分类
         LambdaQueryWrapper<Category> queryWrapper = new LambdaQueryWrapper<>();
-        queryWrapper.eq(Category::getDeleteFlag, 0);
+        queryWrapper.eq(Category::getDeleteFlag, false);
         List<Category> list = this.list(queryWrapper);
 
         //构造分类树
@@ -165,10 +166,10 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
     }
 
     @Override
-    public List<CategoryVO> listAllChildren() {
+    public List<CategoryVO> listAllChildren(CategorySearchParams categorySearchParams) {
 
         //获取全部分类
-        List<Category> list = this.list();
+        List<Category> list = this.list(categorySearchParams.queryWrapper());
 
         //构造分类树
         List<CategoryVO> categoryVOList = new ArrayList<>();
@@ -283,7 +284,7 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
     @Override
     @CacheEvict(key = "#categoryId")
     @Transactional(rollbackFor = Exception.class)
-    public void updateCategoryStatus(String categoryId, Integer enableOperations) {
+    public void updateCategoryStatus(String categoryId, Boolean enableOperations) {
         //禁用子分类
         CategoryVO categoryVO = new CategoryVO(this.getById(categoryId));
         List<String> ids = new ArrayList<>();

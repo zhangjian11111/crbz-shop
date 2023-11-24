@@ -356,7 +356,7 @@ public class GoodsMessageListener implements RocketMQListener<MessageExt> {
             }
             log.info("goods：{}", goods);
             log.info("goodsSkuList：{}", goodsSkuByPage.getRecords());
-            if (goods.getAuthFlag().equals(GoodsAuthEnum.PASS.name()) && goods.getMarketEnable().equals(GoodsStatusEnum.UPPER.name()) && "0".equals(String.valueOf(goods.getDeleteFlag()))) {
+            if (goods.getAuthFlag().equals(GoodsAuthEnum.PASS.name()) && goods.getMarketEnable().equals(GoodsStatusEnum.UPPER.name()) && Boolean.FALSE.equals(goods.getDeleteFlag())) {
                 this.generatorGoodsIndex(goods, goodsSkuByPage.getRecords());
             } else {
                 //如果商品状态值不支持es搜索，那么将商品信息做下架处理
@@ -492,7 +492,7 @@ public class GoodsMessageListener implements RocketMQListener<MessageExt> {
                 }
                 int buyCount = goodsSku.getBuyCount() + goodsCompleteMessage.getBuyNum();
                 goodsSku.setBuyCount(buyCount);
-                goodsSkuService.update(goodsSku);
+                goodsSkuService.updateGoodsSkuBuyCount(goodsSku.getId(), buyCount);
 
                 this.goodsIndexService.updateIndex(MapUtil.builder(new HashMap<String, Object>()).put("id", goodsCompleteMessage.getSkuId()).build(), MapUtil.builder(new HashMap<String, Object>()).put("buyCount", buyCount).build());
 

@@ -17,7 +17,7 @@ import java.util.List;
  *
  * @author wget
  * @title: ClerkService
- * @projectName lilishop
+ * @projectName crbzshop
  * @date 2021/12/28 7:42 下午
  */
 public interface ClerkService extends IService<Clerk> {

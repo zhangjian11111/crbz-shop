@@ -7,9 +7,7 @@ import cn.crbz.common.exception.ServiceException;
 import cn.crbz.common.security.AuthUser;
 import cn.crbz.common.security.context.UserContext;
 import cn.crbz.common.security.enums.UserEnums;
-import cn.crbz.common.vo.PageVO;
 import cn.crbz.common.vo.ResultMessage;
-import cn.crbz.common.vo.SearchVO;
 import cn.crbz.modules.file.entity.File;
 import cn.crbz.modules.file.entity.dto.FileOwnerDTO;
 import cn.crbz.modules.file.service.FileService;
@@ -43,10 +41,9 @@ public class FileController {
     @ApiOperation(value = "获取自己的图片资源")
     @GetMapping
     @ApiImplicitParam(name = "title", value = "名称模糊匹配")
-    public ResultMessage<IPage<File>> getFileList(@RequestHeader String accessToken, File file, SearchVO searchVO, PageVO pageVo) {
+    public ResultMessage<IPage<File>> getFileList(@RequestHeader String accessToken, FileOwnerDTO fileOwnerDTO) {
 
         AuthUser authUser = UserContext.getAuthUser(cache, accessToken);
-        FileOwnerDTO fileOwnerDTO = new FileOwnerDTO();
         //只有买家才写入自己id
         if (authUser.getRole().equals(UserEnums.MEMBER)) {
             fileOwnerDTO.setOwnerId(authUser.getId());
@@ -55,7 +52,7 @@ public class FileController {
             fileOwnerDTO.setOwnerId(authUser.getStoreId());
         }
         fileOwnerDTO.setUserEnums(authUser.getRole().name());
-        return ResultUtil.data(fileService.customerPageOwner(fileOwnerDTO, file, searchVO, pageVo));
+        return ResultUtil.data(fileService.customerPageOwner(fileOwnerDTO));
     }
 
     @ApiOperation(value = "文件重命名")

@@ -33,8 +33,9 @@ public interface OrderService extends IService<Order> {
      *
      * @param orderSn 订单编号
      * @param reason  错误原因
+     * @param refundMoney 是否退款
      */
-    void systemCancel(String orderSn, String reason);
+    void systemCancel(String orderSn, String reason,Boolean refundMoney);
 
     /**
      * 根据sn查询
@@ -43,6 +44,7 @@ public interface OrderService extends IService<Order> {
      * @return 订单信息
      */
     Order getBySn(String orderSn);
+
 
     /**
      * 订单查询

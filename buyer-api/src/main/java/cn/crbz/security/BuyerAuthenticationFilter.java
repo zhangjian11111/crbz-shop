@@ -50,7 +50,7 @@ public class BuyerAuthenticationFilter extends BasicAuthenticationFilter {
 
     /**
      * 自定义构造器
-     *
+     *+
      * @param authenticationManager
      * @param cache
      */

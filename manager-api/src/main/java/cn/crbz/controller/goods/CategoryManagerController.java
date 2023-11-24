@@ -6,6 +6,7 @@ import cn.crbz.common.enums.ResultUtil;
 import cn.crbz.common.exception.ServiceException;
 import cn.crbz.common.vo.ResultMessage;
 import cn.crbz.modules.goods.entity.dos.Category;
+import cn.crbz.modules.goods.entity.dto.CategorySearchParams;
 import cn.crbz.modules.goods.entity.vos.CategoryVO;
 import cn.crbz.modules.goods.service.CategoryService;
 import cn.crbz.modules.goods.service.GoodsService;
@@ -54,8 +55,8 @@ public class CategoryManagerController {
 
     @ApiOperation(value = "查询全部分类列表")
     @GetMapping(value = "/allChildren")
-    public ResultMessage<List<CategoryVO>> list() {
-        return ResultUtil.data(this.categoryService.listAllChildren());
+    public ResultMessage<List<CategoryVO>> list(CategorySearchParams categorySearchParams) {
+        return ResultUtil.data(this.categoryService.listAllChildren(categorySearchParams));
     }
 
     @PostMapping
@@ -118,7 +119,7 @@ public class CategoryManagerController {
     })
     @DemoSite
     @ApiOperation(value = "后台 禁用/启用 分类")
-    public ResultMessage<Object> disable(@PathVariable String id, @RequestParam Integer enableOperations) {
+    public ResultMessage<Object> disable(@PathVariable String id, @RequestParam Boolean enableOperations) {
 
         Category category = categoryService.getById(id);
         if (category == null) {

@@ -4,7 +4,6 @@ import cn.hutool.core.text.CharSequenceUtil;
 import cn.crbz.common.enums.ResultCode;
 import cn.crbz.common.exception.ServiceException;
 import cn.crbz.common.security.AuthUser;
-import cn.crbz.mybatis.util.PageUtil;
 import cn.crbz.common.vo.PageVO;
 import cn.crbz.common.vo.SearchVO;
 import cn.crbz.modules.file.entity.File;
@@ -12,6 +11,7 @@ import cn.crbz.modules.file.entity.dto.FileOwnerDTO;
 import cn.crbz.modules.file.mapper.FileMapper;
 import cn.crbz.modules.file.plugin.FilePluginFactory;
 import cn.crbz.modules.file.service.FileService;
+import cn.crbz.mybatis.util.PageUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -47,6 +47,18 @@ public class FileServiceImpl extends ServiceImpl<FileMapper, File> implements Fi
     }
 
     @Override
+    public void batchDeleteByDirectory(String directoryId) {
+        LambdaQueryWrapper<File> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(File::getFileDirectoryId, directoryId);
+
+        List<File> files = this.list(queryWrapper);
+        List<String> keys = new ArrayList<>();
+        files.forEach(item -> keys.add(item.getFileKey()));
+        filePluginFactory.filePlugin().deleteFile(keys);
+        this.remove(queryWrapper);
+    }
+
+    @Override
     public void batchDelete(List<String> ids, AuthUser authUser) {
         LambdaQueryWrapper<File> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.in(File::getId, ids);
@@ -73,26 +85,28 @@ public class FileServiceImpl extends ServiceImpl<FileMapper, File> implements Fi
     }
 
     @Override
-    public IPage<File> customerPage(File file, SearchVO searchVO, PageVO pageVo) {
+    public IPage<File> customerPage(FileOwnerDTO fileOwnerDTO) {
         LambdaQueryWrapper<File> queryWrapper = new LambdaQueryWrapper<>();
-        queryWrapper.like(CharSequenceUtil.isNotEmpty(file.getName()), File::getName, file.getName())
-                .like(CharSequenceUtil.isNotEmpty(file.getFileKey()), File::getFileKey, file.getFileKey())
-                .like(CharSequenceUtil.isNotEmpty(file.getFileType()), File::getFileType, file.getFileType())
-                .between(CharSequenceUtil.isNotEmpty(searchVO.getStartDate()) && CharSequenceUtil.isNotEmpty(searchVO.getEndDate()),
-                        File::getCreateTime, searchVO.getStartDate(), searchVO.getEndDate());
-        return this.page(PageUtil.initPage(pageVo), queryWrapper);
+        queryWrapper.like(CharSequenceUtil.isNotEmpty(fileOwnerDTO.getName()), File::getName, fileOwnerDTO.getName())
+                .eq(CharSequenceUtil.isNotEmpty(fileOwnerDTO.getFileDirectoryId()),File::getFileDirectoryId, fileOwnerDTO.getFileDirectoryId())
+                .like(CharSequenceUtil.isNotEmpty(fileOwnerDTO.getFileKey()), File::getFileKey, fileOwnerDTO.getFileKey())
+                .like(CharSequenceUtil.isNotEmpty(fileOwnerDTO.getFileType()), File::getFileType, fileOwnerDTO.getFileType())
+                .between(CharSequenceUtil.isNotEmpty(fileOwnerDTO.getStartDate()) && CharSequenceUtil.isNotEmpty(fileOwnerDTO.getEndDate()),
+                        File::getCreateTime, fileOwnerDTO.getStartDate(), fileOwnerDTO.getEndDate());
+        return this.page(PageUtil.initPage(fileOwnerDTO), queryWrapper);
     }
 
     @Override
-    public IPage<File> customerPageOwner(FileOwnerDTO ownerDTO, File file, SearchVO searchVO, PageVO pageVo) {
+    public IPage<File> customerPageOwner(FileOwnerDTO fileOwnerDTO) {
         LambdaQueryWrapper<File> queryWrapper = new LambdaQueryWrapper<>();
-        queryWrapper.eq(CharSequenceUtil.isNotEmpty(ownerDTO.getOwnerId()), File::getOwnerId, ownerDTO.getOwnerId())
-                .eq(File::getUserEnums, ownerDTO.getUserEnums())
-                .like(CharSequenceUtil.isNotEmpty(file.getName()), File::getName, file.getName())
-                .like(CharSequenceUtil.isNotEmpty(file.getFileKey()), File::getFileKey, file.getFileKey())
-                .like(CharSequenceUtil.isNotEmpty(file.getFileType()), File::getFileType, file.getFileType())
-                .between(CharSequenceUtil.isNotEmpty(searchVO.getStartDate()) && CharSequenceUtil.isNotEmpty(searchVO.getEndDate()),
-                        File::getCreateTime, searchVO.getStartDate(), searchVO.getEndDate());
-        return this.page(PageUtil.initPage(pageVo), queryWrapper);
+        queryWrapper.eq(CharSequenceUtil.isNotEmpty(fileOwnerDTO.getOwnerId()), File::getOwnerId, fileOwnerDTO.getOwnerId())
+                .eq(File::getUserEnums, fileOwnerDTO.getUserEnums())
+                .eq(CharSequenceUtil.isNotEmpty(fileOwnerDTO.getFileDirectoryId()),File::getFileDirectoryId, fileOwnerDTO.getFileDirectoryId())
+                .like(CharSequenceUtil.isNotEmpty(fileOwnerDTO.getName()), File::getName, fileOwnerDTO.getName())
+                .like(CharSequenceUtil.isNotEmpty(fileOwnerDTO.getFileKey()), File::getFileKey, fileOwnerDTO.getFileKey())
+                .like(CharSequenceUtil.isNotEmpty(fileOwnerDTO.getFileType()), File::getFileType, fileOwnerDTO.getFileType())
+                .between(CharSequenceUtil.isNotEmpty(fileOwnerDTO.getStartDate()) && CharSequenceUtil.isNotEmpty(fileOwnerDTO.getEndDate()),
+                        File::getCreateTime, fileOwnerDTO.getStartDate(), fileOwnerDTO.getEndDate());
+        return this.page(PageUtil.initPage(fileOwnerDTO), queryWrapper);
     }
 }

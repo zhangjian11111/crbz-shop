@@ -16,7 +16,7 @@ import org.apache.ibatis.annotations.Select;
  *
  * @author wget
  * @title: ClerkMapper
- * @projectName lilishop
+ * @projectName crbzshop
  * @date 2021/12/28 7:39 下午
  */
 public interface ClerkMapper extends BaseMapper<Clerk> {

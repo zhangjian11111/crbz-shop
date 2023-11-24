@@ -73,6 +73,7 @@ public class PromotionEverydayExecute implements EveryDayExecute {
         for (int i = 1; i <= SeckillService.PRE_CREATION; i++) {
             Seckill seckill = new Seckill(i, seckillSetting.getHours(), seckillSetting.getSeckillRule());
 
+            seckill.setApplyEndTime(null);
             //如果已经存在促销，则不再次保存
             if (seckillService.list(
                     PromotionTools.checkActiveTime(seckill.getStartTime(), seckill.getEndTime(), PromotionTypeEnum.SECKILL, null, seckill.getId())).isEmpty()) {

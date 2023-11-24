@@ -13,7 +13,7 @@ import lombok.Data;
 /**
  * 管理段发送消息对象
  *
- * @author lili
+ * @author crbz
  */
 
 @Data

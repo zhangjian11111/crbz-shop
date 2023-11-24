@@ -6,7 +6,7 @@ import cn.crbz.common.vo.ResultMessage;
 /**
  * 返回结果工具类
  *
- * @author lili
+ * @author crbz
  */
 public class ResultUtil<T> {
 

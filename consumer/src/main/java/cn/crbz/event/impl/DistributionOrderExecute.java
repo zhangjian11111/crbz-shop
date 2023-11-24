@@ -73,14 +73,14 @@ public class DistributionOrderExecute implements OrderStatusChangeEvent, EveryDa
         //当前时间-结算天数=最终结算时间
         dateTime = dateTime.offsetNew(DateField.DAY_OF_MONTH, -distributionSetting.getCashDay());
         //分销人员订单结算
-        distributionOrderService.updateRebate(dateTime,DistributionOrderStatusEnum.WAIT_BILL.name());
+        distributionOrderService.updateRebate(dateTime, DistributionOrderStatusEnum.WAIT_BILL.name());
 
     }
 
     @Override
     public void afterSaleStatusChange(AfterSale afterSale) {
         if (afterSale.getServiceStatus().equals(AfterSaleStatusEnum.COMPLETE.name())) {
-            distributionOrderService.refundOrder(afterSale.getSn());
+            distributionOrderService.refundOrder(afterSale);
         }
     }
 

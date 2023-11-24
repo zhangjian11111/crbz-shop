@@ -1,12 +1,13 @@
 package cn.crbz.modules.im.entity.dto;
 
+import cn.hutool.core.text.CharSequenceUtil;
 import cn.crbz.common.enums.ResultCode;
 import cn.crbz.common.exception.ServiceException;
-import cn.crbz.common.utils.StringUtils;
 import cn.crbz.common.vo.PageVO;
 import cn.crbz.modules.im.entity.dos.ImMessage;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  * MessageQueryParams
@@ -15,8 +16,12 @@ import lombok.Data;
  * @version v1.0
  * 2022-01-20 17:16
  */
+@EqualsAndHashCode(callSuper = true)
 @Data
 public class MessageQueryParams extends PageVO {
+
+    private static final long serialVersionUID = 3504156704697214077L;
+
     /**
      * 聊天窗口
      */
@@ -31,7 +36,7 @@ public class MessageQueryParams extends PageVO {
     private Integer num;
 
     public LambdaQueryWrapper<ImMessage> initQueryWrapper() {
-        if (StringUtils.isEmpty(talkId)) {
+        if (CharSequenceUtil.isEmpty(talkId)) {
             throw new ServiceException(ResultCode.ERROR);
         }
         if (num == null || num > 50) {
@@ -40,7 +45,7 @@ public class MessageQueryParams extends PageVO {
 
         LambdaQueryWrapper<ImMessage> lambdaQueryWrapper = new LambdaQueryWrapper<>();
         lambdaQueryWrapper.eq(ImMessage::getTalkId, talkId);
-        if (StringUtils.isNotEmpty(lastMessageId)) {
+        if (CharSequenceUtil.isNotEmpty(lastMessageId)) {
             lambdaQueryWrapper.lt(ImMessage::getId, lastMessageId);
         }
         lambdaQueryWrapper.orderByDesc(ImMessage::getCreateTime);

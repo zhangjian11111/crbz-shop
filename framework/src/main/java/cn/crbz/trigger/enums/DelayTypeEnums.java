@@ -18,6 +18,11 @@ public enum DelayTypeEnums {
     PINTUAN_ORDER("拼团订单"),
 
     /**
+     * 订单
+     */
+    COUPON_ACTIVITY("优惠券活动"),
+
+    /**
      * 直播
      */
     BROADCAST("直播");

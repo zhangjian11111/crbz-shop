@@ -1,10 +1,9 @@
 package cn.crbz.controller.file;
 
 import cn.crbz.common.enums.ResultUtil;
-import cn.crbz.common.vo.PageVO;
 import cn.crbz.common.vo.ResultMessage;
-import cn.crbz.common.vo.SearchVO;
 import cn.crbz.modules.file.entity.File;
+import cn.crbz.modules.file.entity.dto.FileOwnerDTO;
 import cn.crbz.modules.file.service.FileService;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import io.swagger.annotations.Api;
@@ -34,9 +33,9 @@ public class FileManagerController {
     @ApiOperation(value = "管理端管理所有图片")
     @GetMapping
     @ApiImplicitParam(name = "title", value = "名称模糊匹配")
-    public ResultMessage<IPage<File>> adminFiles(File file, SearchVO searchVO, PageVO pageVo) {
+    public ResultMessage<IPage<File>> adminFiles(FileOwnerDTO fileOwnerDTO) {
 
-        return ResultUtil.data(fileService.customerPage(file, searchVO, pageVo));
+        return ResultUtil.data(fileService.customerPage(fileOwnerDTO));
     }
 
 

@@ -1,5 +1,6 @@
 package cn.crbz.modules.distribution.service;
 
+import cn.crbz.modules.order.aftersale.entity.dos.AfterSale;
 import cn.hutool.core.date.DateTime;
 import cn.crbz.modules.distribution.entity.dos.DistributionOrder;
 import cn.crbz.modules.distribution.entity.vos.DistributionOrderSearchParams;
@@ -47,7 +48,7 @@ public interface DistributionOrderService extends IService<DistributionOrder> {
      *
      * @param afterSaleSn 售后单号
      */
-    void refundOrder(String afterSaleSn);
+    void refundOrder(AfterSale afterSale);
 
     /**
      * 分销订单状态修改

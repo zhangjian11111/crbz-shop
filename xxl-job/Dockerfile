@@ -1,4 +1,4 @@
-FROM java:8
+FROM adoptopenjdk/openjdk8-openj9:alpine-slim
 MAINTAINER Chopper
 ADD xxl-job-admin-2.3.0-SNAPSHOT.jar /xxl-job.jar
 ADD application.properties /application.properties
@@ -10,3 +10,4 @@ RUN "java -jar /xxl-job.jar --spring.config.location=/application.properties"
 #    "--spring.config.location=application.properties"
 #],
 #ENTRYPOINT ["java","-jar","xxl-job.jar"]
+

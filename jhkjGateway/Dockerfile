@@ -1,4 +1,4 @@
-FROM openjdk:8u342-oraclelinux8
+FROM adoptopenjdk/openjdk8-openj9:alpine-slim
 MAINTAINER ZHANGJIAN <1097951193@qq.com>
 ENV APP_VERSION=4.2.5
 ENV APP_HOME=/data/crbz

@@ -7,6 +7,7 @@ import cn.crbz.event.GoodsCommentCompleteEvent;
 import cn.crbz.event.StoreSettingChangeEvent;
 import cn.crbz.modules.goods.entity.dos.GoodsSku;
 import cn.crbz.modules.goods.entity.dto.GoodsSearchParams;
+import cn.crbz.modules.goods.service.GoodsService;
 import cn.crbz.modules.goods.service.GoodsSkuService;
 import cn.crbz.modules.member.entity.dos.MemberEvaluation;
 import cn.crbz.modules.store.entity.dos.Store;
@@ -32,11 +33,14 @@ public class GoodsSkuExecute implements GoodsCommentCompleteEvent, StoreSettingC
     private GoodsSkuService goodsSkuService;
 
     @Autowired
+    private GoodsService goodsService;
+
+    @Autowired
     private Cache cache;
 
     @Override
     public void goodsComment(MemberEvaluation memberEvaluation) {
-        goodsSkuService.updateGoodsSkuCommentNum(memberEvaluation.getSkuId());
+        goodsService.updateGoodsCommentNum(memberEvaluation.getGoodsId(), memberEvaluation.getSkuId());
     }
 
     @Override

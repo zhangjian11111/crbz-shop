@@ -2,6 +2,7 @@ package cn.crbz.modules.promotion.entity.vos;
 
 import cn.crbz.modules.promotion.entity.dos.SeckillApply;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  * 秒杀活动申请视图对象

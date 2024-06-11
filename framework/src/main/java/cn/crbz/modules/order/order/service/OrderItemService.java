@@ -1,5 +1,6 @@
 package cn.crbz.modules.order.order.service;
 
+import cn.hutool.core.date.DateTime;
 import cn.crbz.modules.order.order.entity.dos.OrderItem;
 import cn.crbz.modules.order.order.entity.dto.OrderItemOperationDTO;
 import cn.crbz.modules.order.order.entity.enums.CommentStatusEnum;
@@ -32,6 +33,12 @@ public interface OrderItemService extends IService<OrderItem> {
      * @param orderItemAfterSaleStatusEnum 售后状态枚举
      */
     void updateAfterSaleStatus(String orderItemSn, OrderItemAfterSaleStatusEnum orderItemAfterSaleStatusEnum);
+
+    /**
+     * 更新售后状态
+     * @param orderItem
+     */
+    void updateByAfterSale(OrderItem orderItem);
 
     /**
      * 更新订单可投诉状态
@@ -69,4 +76,6 @@ public interface OrderItemService extends IService<OrderItem> {
     OrderItem getByOrderSnAndSkuId(String orderSn, String skuId);
 
     List<OrderItem> waitOperationOrderItem(OrderItemOperationDTO orderItemOperationDTO);
+
+    void expiredAfterSaleStatus(DateTime expiredTime);
 }

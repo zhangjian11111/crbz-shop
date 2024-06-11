@@ -1,14 +1,13 @@
 package cn.crbz.modules.goods.serviceimpl;
 
-import cn.crbz.modules.file.entity.enums.OssEnum;
-import cn.crbz.modules.system.entity.dto.OssSetting;
 import cn.hutool.json.JSONUtil;
-import cn.crbz.modules.file.util.FileUtil;
+import cn.crbz.modules.file.entity.enums.OssEnum;
 import cn.crbz.modules.goods.entity.dos.GoodsGallery;
 import cn.crbz.modules.goods.mapper.GoodsGalleryMapper;
 import cn.crbz.modules.goods.service.GoodsGalleryService;
 import cn.crbz.modules.system.entity.dos.Setting;
 import cn.crbz.modules.system.entity.dto.GoodsSetting;
+import cn.crbz.modules.system.entity.dto.OssSetting;
 import cn.crbz.modules.system.entity.enums.SettingEnum;
 import cn.crbz.modules.system.service.SettingService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;

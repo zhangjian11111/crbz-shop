@@ -45,6 +45,6 @@ public interface StoreMapper extends BaseMapper<Store> {
      * @param num     收藏数量
      */
     @Update("update crbz_store set collection_num = collection_num + #{num} where id = #{storeId}")
-    void updateCollection(@Param("storeId") String storeId,@Param("num") Integer num);
+    void updateCollection(String storeId, Integer num);
 
 }

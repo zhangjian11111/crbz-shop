@@ -16,6 +16,7 @@ import cn.crbz.modules.distribution.service.DistributionService;
 import cn.crbz.modules.wallet.entity.dto.MemberWalletUpdateDTO;
 import cn.crbz.modules.wallet.entity.dto.MemberWithdrawalMessage;
 import cn.crbz.modules.wallet.entity.enums.DepositServiceTypeEnum;
+import cn.crbz.modules.wallet.entity.enums.MemberWithdrawalDestinationEnum;
 import cn.crbz.modules.wallet.entity.enums.WithdrawStatusEnum;
 import cn.crbz.modules.wallet.service.MemberWalletService;
 import cn.crbz.mybatis.util.PageUtil;
@@ -137,17 +138,18 @@ public class DistributionCashServiceImpl extends ServiceImpl<DistributionCashMap
                     distribution.setCanRebate(CurrencyUtil.add(distribution.getCanRebate(), distributorCash.getPrice()));
                     distributorCash.setDistributionCashStatus(WithdrawStatusEnum.FAIL_AUDITING.name());
                 }
+                distribution.setCommissionFrozen(CurrencyUtil.sub(distribution.getCommissionFrozen(), distributorCash.getPrice()));
                 //分销员金额相关处理
                 distributionService.updateById(distribution);
                 //修改分销提现申请
                 boolean bool = this.updateById(distributorCash);
-                if (bool) {
-                    //组织会员提现审核消息
-                    memberWithdrawalMessage.setMemberId(distribution.getMemberId());
-                    memberWithdrawalMessage.setPrice(distributorCash.getPrice());
-                    String destination = rocketmqCustomProperties.getMemberTopic() + ":" + MemberTagsEnum.MEMBER_WITHDRAWAL.name();
-                    rocketMQTemplate.asyncSend(destination, memberWithdrawalMessage, RocketmqSendCallbackBuilder.commonCallback());
-                }
+                //if (bool) {
+                //    //组织会员提现审核消息
+                //    memberWithdrawalMessage.setMemberId(distribution.getMemberId());
+                //    memberWithdrawalMessage.setPrice(distributorCash.getPrice());
+                //    String destination = rocketmqCustomProperties.getMemberTopic() + ":" + MemberTagsEnum.MEMBER_WITHDRAWAL.name();
+                //    rocketMQTemplate.asyncSend(destination, memberWithdrawalMessage, RocketmqSendCallbackBuilder.commonCallback());
+                //}
                 return distributorCash;
             }
             throw new ServiceException(ResultCode.DISTRIBUTION_NOT_EXIST);

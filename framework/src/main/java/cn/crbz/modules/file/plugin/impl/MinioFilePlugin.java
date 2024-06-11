@@ -6,14 +6,16 @@ import cn.crbz.modules.file.entity.enums.OssEnum;
 import cn.crbz.modules.file.plugin.FilePlugin;
 import cn.crbz.modules.system.entity.dto.OssSetting;
 import io.minio.*;
+import io.minio.errors.ErrorResponseException;
+import io.minio.messages.DeleteError;
 import io.minio.messages.DeleteObject;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.*;
 import java.util.stream.Collectors;
-import io.minio.messages.DeleteError;
 
 
 /**

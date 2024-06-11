@@ -1,7 +1,17 @@
 package cn.crbz.timetask.handler.impl.promotion;
 
+import cn.crbz.common.enums.PromotionTypeEnum;
+import cn.crbz.modules.promotion.entity.dos.Seckill;
 import cn.crbz.modules.promotion.service.MemberCouponSignService;
+import cn.crbz.modules.promotion.service.SeckillService;
+import cn.crbz.modules.promotion.tools.PromotionTools;
+import cn.crbz.modules.search.service.EsGoodsIndexService;
+import cn.crbz.modules.system.entity.dos.Setting;
+import cn.crbz.modules.system.entity.dto.SeckillSetting;
+import cn.crbz.modules.system.entity.enums.SettingEnum;
+import cn.crbz.modules.system.service.SettingService;
 import cn.crbz.timetask.handler.EveryDayExecute;
+import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

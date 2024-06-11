@@ -1,10 +1,13 @@
 package cn.crbz.modules.promotion.serviceimpl;
 
+import cn.hutool.core.map.MapBuilder;
 import cn.hutool.core.text.CharSequenceUtil;
 import cn.hutool.json.JSONUtil;
 import cn.crbz.common.enums.PromotionTypeEnum;
 import cn.crbz.common.enums.ResultCode;
+import cn.crbz.common.event.TransactionCommitSendMQEvent;
 import cn.crbz.common.exception.ServiceException;
+import cn.crbz.common.properties.RocketmqCustomProperties;
 import cn.crbz.common.utils.DateUtil;
 import cn.crbz.common.vo.PageVO;
 import cn.crbz.modules.goods.entity.dos.GoodsSku;
@@ -24,15 +27,18 @@ import cn.crbz.modules.promotion.mapper.CouponMapper;
 import cn.crbz.modules.promotion.service.*;
 import cn.crbz.modules.promotion.tools.PromotionTools;
 import cn.crbz.mybatis.util.PageUtil;
+import cn.crbz.rocketmq.tags.GoodsTagsEnum;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -69,6 +75,12 @@ public class CouponServiceImpl extends AbstractPromotionsServiceImpl<CouponMappe
      */
     @Autowired
     private CouponActivityItemService couponActivityItemService;
+
+    @Autowired
+    private RocketmqCustomProperties rocketmqCustomProperties;
+
+    @Autowired
+    private ApplicationEventPublisher applicationEventPublisher;
 
     /**
      * 领取优惠券
@@ -270,9 +282,16 @@ public class CouponServiceImpl extends AbstractPromotionsServiceImpl<CouponMappe
      * @param promotions 优惠券信息
      */
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void updateEsGoodsIndex(Coupon promotions) {
         Coupon coupon = JSONUtil.parse(promotions).toBean(Coupon.class);
-        super.updateEsGoodsIndex(coupon);
+        if (!CouponRangeDayEnum.DYNAMICTIME.name().equals(coupon.getRangeDayType()) && promotions.getStartTime() == null && promotions.getEndTime() == null) {
+            Map<Object, Object> build = MapBuilder.create().put("promotionKey", this.getPromotionType() + "-" + promotions.getId()).put("scopeId", promotions.getScopeId()).build();
+            //删除商品促销消息
+            applicationEventPublisher.publishEvent(new TransactionCommitSendMQEvent("删除商品促销事件", rocketmqCustomProperties.getGoodsTopic(), GoodsTagsEnum.DELETE_GOODS_INDEX_PROMOTIONS.name(), JSONUtil.toJsonStr(build)));
+        } else {
+            super.sendUpdateEsGoodsMsg(promotions);
+        }
     }
 
     @Override

@@ -1,6 +1,5 @@
 package cn.crbz.modules.distribution.serviceimpl;
 
-import cn.crbz.modules.order.aftersale.entity.dos.AfterSale;
 import cn.hutool.core.collection.ListUtil;
 import cn.hutool.core.date.DateField;
 import cn.hutool.core.date.DateTime;
@@ -17,6 +16,7 @@ import cn.crbz.modules.distribution.entity.vos.DistributionOrderSearchParams;
 import cn.crbz.modules.distribution.mapper.DistributionOrderMapper;
 import cn.crbz.modules.distribution.service.DistributionOrderService;
 import cn.crbz.modules.distribution.service.DistributionService;
+import cn.crbz.modules.order.aftersale.entity.dos.AfterSale;
 import cn.crbz.modules.order.order.entity.dos.Order;
 import cn.crbz.modules.order.order.entity.dos.OrderItem;
 import cn.crbz.modules.order.order.entity.dos.StoreFlow;
@@ -129,14 +129,14 @@ public class DistributionOrderServiceImpl extends ServiceImpl<DistributionOrderM
                     distributionService.addRebate(rebate, order.getDistributionId());
 
                     //如果天数写0则立即进行结算
-                    if (distributionSetting.getCashDay().equals(0)) {
-                        DateTime dateTime = new DateTime();
-                        dateTime = dateTime.offsetNew(DateField.DAY_OF_MONTH, -distributionSetting.getCashDay());
-                        //防止事务失效，采用上下文获取bean
-                        DistributionOrderService bean = SpringContextUtil.getBean(DistributionOrderService.class);
-                        //分销订单结算
-                        bean.updateRebate(dateTime, DistributionOrderStatusEnum.WAIT_BILL.name());
-                    }
+//                    if (distributionSetting.getCashDay().equals(0)) {
+//                        DateTime dateTime = new DateTime();
+//                        dateTime = dateTime.offsetNew(DateField.DAY_OF_MONTH, -distributionSetting.getCashDay());
+//                        //防止事务失效，采用上下文获取bean
+//                        DistributionOrderService bean = SpringContextUtil.getBean(DistributionOrderService.class);
+//                        //分销订单结算
+//                        bean.updateRebate(dateTime, DistributionOrderStatusEnum.WAIT_BILL.name());
+//                    }
                 }
 
 

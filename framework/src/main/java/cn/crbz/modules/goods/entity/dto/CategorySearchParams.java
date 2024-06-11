@@ -34,7 +34,7 @@ public class CategorySearchParams {
     private String parentTitle;
 
     @ApiModelProperty(value = "是否禁用")
-    private Boolean deleteFlag;
+    private Integer deleteFlag;
 
     public <T > QueryWrapper<T> queryWrapper() {
         QueryWrapper<T> queryWrapper = new QueryWrapper<>();

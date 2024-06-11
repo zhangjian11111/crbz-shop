@@ -47,7 +47,7 @@ public class MemberReceiptVO {
         if (StringUtils.isNotEmpty(receiptType)) {
             queryWrapper.eq(MemberReceipt::getReceiptType, receiptType);
         }
-        queryWrapper.eq(MemberReceipt::getDeleteFlag, 1);
+        queryWrapper.eq(MemberReceipt::getDeleteFlag, true);
         queryWrapper.orderByDesc(MemberReceipt::getCreateTime);
         return queryWrapper;
     }

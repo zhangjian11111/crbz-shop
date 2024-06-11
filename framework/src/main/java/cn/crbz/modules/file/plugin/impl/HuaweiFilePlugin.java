@@ -7,11 +7,11 @@ import cn.crbz.modules.file.plugin.FilePlugin;
 import cn.crbz.modules.system.entity.dto.OssSetting;
 import com.obs.services.ObsClient;
 import com.obs.services.exception.ObsException;
-import lombok.extern.slf4j.Slf4j;
 import com.obs.services.model.DeleteObjectsRequest;
 import com.obs.services.model.DeleteObjectsResult;
 import com.obs.services.model.ListVersionsResult;
 import com.obs.services.model.PutObjectRequest;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.File;
 import java.io.IOException;
@@ -21,7 +21,7 @@ import java.util.List;
 /**
  * 华为obs 文件操作
  *
- * @author jianjian
+ * @author Bulbasaur
  */
 
 @Slf4j

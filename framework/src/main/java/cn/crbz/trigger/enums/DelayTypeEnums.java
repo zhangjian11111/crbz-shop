@@ -16,7 +16,6 @@ public enum DelayTypeEnums {
      * 拼团订单
      */
     PINTUAN_ORDER("拼团订单"),
-
     /**
      * 订单
      */

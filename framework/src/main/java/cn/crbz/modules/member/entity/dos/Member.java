@@ -3,6 +3,7 @@ package cn.crbz.modules.member.entity.dos;
 import cn.crbz.common.enums.ClientTypeEnum;
 import cn.crbz.common.security.sensitive.Sensitive;
 import cn.crbz.common.security.sensitive.enums.SensitiveStrategy;
+import cn.crbz.common.utils.CommonUtil;
 import cn.crbz.mybatis.BaseEntity;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -101,7 +102,7 @@ public class Member extends BaseEntity {
         this.username = username;
         this.password = password;
         this.mobile = mobile;
-        this.nickName = "临时昵称";
+        this.nickName = CommonUtil.getSpecialStr("用户");
         this.disabled = true;
         this.haveStore = false;
         this.sex = 0;

@@ -5,6 +5,7 @@ import cn.crbz.modules.order.cart.entity.dto.StoreRemarkDTO;
 import cn.crbz.modules.order.cart.entity.dto.TradeDTO;
 import cn.crbz.modules.order.cart.entity.enums.RenderStepEnums;
 import cn.crbz.modules.order.cart.render.CartRenderStep;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Service;
 
 /**

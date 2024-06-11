@@ -2,7 +2,6 @@ package cn.crbz.modules.distribution.mapper;
 
 import cn.crbz.modules.distribution.entity.dos.Distribution;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Update;
 
 
@@ -22,7 +21,7 @@ public interface DistributionMapper extends BaseMapper<Distribution> {
      */
     @Update("UPDATE crbz_distribution set commission_frozen = (IFNULL(commission_frozen,0)+#{commissionFrozen}) " +
             ", rebate_total=(IFNULL(rebate_total,0)+#{commissionFrozen})  WHERE id = #{distributionId}")
-    void subCanRebate(@Param("commissionFrozen") Double commissionFrozen,@Param("distributionId") String distributionId);
+    void subCanRebate(Double commissionFrozen, String distributionId);
 
     /**
      * 添加分销金额
@@ -33,6 +32,6 @@ public interface DistributionMapper extends BaseMapper<Distribution> {
     @Update("UPDATE crbz_distribution set commission_frozen = (IFNULL(commission_frozen,0)+#{commissionFrozen}) " +
             ", rebate_total=(IFNULL(rebate_total,0)+#{commissionFrozen}) " +
             ", distribution_order_count=(IFNULL(distribution_order_count,0)+1) WHERE id = #{distributionId}")
-    void addCanRebate(@Param("commissionFrozen") Double commissionFrozen,@Param("distributionId") String distributionId);
+    void addCanRebate(Double commissionFrozen, String distributionId);
 
 }

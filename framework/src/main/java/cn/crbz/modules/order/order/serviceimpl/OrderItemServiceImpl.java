@@ -1,5 +1,6 @@
 package cn.crbz.modules.order.order.serviceimpl;
 
+import cn.hutool.core.date.DateTime;
 import cn.hutool.core.text.CharSequenceUtil;
 import cn.crbz.common.enums.ResultCode;
 import cn.crbz.common.exception.ServiceException;
@@ -41,6 +42,15 @@ public class OrderItemServiceImpl extends ServiceImpl<OrderItemMapper, OrderItem
         LambdaUpdateWrapper<OrderItem> lambdaUpdateWrapper = Wrappers.lambdaUpdate();
         lambdaUpdateWrapper.set(OrderItem::getAfterSaleStatus, orderItemAfterSaleStatusEnum.name());
         lambdaUpdateWrapper.eq(OrderItem::getSn, orderItemSn);
+        this.update(lambdaUpdateWrapper);
+    }
+
+    @Override
+    public void updateByAfterSale(OrderItem orderItem) {
+        LambdaUpdateWrapper<OrderItem> lambdaUpdateWrapper = new LambdaUpdateWrapper<OrderItem>()
+                .eq(OrderItem::getSn, orderItem.getSn())
+                .set(OrderItem::getIsRefund, orderItem.getIsRefund())
+                .set(OrderItem::getRefundPrice, orderItem.getRefundPrice());
         this.update(lambdaUpdateWrapper);
     }
 
@@ -94,5 +104,12 @@ public class OrderItemServiceImpl extends ServiceImpl<OrderItemMapper, OrderItem
         queryWrapper.eq(CharSequenceUtil.isNotEmpty(dto.getAfterSaleStatus()), "oi.after_sale_status", dto.getAfterSaleStatus());
         queryWrapper.eq(CharSequenceUtil.isNotEmpty(dto.getComplainStatus()), "oi.complain_status", dto.getComplainStatus());
         return this.baseMapper.waitOperationOrderItem(queryWrapper);
+    }
+
+
+    @Override
+    public void expiredAfterSaleStatus(DateTime expiredTime) {
+        this.baseMapper.expiredAfterSaleStatus(expiredTime);
+        this.baseMapper.expiredAfterSaleStatusExecuteByAfterSale(expiredTime);
     }
 }

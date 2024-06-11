@@ -3,7 +3,6 @@ package cn.crbz.modules.distribution.mapper;
 import cn.hutool.core.date.DateTime;
 import cn.crbz.modules.distribution.entity.dos.DistributionOrder;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Update;
 
 /**
@@ -23,6 +22,6 @@ public interface DistributionOrderMapper extends BaseMapper<DistributionOrder> {
     @Update("UPDATE crbz_distribution AS d " +
             "SET d.can_rebate =(ifnull(d.can_rebate,0) +(SELECT SUM( dorder.rebate ) FROM crbz_distribution_order AS dorder WHERE dorder.distribution_order_status = #{distributionOrderStatus} AND dorder.settle_cycle< #{settleCycle} AND dorder.distribution_id = d.id ))" +
             ",d.commission_frozen =(ifnull(d.commission_frozen,0) -(SELECT SUM( dorder.rebate ) FROM crbz_distribution_order AS dorder WHERE dorder.distribution_order_status = #{distributionOrderStatus} AND dorder.settle_cycle< #{settleCycle} AND dorder.distribution_id = d.id ) )")
-    void rebate(@Param("distributionOrderStatus") String distributionOrderStatus,@Param("settleCycle") DateTime settleCycle);
+    void rebate(String distributionOrderStatus, DateTime settleCycle);
 
 }

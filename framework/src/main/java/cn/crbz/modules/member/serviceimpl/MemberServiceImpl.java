@@ -47,7 +47,6 @@ import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.rocketmq.spring.core.RocketMQTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
@@ -67,7 +66,6 @@ import java.util.concurrent.TimeUnit;
  * @author Chopper
  * @since 2021-03-29 14:10:16
  */
-@Slf4j
 @Service
 public class MemberServiceImpl extends ServiceImpl<MemberMapper, Member> implements MemberService {
 
@@ -243,7 +241,7 @@ public class MemberServiceImpl extends ServiceImpl<MemberMapper, Member> impleme
     public Member autoRegister(ConnectAuthUser authUser) {
 
         if (CharSequenceUtil.isEmpty(authUser.getNickname())) {
-            authUser.setNickname("临时昵称");
+            authUser.setNickname(CommonUtil.getSpecialStr("用户"));
         }
         if (CharSequenceUtil.isEmpty(authUser.getAvatar())) {
             authUser.setAvatar("https://i.loli.net/2020/11/19/LyN6JF7zZRskdIe.png");
@@ -294,6 +292,10 @@ public class MemberServiceImpl extends ServiceImpl<MemberMapper, Member> impleme
             member = new Member(mobilePhone, UuidUtils.getUUID(), mobilePhone);
             registerHandler(member);
         }
+        //判断用户是否有效
+        if (member.getDisabled().equals(false) || member.getDeleteFlag().equals(true)) {
+            throw new ServiceException(ResultCode.USER_STATUS_ERROR);
+        }
         loginBindUser(member);
         return memberTokenGenerate.createToken(member, false);
     }
@@ -320,7 +322,6 @@ public class MemberServiceImpl extends ServiceImpl<MemberMapper, Member> impleme
         Member member = this.findByUsername(Objects.requireNonNull(UserContext.getCurrentUser()).getUsername());
         //传递修改会员信息
         BeanUtil.copyProperties(memberEditDTO, member);
-        log.info("复制后的member："+member.toString());
         //修改会员
         this.updateById(member);
         String destination = rocketmqCustomProperties.getMemberTopic() + ":" + MemberTagsEnum.MEMBER_INFO_EDIT.name();
@@ -378,19 +379,17 @@ public class MemberServiceImpl extends ServiceImpl<MemberMapper, Member> impleme
     }
 
     @Override
-    public void cancellation(String password) {
+    public void cancellation() {
 
         AuthUser tokenUser = UserContext.getCurrentUser();
         if (tokenUser == null) {
             throw new ServiceException(ResultCode.USER_NOT_LOGIN);
         }
         Member member = this.getById(tokenUser.getId());
-        if (member.getPassword().equals(new BCryptPasswordEncoder().encode(password))) {
-            //删除联合登录
-            connectService.deleteByMemberId(member.getId());
-            //混淆用户信息
-            this.confusionMember(member);
-        }
+        //删除联合登录
+        connectService.deleteByMemberId(member.getId());
+        //混淆用户信息
+        this.confusionMember(member);
     }
 
     /**
@@ -844,4 +843,5 @@ public class MemberServiceImpl extends ServiceImpl<MemberMapper, Member> impleme
             throw new ServiceException(ResultCode.USER_EXIST);
         }
     }
+
 }

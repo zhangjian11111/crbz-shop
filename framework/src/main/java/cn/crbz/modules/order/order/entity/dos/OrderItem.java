@@ -2,6 +2,7 @@ package cn.crbz.modules.order.order.entity.dos;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.json.JSONUtil;
+import cn.crbz.common.enums.PromotionTypeEnum;
 import cn.crbz.common.utils.BeanUtil;
 import cn.crbz.common.utils.SnowFlake;
 import cn.crbz.modules.order.cart.entity.dto.TradeDTO;
@@ -11,6 +12,7 @@ import cn.crbz.modules.order.order.entity.dto.PriceDetailDTO;
 import cn.crbz.modules.order.order.entity.enums.CommentStatusEnum;
 import cn.crbz.modules.order.order.entity.enums.OrderComplaintStatusEnum;
 import cn.crbz.modules.order.order.entity.enums.OrderItemAfterSaleStatusEnum;
+import cn.crbz.modules.order.order.entity.enums.RefundStatusEnum;
 import cn.crbz.modules.promotion.entity.vos.PromotionSkuVO;
 import cn.crbz.mybatis.BaseEntity;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -18,7 +20,9 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.stream.Collectors;
 
@@ -28,7 +32,9 @@ import java.util.stream.Collectors;
  * @author Chopper
  * @since 2020/11/17 7:30 下午
  */
+@EqualsAndHashCode(callSuper = true)
 @Data
+@Slf4j
 @TableName("crbz_order_item")
 @ApiModel(value = "子订单")
 @NoArgsConstructor
@@ -115,6 +121,24 @@ public class OrderItem extends BaseEntity {
     @ApiModelProperty(value = "退货商品数量")
     private Integer returnGoodsNumber;
 
+    /**
+     * @see cn.crbz.modules.order.order.entity.enums.RefundStatusEnum
+     */
+    @ApiModelProperty(value = "退款状态")
+    private String isRefund;
+
+    @ApiModelProperty(value = "退款金额")
+    private Double refundPrice;
+
+    @ApiModelProperty(value = "已发货数量")
+    private Integer deliverNumber;
+
+    public Integer getDeliverNumber() {
+        if(deliverNumber == null){
+            return 0;
+        }
+        return deliverNumber;
+    }
 
     public OrderItem(CartSkuVO cartSkuVO, CartVO cartVO, TradeDTO tradeDTO) {
         String oldId = this.getId();
@@ -146,12 +170,33 @@ public class OrderItem extends BaseEntity {
 
     }
 
+    public String getIsRefund() {
+        if (isRefund == null) {
+            return RefundStatusEnum.NO_REFUND.name();
+        }
+        return isRefund;
+    }
+
+    public double getRefundPrice() {
+        if (refundPrice == null) {
+            return 0;
+        }
+        return refundPrice;
+    }
+
     public PriceDetailDTO getPriceDetailDTO() {
         return JSONUtil.toBean(priceDetail, PriceDetailDTO.class);
     }
 
     public void setPriceDetailDTO(PriceDetailDTO priceDetail) {
         this.priceDetail = JSONUtil.toJsonStr(priceDetail);
+    }
+
+    public String getAfterSaleStatus() {
+        if (!PromotionTypeEnum.isCanAfterSale(this.promotionType)) {
+            return OrderItemAfterSaleStatusEnum.EXPIRED.name();
+        }
+        return afterSaleStatus;
     }
 
 }

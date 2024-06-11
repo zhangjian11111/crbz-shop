@@ -72,6 +72,6 @@ public interface BrandService extends IService<Brand> {
      * @param disable 是否不可用
      * @return 更新结果
      */
-    boolean brandDisable(String brandId, boolean disable);
+    boolean brandDisable(String brandId, Integer disable);
 
 }

@@ -3,6 +3,7 @@ package cn.crbz.timetask.handler.impl.hotwords;
 import cn.hutool.json.JSONUtil;
 import cn.crbz.cache.Cache;
 import cn.crbz.cache.CachePrefix;
+import cn.crbz.common.utils.StringUtils;
 import cn.crbz.modules.search.entity.dos.HotWordsHistory;
 import cn.crbz.modules.search.service.HotWordsHistoryService;
 import cn.crbz.modules.system.entity.dos.Setting;

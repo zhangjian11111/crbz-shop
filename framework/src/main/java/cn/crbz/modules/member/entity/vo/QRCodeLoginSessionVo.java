@@ -1,5 +1,6 @@
 package cn.crbz.modules.member.entity.vo;
 
+import cn.crbz.modules.member.entity.enums.QRCodeLoginSessionStatusEnum;
 import lombok.Data;
 
 import java.io.Serializable;

@@ -122,6 +122,7 @@ public class CheckDataRender implements CartRenderStep {
                     cartSkuVO.getGoodsSku().getUpdateTime() != null &&
                     dataSku.getUpdateTime().after(cartSkuVO.getGoodsSku().getUpdateTime());
 
+
             if (checkGoodsStatus || checkGoodsValid) {
                 if (checkGoodsValid) {
                     cartSkuVO.rebuildBySku(dataSku);

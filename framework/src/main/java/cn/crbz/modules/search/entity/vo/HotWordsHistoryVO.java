@@ -1,5 +1,7 @@
 package cn.crbz.modules.search.entity.vo;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.util.Date;

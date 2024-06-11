@@ -1,7 +1,9 @@
 package cn.crbz.listener;
 
 import cn.hutool.json.JSONUtil;
+import cn.crbz.event.MemberRegisterEvent;
 import cn.crbz.event.StoreSettingChangeEvent;
+import cn.crbz.modules.member.entity.dos.Member;
 import cn.crbz.modules.store.entity.dos.Store;
 import cn.crbz.rocketmq.tags.StoreTagsEnum;
 import lombok.extern.slf4j.Slf4j;

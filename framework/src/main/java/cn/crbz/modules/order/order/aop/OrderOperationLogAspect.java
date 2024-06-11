@@ -35,13 +35,9 @@ public class OrderOperationLogAspect {
     public void doAfter(JoinPoint joinPoint) {
         try {
 
-            log.info("joinpoint::"+joinPoint);
-
             //日志对象拼接
             //默认操作人员，系统操作
             String userName = "系统操作", id = "-1", role = UserEnums.SYSTEM.getRole();
-            log.info("当前用户：：："+UserContext.getCurrentUser());
-            log.info("当前用户：：："+UserContext.getCurrentUser().getUsername()+".."+UserContext.getCurrentUser().getRole());
             if (UserContext.getCurrentUser() != null) {
                 //日志对象拼接
                 userName = UserContext.getCurrentUser().getUsername();
@@ -69,9 +65,6 @@ public class OrderOperationLogAspect {
         Map<String, String> result = new HashMap<>(2);
         MethodSignature signature = (MethodSignature) joinPoint.getSignature();
         OrderLogPoint orderLogPoint = signature.getMethod().getAnnotation(OrderLogPoint.class);
-        log.info("orderLogPoint::"+orderLogPoint.orderSn());
-        log.info("orderLogPoint::"+orderLogPoint.description());
-        log.info("joinPoint::"+joinPoint);
         String description = SpelUtil.compileParams(joinPoint, orderLogPoint.description());
         String orderSn = SpelUtil.compileParams(joinPoint, orderLogPoint.orderSn());
 

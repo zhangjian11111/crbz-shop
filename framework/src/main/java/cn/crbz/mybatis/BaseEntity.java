@@ -70,7 +70,7 @@ public abstract class BaseEntity implements Serializable {
     private Date updateTime;
 
     @TableField(fill = FieldFill.INSERT_UPDATE)
-    @ApiModelProperty(value = "删除标志 true/false 删除/未删除", hidden = true)
+    @ApiModelProperty(value = "删除标志 1/0 删除/未删除", hidden = true)
     private Integer deleteFlag;
 
 }

@@ -1,6 +1,5 @@
 package cn.crbz.modules.goods.serviceimpl;
 
-import cn.crbz.modules.goods.entity.dto.CategorySearchParams;
 import cn.hutool.core.text.CharSequenceUtil;
 import cn.crbz.cache.Cache;
 import cn.crbz.cache.CachePrefix;
@@ -9,6 +8,7 @@ import cn.crbz.common.event.TransactionCommitSendMQEvent;
 import cn.crbz.common.exception.ServiceException;
 import cn.crbz.common.properties.RocketmqCustomProperties;
 import cn.crbz.modules.goods.entity.dos.Category;
+import cn.crbz.modules.goods.entity.dto.CategorySearchParams;
 import cn.crbz.modules.goods.entity.vos.CategoryVO;
 import cn.crbz.modules.goods.mapper.CategoryMapper;
 import cn.crbz.modules.goods.service.CategoryBrandService;
@@ -107,10 +107,10 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
 
     @Override
     public List<CategoryVO> categoryTree() {
-//        List<CategoryVO> categoryVOList = (List<CategoryVO>) cache.get(CachePrefix.CATEGORY.getPrefix());
-//        if (categoryVOList != null) {
-//            return categoryVOList;
-//        }
+        List<CategoryVO> categoryVOList = (List<CategoryVO>) cache.get(CachePrefix.CATEGORY.getPrefix());
+        if (categoryVOList != null) {
+            return categoryVOList;
+        }
 
         //获取全部分类
         LambdaQueryWrapper<Category> queryWrapper = new LambdaQueryWrapper<>();
@@ -118,7 +118,7 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
         List<Category> list = this.list(queryWrapper);
 
         //构造分类树
-        List<CategoryVO> categoryVOList = new ArrayList<>();
+        categoryVOList = new ArrayList<>();
         for (Category category : list) {
             if ("0".equals(category.getParentId())) {
                 CategoryVO categoryVO = new CategoryVO(category);

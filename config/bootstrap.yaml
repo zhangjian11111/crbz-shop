@@ -1,17 +1,18 @@
+#开发配置：
 spring:
   profiles:
     active: dev
-  nacos-ip: 192.168.124.9:8848
+  nacos-ip: 192.168.31.209:8848
   cloud:
     nacos:
       discovery:
         server-addr: ${spring.nacos-ip}
-        namespace: xbmall-dev
+        namespace: XBMALL-DEV
         group: CRBZSHOP_GROUP
       config:
         server-addr: ${spring.nacos-ip}
         file-extension: yaml
-        namespace: xbmall-dev
+        namespace: XBMALL-DEV
         group: CRBZSHOP_GROUP
         shared-configs:
           - data-id: xbmall-common-dev-config.yaml
@@ -19,6 +20,30 @@ spring:
             refresh: true
         refresh-enabled: true
 
+
+
+#生产配置：
+#spring:
+#  profiles:
+#    active: prod
+#  nacos-ip: 192.168.31.209:8848
+#  cloud:
+#    nacos:
+#      discovery:
+#        server-addr: ${spring.nacos-ip}
+#        namespace: XBMALL-PROD
+#        group: CRBZSHOP_GROUP
+#      config:
+#        server-addr: ${spring.nacos-ip}
+#        file-extension: yaml
+#        namespace: XBMALL-PROD
+#        group: CRBZSHOP_GROUP
+#        shared-configs:
+#          - data-id: xbmall-common-prod-config.yaml
+#            group: XBMALL_COMMON_GROUP
+#            refresh: true
+#        refresh-enabled: true
+#
 
 
 

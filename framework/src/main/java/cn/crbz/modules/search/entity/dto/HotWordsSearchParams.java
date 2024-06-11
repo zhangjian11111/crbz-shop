@@ -1,7 +1,10 @@
 package cn.crbz.modules.search.entity.dto;
 
+import cn.hutool.core.text.CharSequenceUtil;
 import cn.crbz.common.utils.StringUtils;
 import cn.crbz.common.vo.PageVO;
+import cn.crbz.modules.goods.entity.enums.GoodsAuthEnum;
+import cn.crbz.modules.goods.entity.enums.GoodsStatusEnum;
 import cn.crbz.modules.statistics.entity.dto.StatisticsQueryParam;
 import cn.crbz.modules.statistics.util.StatisticsDateUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -11,6 +14,7 @@ import lombok.EqualsAndHashCode;
 import org.springframework.beans.BeanUtils;
 
 import javax.validation.constraints.NotNull;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 

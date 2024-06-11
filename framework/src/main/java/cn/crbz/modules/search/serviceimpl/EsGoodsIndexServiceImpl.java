@@ -72,7 +72,6 @@ import org.springframework.data.elasticsearch.core.SearchPage;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
@@ -369,7 +368,6 @@ public class EsGoodsIndexServiceImpl extends BaseElasticsearchService implements
             keywordsList.forEach(item -> customWordsArrayList.add(new CustomWords(item)));
             //这里采用先批量删除再插入的方法，故意这么做。否则需要挨个匹配是否存在，性能消耗更大
             if (CollUtil.isNotEmpty(customWordsArrayList)) {
-                customWordsService.deleteBathByName(keywordsList);
                 customWordsService.insertBatchCustomWords(customWordsArrayList);
             }
         } catch (Exception e) {
@@ -417,6 +415,7 @@ public class EsGoodsIndexServiceImpl extends BaseElasticsearchService implements
         }
         update.setScript(new Script(script.toString()));
         update.setConflicts("proceed");
+
         this.client.updateByQueryAsync(update, RequestOptions.DEFAULT, new ActionListener<BulkByScrollResponse>() {
             @Override
             public void onResponse(BulkByScrollResponse bulkByScrollResponse) {
@@ -424,6 +423,7 @@ public class EsGoodsIndexServiceImpl extends BaseElasticsearchService implements
                     throw new RetryException("更新商品索引失败，es内容版本冲突");
                 }
             }
+
             @Override
             public void onFailure(Exception e) {
                 log.error("更新商品索引异常", e);
@@ -438,32 +438,31 @@ public class EsGoodsIndexServiceImpl extends BaseElasticsearchService implements
      */
     @Override
     public void updateBulkIndex(List<EsGoodsIndex> goodsIndices) {
+        //索引名称拼接
+        String indexName = getIndexName();
 
-            //索引名称拼接
-            String indexName = getIndexName();
+        BulkRequest request = new BulkRequest();
 
-            BulkRequest request = new BulkRequest();
+        for (EsGoodsIndex goodsIndex : goodsIndices) {
+            UpdateRequest updateRequest = new UpdateRequest(indexName, goodsIndex.getId());
 
-            for (EsGoodsIndex goodsIndex : goodsIndices) {
-                UpdateRequest updateRequest = new UpdateRequest(indexName, goodsIndex.getId());
-
-                JSONObject jsonObject = JSONUtil.parseObj(goodsIndex);
-                jsonObject.set("releaseTime", goodsIndex.getReleaseTime());
-                updateRequest.doc(jsonObject);
-                request.add(updateRequest);
+            JSONObject jsonObject = JSONUtil.parseObj(goodsIndex);
+            jsonObject.set("releaseTime", goodsIndex.getReleaseTime());
+            updateRequest.doc(jsonObject);
+            request.add(updateRequest);
         }
-            this.client.bulkAsync(request, RequestOptions.DEFAULT, new ActionListener<BulkResponse>() {
-                @Override
-                public void onResponse(BulkResponse bulkItemResponses) {
-                    // 判断索引如果不存在的处理
-                    log.info("批量更新商品索引结果：{}", bulkItemResponses.buildFailureMessage());
-                }
+        this.client.bulkAsync(request, RequestOptions.DEFAULT, new ActionListener<BulkResponse>() {
+            @Override
+            public void onResponse(BulkResponse bulkItemResponses) {
+                // 判断索引如果不存在的处理
+                log.info("批量更新商品索引结果：{}", bulkItemResponses.buildFailureMessage());
+            }
 
-                @Override
-                public void onFailure(Exception e) {
-                    log.error("批量更新商品索引异常", e);
-                }
-            });
+            @Override
+            public void onFailure(Exception e) {
+                log.error("批量更新商品索引异常", e);
+            }
+        });
     }
 
     /**
@@ -490,11 +489,13 @@ public class EsGoodsIndexServiceImpl extends BaseElasticsearchService implements
                     throw new RetryException("删除索引失败，es内容版本冲突");
                 }
             }
+
             @Override
             public void onFailure(Exception e) {
                 throw new RetryException("删除索引失败，" + e.getMessage());
             }
         });
+
     }
 
     /**
@@ -504,13 +505,7 @@ public class EsGoodsIndexServiceImpl extends BaseElasticsearchService implements
      */
     @Override
     public void deleteIndexById(String id) {
-        try {
-            goodsIndexRepository.deleteById(id);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-//        goodsIndexRepository.deleteById(id);
+        goodsIndexRepository.deleteById(id);
     }
 
     /**
@@ -916,11 +911,13 @@ public class EsGoodsIndexServiceImpl extends BaseElasticsearchService implements
                     log.info("批量更新商品索引的促销信息结果：{}", bulkItemResponses.status());
                 }
             }
+
             @Override
             public void onFailure(Exception e) {
                 log.error("批量更新商品索引的促销信息出现异常！", e);
             }
         });
+
     }
 
     /**

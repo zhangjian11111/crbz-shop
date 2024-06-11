@@ -17,6 +17,16 @@ public enum ComplaintStatusEnum {
      */
     CANCEL("已撤销"),
     /**
+     * 待申诉
+     */
+    WAIT_APPEAL("待申诉"),
+    /**
+     * 对话中
+     */
+    COMMUNICATION("对话中"),
+    /**
+
+    /**
      * 等待仲裁
      */
     WAIT_ARBITRATION("等待仲裁"),

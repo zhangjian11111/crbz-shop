@@ -43,7 +43,7 @@ public interface MemberSignMapper extends BaseMapper<MemberSign> {
      * @param time     时间
      * @return 会员签到列表
      */
-    @Select("SELECT * FROM crbz_member_sign WHERE DATE_FORMAT(create_time,'%Y%m') = #{arg1} and member_id = #{arg0}")
+    @Select("SELECT * FROM crbz_member_sign WHERE DATE_FORMAT(create_time,'%Y%m') = #{time} and member_id = #{memberId}")
     List<MemberSign> getMonthMemberSign(String memberId, String time);
 
 }

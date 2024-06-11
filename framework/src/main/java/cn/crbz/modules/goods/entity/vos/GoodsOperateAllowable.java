@@ -26,7 +26,7 @@ public class GoodsOperateAllowable implements Serializable {
     private String marketEnable;
 
     /**
-     * 删除状态 true 已删除 false 未删除
+     * 删除状态 1 已删除 0 未删除
      */
     private Integer deleteFlag;
 

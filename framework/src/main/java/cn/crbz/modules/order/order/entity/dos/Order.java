@@ -17,7 +17,6 @@ import cn.crbz.modules.order.order.entity.dto.PriceDetailDTO;
 import cn.crbz.modules.order.order.entity.enums.*;
 import cn.crbz.modules.payment.entity.enums.PaymentMethodEnum;
 import cn.crbz.mybatis.BaseEntity;
-import cn.hutool.log.Log;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
@@ -25,7 +24,6 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
@@ -42,7 +40,6 @@ import java.util.Optional;
 @TableName("crbz_order")
 @ApiModel(value = "订单")
 @NoArgsConstructor
-@Slf4j
 public class Order extends BaseEntity {
 
 
@@ -87,7 +84,7 @@ public class Order extends BaseEntity {
     private String receivableNo;
 
     /**
-     * @see  PaymentMethodEnum
+     * @see PaymentMethodEnum
      */
     @ApiModelProperty(value = "支付方式")
     private String paymentMethod;
@@ -150,6 +147,9 @@ public class Order extends BaseEntity {
 
     @ApiModelProperty(value = "买家订单备注")
     private String remark;
+
+    @ApiModelProperty(value = "卖家订单备注")
+    private String sellerRemark;
 
     @ApiModelProperty(value = "订单取消原因")
     private String cancelReason;
@@ -245,8 +245,7 @@ public class Order extends BaseEntity {
         this.setRemark(cartVO.getRemark());
         this.setFreightPrice(tradeDTO.getPriceDetailDTO().getFreightPrice());
         //会员收件信息
-        if(DeliveryMethodEnum.LOGISTICS.name().equals(cartVO.getDeliveryMethod())){
-            log.info("进入物流配送方式：实际上是"+cartVO.getDeliveryMethod());
+        if (tradeDTO.getMemberAddress() != null && DeliveryMethodEnum.LOGISTICS.name().equals(cartVO.getDeliveryMethod())) {
             this.setConsigneeAddressIdPath(tradeDTO.getMemberAddress().getConsigneeAddressIdPath());
             this.setConsigneeAddressPath(tradeDTO.getMemberAddress().getConsigneeAddressPath());
             this.setConsigneeDetail(tradeDTO.getMemberAddress().getDetail());
@@ -254,8 +253,7 @@ public class Order extends BaseEntity {
             this.setConsigneeName(tradeDTO.getMemberAddress().getName());
         }
         //自提点信息
-        if(DeliveryMethodEnum.SELF_PICK_UP.name().equals(cartVO.getDeliveryMethod())){
-            log.info("进入自提配送方式：实际上是"+cartVO.getDeliveryMethod());
+        if (tradeDTO.getStoreAddress() != null && DeliveryMethodEnum.SELF_PICK_UP.name().equals(cartVO.getDeliveryMethod())) {
             this.setStoreAddressPath(tradeDTO.getStoreAddress().getAddress());
             this.setStoreAddressMobile(tradeDTO.getStoreAddress().getMobile());
             this.setStoreAddressCenter(tradeDTO.getStoreAddress().getCenter());

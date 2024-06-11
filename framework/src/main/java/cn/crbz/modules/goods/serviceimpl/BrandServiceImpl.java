@@ -96,7 +96,7 @@ public class BrandServiceImpl extends ServiceImpl<BrandMapper, Brand> implements
     }
 
     @Override
-    public boolean brandDisable(String brandId, boolean disable) {
+    public boolean brandDisable(String brandId, Integer disable) {
         Brand brand = this.checkExist(brandId);
         //如果是要禁用，则需要先判定绑定关系
         if (Boolean.TRUE.equals(disable)) {
@@ -104,7 +104,7 @@ public class BrandServiceImpl extends ServiceImpl<BrandMapper, Brand> implements
             ids.add(brandId);
             checkBind(ids);
         }
-        brand.setDeleteFlag(1);
+        brand.setDeleteFlag(disable);
         return updateById(brand);
     }
 

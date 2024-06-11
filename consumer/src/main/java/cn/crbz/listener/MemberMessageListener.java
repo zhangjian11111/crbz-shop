@@ -2,6 +2,7 @@ package cn.crbz.listener;
 
 import cn.hutool.json.JSONUtil;
 import cn.crbz.event.*;
+import cn.crbz.event.impl.ImTalkExecute;
 import cn.crbz.modules.connect.entity.dto.MemberConnectLoginMessage;
 import cn.crbz.modules.member.entity.dos.Member;
 import cn.crbz.modules.member.entity.dos.MemberSign;

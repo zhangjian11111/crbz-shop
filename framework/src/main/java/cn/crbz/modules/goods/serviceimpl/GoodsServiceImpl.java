@@ -14,10 +14,7 @@ import cn.crbz.common.properties.RocketmqCustomProperties;
 import cn.crbz.common.security.AuthUser;
 import cn.crbz.common.security.context.UserContext;
 import cn.crbz.common.security.enums.UserEnums;
-import cn.crbz.modules.goods.entity.dos.Category;
-import cn.crbz.modules.goods.entity.dos.Goods;
-import cn.crbz.modules.goods.entity.dos.GoodsGallery;
-import cn.crbz.modules.goods.entity.dos.Wholesale;
+import cn.crbz.modules.goods.entity.dos.*;
 import cn.crbz.modules.goods.entity.dto.GoodsOperationDTO;
 import cn.crbz.modules.goods.entity.dto.GoodsParamsDTO;
 import cn.crbz.modules.goods.entity.dto.GoodsSearchParams;
@@ -36,6 +33,7 @@ import cn.crbz.modules.store.entity.dos.Store;
 import cn.crbz.modules.store.entity.vos.StoreVO;
 import cn.crbz.modules.store.service.FreightTemplateService;
 import cn.crbz.modules.store.service.StoreService;
+import cn.crbz.modules.system.aspect.annotation.SystemLogPoint;
 import cn.crbz.modules.system.entity.dos.Setting;
 import cn.crbz.modules.system.entity.dto.GoodsSetting;
 import cn.crbz.modules.system.entity.enums.SettingEnum;
@@ -168,6 +166,7 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements
 
     @Override
     @Transactional(rollbackFor = Exception.class)
+    @SystemLogPoint(description = "添加商品", customerLog = "'新增商品名称:['+#goodsOperationDTO.goodsName+']'")
     public void addGoods(GoodsOperationDTO goodsOperationDTO) {
         Goods goods = new Goods(goodsOperationDTO);
         //检查商品
@@ -195,6 +194,7 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements
 
     @Override
     @Transactional(rollbackFor = Exception.class)
+    @SystemLogPoint(description = "修改商品", customerLog = "'操作的商品ID:['+#goodsId+']'")
     public void editGoods(GoodsOperationDTO goodsOperationDTO, String goodsId) {
         Goods goods = new Goods(goodsOperationDTO);
         goods.setId(goodsId);
@@ -293,6 +293,7 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements
     }
 
     @Override
+    @SystemLogPoint(description = "审核商品", customerLog = "'操作的商品ID:['+#goodsIds+']，操作后商品状态:['+#goodsAuthEnum+']'")
     @Transactional(rollbackFor = Exception.class)
     public boolean auditGoods(List<String> goodsIds, GoodsAuthEnum goodsAuthEnum) {
         List<String> goodsCacheKeys = new ArrayList<>();
@@ -315,6 +316,7 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements
 
     @Override
     @Transactional(rollbackFor = Exception.class)
+    @SystemLogPoint(description = "商品状态操作", customerLog = "'操作类型:['+#goodsStatusEnum+']，操作对象:['+#goodsIds+']，操作原因:['+#underReason+']'")
     public Boolean updateGoodsMarketAble(List<String> goodsIds, GoodsStatusEnum goodsStatusEnum, String underReason) {
         boolean result;
 
@@ -346,6 +348,7 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements
      * @return 更新结果
      */
     @Override
+    @SystemLogPoint(description = "店铺关闭下架商品", customerLog = "'操作类型:['+#goodsStatusEnum+']，操作对象:['+#storeId+']，操作原因:['+#underReason+']'")
     public Boolean updateGoodsMarketAbleByStoreId(String storeId, GoodsStatusEnum goodsStatusEnum, String underReason) {
 
 
@@ -361,7 +364,9 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements
     }
 
     @Override
+    @SystemLogPoint(description = "管理员关闭下架商品", customerLog = "'操作类型:['+#goodsStatusEnum+']，操作对象:['+#goodsIds+']，操作原因:['+#underReason+']'")
     @Transactional(rollbackFor = Exception.class)
+
     public Boolean managerUpdateGoodsMarketAble(List<String> goodsIds, GoodsStatusEnum goodsStatusEnum, String underReason) {
         boolean result;
 
@@ -389,6 +394,7 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements
 
     @Override
     @Transactional(rollbackFor = Exception.class)
+    @SystemLogPoint(description = "删除商品", customerLog = "'操作对象:['+#goodsIds+']'")
     public Boolean deleteGoods(List<String> goodsIds) {
 
         LambdaUpdateWrapper<Goods> updateWrapper = this.getUpdateWrapperByStoreAuthority();
@@ -435,19 +441,30 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements
     }
 
     @Override
-    public void updateStock(String goodsId, Integer quantity) {
+    @SystemLogPoint(description = "同步商品库存", customerLog = "'同步商品商品ID的库存:['+#goodsId+']'")
+    public void updateStock(String goodsId) {
         LambdaUpdateWrapper<Goods> lambdaUpdateWrapper = Wrappers.lambdaUpdate();
-        lambdaUpdateWrapper.set(Goods::getQuantity, quantity);
+        Integer stock = goodsSkuService.getGoodsStock(goodsId);
+        lambdaUpdateWrapper.set(Goods::getQuantity, stock);
         lambdaUpdateWrapper.eq(Goods::getId, goodsId);
         cache.remove(CachePrefix.GOODS.getPrefix() + goodsId);
         this.update(lambdaUpdateWrapper);
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void updateGoodsCommentNum(String goodsId, String skuId) {
+        GoodsSku goodsSku = goodsSkuService.getGoodsSkuByIdFromCache(skuId);
+        if (goodsSku == null) {
+            return;
+        }
 
         //获取商品信息
         Goods goods = this.getById(goodsId);
+
+        if (goods == null) {
+            return;
+        }
 
         //修改商品评价数量
         long commentNum = memberEvaluationService.getEvaluationCount(EvaluationQueryParams.builder().goodsId(goodsId).status("OPEN").build());
@@ -458,11 +475,19 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements
         //好评率
         double grade = NumberUtil.mul(NumberUtil.div(highPraiseNum, goods.getCommentNum().doubleValue(), 2), 100);
         goods.setGrade(grade);
-        this.updateById(goods);
+        LambdaUpdateWrapper<Goods> updateWrapper = new LambdaUpdateWrapper<>();
+        updateWrapper.eq(Goods::getId, goodsId);
+        updateWrapper.set(Goods::getCommentNum, goods.getCommentNum());
+        updateWrapper.set(Goods::getGrade, goods.getGrade());
+        this.update(updateWrapper);
 
         cache.remove(CachePrefix.GOODS.getPrefix() + goodsId);
 
-        Map<String, Object> updateIndexFieldsMap = EsIndexUtil.getUpdateIndexFieldsMap(MapUtil.builder(new HashMap<String, Object>()).put("id", skuId).build(), MapUtil.builder(new HashMap<String, Object>()).put("commentNum", goods.getCommentNum()).put("highPraiseNum", highPraiseNum).put("grade", grade).build());
+
+        // 修改商品sku评价数量
+        this.goodsSkuService.updateGoodsSkuGrade(goodsId, grade, goods.getCommentNum());
+
+        Map<String, Object> updateIndexFieldsMap = EsIndexUtil.getUpdateIndexFieldsMap(MapUtil.builder(new HashMap<String, Object>()).put("goodsId", goodsId).build(), MapUtil.builder(new HashMap<String, Object>()).put("commentNum", goods.getCommentNum()).put("highPraiseNum", highPraiseNum).put("grade", grade).build());
         applicationEventPublisher.publishEvent(new TransactionCommitSendMQEvent("更新商品索引信息", rocketmqCustomProperties.getGoodsTopic(), GoodsTagsEnum.UPDATE_GOODS_INDEX_FIELD.name(), JSONUtil.toJsonStr(updateIndexFieldsMap)));
     }
 

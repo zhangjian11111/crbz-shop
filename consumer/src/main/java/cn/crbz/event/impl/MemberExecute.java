@@ -1,9 +1,11 @@
 package cn.crbz.event.impl;
 
 import cn.hutool.core.util.StrUtil;
+import cn.crbz.common.enums.ClientTypeEnum;
 import cn.crbz.event.MemberConnectLoginEvent;
 import cn.crbz.event.MemberLoginEvent;
 import cn.crbz.modules.connect.entity.dto.ConnectAuthUser;
+import cn.crbz.modules.connect.entity.enums.ConnectEnum;
 import cn.crbz.modules.connect.entity.enums.SourceEnum;
 import cn.crbz.modules.connect.service.ConnectService;
 import cn.crbz.modules.member.entity.dos.Member;

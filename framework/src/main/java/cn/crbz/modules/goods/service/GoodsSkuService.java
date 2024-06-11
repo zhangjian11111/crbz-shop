@@ -189,6 +189,18 @@ public interface GoodsSkuService extends IService<GoodsSku> {
     void updateStocks(List<GoodsSkuStockDTO> goodsSkuStockDTOS);
 
     /**
+     * 更新SKU预警库存
+     * @param goodsSkuStockDTOS sku库存修改实体
+     */
+    void batchUpdateAlertQuantity(List<GoodsSkuStockDTO> goodsSkuStockDTOS);
+
+    /**
+     * 更新SKU预警库存
+     * @param goodsSkuStockDTO sku库存修改实体
+     */
+    void updateAlertQuantity(GoodsSkuStockDTO goodsSkuStockDTO);
+
+    /**
      * 更新SKU库存
      *
      * @param skuId    SKUId
@@ -210,13 +222,6 @@ public interface GoodsSkuService extends IService<GoodsSku> {
      * @param goodsSkus
      */
     void updateGoodsStock(List<GoodsSku> goodsSkus);
-
-    /**
-     * 更新SKU评价数量
-     *
-     * @param skuId SKUId
-     */
-    void updateGoodsSkuCommentNum(String skuId);
 
     /**
      * 根据商品id获取全部skuId的集合
@@ -261,9 +266,17 @@ public interface GoodsSkuService extends IService<GoodsSku> {
     /**
      * 更新商品sku评分
      *
-     * @param skuId   skuId
+     * @param goodsId goodsId
      * @param grade   评分
      * @param commentNum 评论数量
      */
-    void updateGoodsSkuGrade(String skuId, double grade,int commentNum);
+    void updateGoodsSkuGrade(String goodsId, double grade,int commentNum);
+
+    /**
+     * 获取最新商品库存
+     *
+     * @param goodsId 商品ID
+     * @return 库存数量
+     */
+    Integer getGoodsStock(String goodsId);
 }

@@ -1,12 +1,14 @@
 package cn.crbz.controller.common;
 
 import cn.crbz.cache.Cache;
+import cn.crbz.common.context.ThreadContextHolder;
 import cn.crbz.common.enums.ResultCode;
 import cn.crbz.common.enums.ResultUtil;
 import cn.crbz.common.exception.ServiceException;
 import cn.crbz.common.security.AuthUser;
 import cn.crbz.common.security.context.UserContext;
 import cn.crbz.common.security.enums.UserEnums;
+import cn.crbz.common.utils.ResponseUtil;
 import cn.crbz.common.vo.ResultMessage;
 import cn.crbz.modules.file.entity.File;
 import cn.crbz.modules.file.entity.dto.FileOwnerDTO;
@@ -44,6 +46,11 @@ public class FileController {
     public ResultMessage<IPage<File>> getFileList(@RequestHeader String accessToken, FileOwnerDTO fileOwnerDTO) {
 
         AuthUser authUser = UserContext.getAuthUser(cache, accessToken);
+        if (authUser == null) {
+            ResponseUtil.output(ThreadContextHolder.getHttpResponse(), 403, ResponseUtil.resultMap(false,
+                    403, "登录已失效，请重新登录"));
+            return null;
+        }
         //只有买家才写入自己id
         if (authUser.getRole().equals(UserEnums.MEMBER)) {
             fileOwnerDTO.setOwnerId(authUser.getId());

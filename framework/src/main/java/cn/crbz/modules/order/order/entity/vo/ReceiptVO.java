@@ -17,7 +17,7 @@ import java.io.Serializable;
 public class ReceiptVO implements Serializable {
 
     private static final long serialVersionUID = -8402457457074092957L;
-
+    
     @ApiModelProperty(value = "发票抬头")
     private String receiptTitle;
 

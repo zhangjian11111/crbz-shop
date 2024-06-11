@@ -2,6 +2,7 @@ package cn.crbz.modules.member.entity.vo;
 
 import cn.crbz.common.utils.BeanUtil;
 import cn.crbz.modules.member.entity.dos.StoreDepartment;
+import cn.crbz.modules.permission.entity.dos.Department;
 import lombok.Data;
 
 import java.util.ArrayList;

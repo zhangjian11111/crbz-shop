@@ -7,7 +7,9 @@ import cn.crbz.modules.member.entity.dto.ClerkAddDTO;
 import cn.crbz.modules.member.entity.dto.ClerkEditDTO;
 import cn.crbz.modules.member.entity.dto.ClerkQueryDTO;
 import cn.crbz.modules.member.entity.vo.ClerkVO;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 import java.util.List;

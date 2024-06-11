@@ -107,7 +107,7 @@ public class HuaweiSmsPlugin implements SmsPlugin {
 
     private void sendSms(String signName, String mobile, String param, String templateCode) throws Exception {
         //必填,请参考"开发准备"获取如下数据,替换为实际值
-        String url = ""; //APP接入地址(在控制台"应用管理"页面获取)+接口访问URI
+        String url = "https://smsapi.cn-north-4.myhuaweicloud.com:443/sms/batchSendSms/v1"; //APP接入地址(在控制台"应用管理"页面获取)+接口访问URI
         String appKey = smsSetting.getHuaweiAppKey(); //APP_Key
         String appSecret = smsSetting.getHuaweiAppSecret(); //APP_Secret
         String sender = smsSetting.getHuaweiSender(); //国内短信签名通道号或国际/港澳台短信通道号

@@ -1,9 +1,13 @@
 package cn.crbz.modules.member.entity.dto;
 
+import cn.crbz.common.security.sensitive.Sensitive;
+import cn.crbz.common.security.sensitive.enums.SensitiveStrategy;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.Length;
 
+import javax.validation.constraints.NotEmpty;
 import java.util.List;
 
 /**

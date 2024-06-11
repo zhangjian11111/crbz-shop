@@ -9,11 +9,14 @@ import cn.crbz.common.security.OperationalJudgment;
 import cn.crbz.common.security.context.UserContext;
 import cn.crbz.common.vo.ResultMessage;
 import cn.crbz.modules.order.order.entity.dos.Order;
+import cn.crbz.modules.order.order.entity.dos.OrderPackage;
 import cn.crbz.modules.order.order.entity.dto.OrderSearchParams;
 import cn.crbz.modules.order.order.entity.enums.OrderStatusEnum;
 import cn.crbz.modules.order.order.entity.vo.OrderDetailVO;
 import cn.crbz.modules.order.order.entity.vo.OrderSimpleVO;
+import cn.crbz.modules.order.order.service.OrderPackageService;
 import cn.crbz.modules.order.order.service.OrderService;
+import cn.crbz.modules.system.entity.vo.Traces;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -43,6 +46,9 @@ public class OrderBuyerController {
      */
     @Autowired
     private OrderService orderService;
+
+    @Autowired
+    private OrderPackageService orderPackageService;
 
     @ApiOperation(value = "查询会员订单列表")
     @GetMapping
@@ -138,4 +144,21 @@ public class OrderBuyerController {
         return ResultUtil.data(orderService.invoice(orderSn));
     }
 
+    @ApiOperation(value = "查询物流踪迹")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "orderSn", value = "订单编号", required = true, dataType = "String", paramType = "path")
+    })
+    @GetMapping(value = "/getTracesList/{orderSn}")
+    public ResultMessage<Object> getTracesList(@NotBlank(message = "订单编号不能为空") @PathVariable String orderSn) {
+        return ResultUtil.data(orderPackageService.getOrderPackageVOList(orderSn));
+    }
+
+    @ApiOperation(value = "查看包裹列表")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "orderSn", value = "订单编号", required = true, dataType = "String", paramType = "path")
+    })
+    @GetMapping(value = "/getPackage/{orderSn}")
+    public ResultMessage<Object> getPackage(@NotBlank(message = "订单编号不能为空") @PathVariable String orderSn) {
+        return ResultUtil.data(orderPackageService.getOrderPackageVOList(orderSn));
+    }
 }

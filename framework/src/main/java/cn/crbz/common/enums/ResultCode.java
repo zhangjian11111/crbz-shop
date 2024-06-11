@@ -205,6 +205,7 @@ public enum ResultCode {
     POINT_NOT_ENOUGH(31015, "当前会员积分不足购买当前积分商品！"),
     ORDER_LABEL_ORDER_ERROR(31016, "订单不能打印电子面单"),
     ORDER_PRICE_ERROR(31017,"订单金额不能小于等于0"),
+    ORDER_PACKAGE_NOT_EXIST(31017, "当前订单包裹不存在！"),
 
 
     /**
@@ -418,7 +419,7 @@ public enum ResultCode {
     STORE_CLOSE_ERROR(50006, "店铺关闭，请联系管理员"),
     STORE_DELIVER_GOODS_ADDRESS(50007,"请填写商家发货地址"),
     FREIGHT_TEMPLATE_NOT_EXIST(50010, "当前模版不存在"),
-    STORE_STATUS_ERROR(50011, "店铺状态异常，无法申请"),
+    STORE_STATUS_ERROR(50011, "店铺在申请中或审核中，请勿重复操作"),
     STORE_DELIVER_ADDRESS_EXIST(50012,"请填写发货地址"),
 
     /**
@@ -457,7 +458,7 @@ public enum ResultCode {
     LOGISTICS_NOT_SETTING(70005, "您还未配置快递查询"),
     LOGISTICS_CHECK_SETTING(70005, "操作失败,请检查您的快递鸟配置"),
     ORDER_SETTING_ERROR(70006, "系统订单配置异常"),
-    Acrbz_SMS_SETTING_ERROR(70007, "您还未配置阿里云短信"),
+    ALI_SMS_SETTING_ERROR(70007, "您还未配置阿里云短信"),
     SMS_SIGN_EXIST_ERROR(70008, "短信签名已存在"),
 
     /**
@@ -495,6 +496,10 @@ public enum ResultCode {
     WECHAT_MP_MESSAGE_TMPL_ERROR(80306, "未能获取到微信模版消息id"),
     WECHAT_ERROR(80307, "微信接口异常"),
     APP_VERSION_EXIST(80307, "APP版本已存在"),
+
+    APP_VERSION_PARAM_ERROR(80308, "添加APP版本参数异常"),
+    // 未选择APP类型
+    APP_VERSION_TYPE_ERROR(80308, "请选择有效的APP类型"),
 
     /**
      * IM

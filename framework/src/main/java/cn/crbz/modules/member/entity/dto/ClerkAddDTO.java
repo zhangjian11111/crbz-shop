@@ -2,12 +2,16 @@ package cn.crbz.modules.member.entity.dto;
 
 import cn.crbz.common.security.sensitive.Sensitive;
 import cn.crbz.common.security.sensitive.enums.SensitiveStrategy;
+import cn.crbz.mybatis.BaseEntity;
+import com.baomidou.mybatisplus.annotation.TableName;
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 import java.util.List;
 
 /**

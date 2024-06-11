@@ -16,6 +16,7 @@ import cn.crbz.modules.goods.entity.dos.Wholesale;
 import cn.crbz.modules.goods.entity.enums.GoodsAuthEnum;
 import cn.crbz.modules.goods.entity.enums.GoodsSalesModeEnum;
 import cn.crbz.modules.goods.entity.enums.GoodsStatusEnum;
+import cn.crbz.modules.goods.entity.enums.GoodsTypeEnum;
 import cn.crbz.modules.goods.service.GoodsSkuService;
 import cn.crbz.modules.goods.service.WholesaleService;
 import cn.crbz.modules.member.entity.dos.Member;
@@ -568,10 +569,8 @@ public class CartServiceImpl implements CartService {
         tradeDTO.setStoreRemark(tradeParams.getRemark());
         tradeDTO.setParentOrderSn(tradeParams.getParentOrderSn());
         //订单无收货地址校验
-        if(tradeDTO.getStoreAddress() == null){
-            if (tradeDTO.getMemberAddress() == null) {
-                throw new ServiceException(ResultCode.MEMBER_ADDRESS_NOT_EXIST);
-            }
+        if (tradeDTO.getStoreAddress() == null && tradeDTO.getMemberAddress() == null && !GoodsTypeEnum.VIRTUAL_GOODS.name().equals(tradeDTO.getCheckedSkuList().get(0).getGoodsSku().getGoodsType())) {
+            throw new ServiceException(ResultCode.MEMBER_ADDRESS_NOT_EXIST);
         }
         //构建交易
         Trade trade = tradeBuilder.createTrade(tradeDTO);
@@ -581,20 +580,17 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public List<String> shippingMethodList(String way) {
-        log.info("购买方式：：："+way);
         List<String> list = new ArrayList<String>();
+        list.add(DeliveryMethodEnum.LOGISTICS.name());
         TradeDTO tradeDTO = this.getCheckedTradeDTO(CartTypeEnum.valueOf(way));
-        if(tradeDTO.getCartList().size()==1){
+        if (tradeDTO.getCartList().size() == 1) {
             for (CartVO cartVO : tradeDTO.getCartList()) {
                 Store store = storeService.getById(cartVO.getStoreId());
-                //暂时将自提和同城配送设置为同一个开关
-                if(store.getSelfPickFlag() != null && store.getSelfPickFlag()){
+                if (store.getSelfPickFlag() != null && store.getSelfPickFlag()) {
                     list.add(DeliveryMethodEnum.SELF_PICK_UP.name());
-                    list.add(DeliveryMethodEnum.LOCAL_TOWN_DELIVERY.name());
                 }
             }
         }
-        list.add(DeliveryMethodEnum.LOGISTICS.name());
         return list;
     }
 

@@ -302,7 +302,7 @@ public class MemberCouponServiceImpl extends ServiceImpl<MemberCouponMapper, Mem
         LambdaUpdateWrapper<MemberCoupon> updateWrapper = new LambdaUpdateWrapper<>();
         updateWrapper.in(MemberCoupon::getCouponId, couponId);
         updateWrapper.set(MemberCoupon::getMemberCouponStatus, MemberCouponStatusEnum.CLOSED.name());
-        updateWrapper.set(MemberCoupon::getDeleteFlag, 1);
+        updateWrapper.set(MemberCoupon::getDeleteFlag, true);
         this.update(updateWrapper);
     }
 

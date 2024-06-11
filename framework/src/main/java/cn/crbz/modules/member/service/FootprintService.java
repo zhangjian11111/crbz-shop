@@ -1,5 +1,6 @@
 package cn.crbz.modules.member.service;
 
+import cn.crbz.common.vo.PageVO;
 import cn.crbz.modules.member.entity.dos.FootPrint;
 import cn.crbz.modules.member.entity.dto.FootPrintQueryParams;
 import cn.crbz.modules.search.entity.dos.EsGoodsIndex;

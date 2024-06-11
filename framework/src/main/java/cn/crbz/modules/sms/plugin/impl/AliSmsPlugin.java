@@ -246,7 +246,7 @@ public class AliSmsPlugin implements SmsPlugin {
     public com.aliyun.dysmsapi20170525.Client createClient() {
         try {
             if (smsSetting == null) {
-                throw new ServiceException(ResultCode.Acrbz_SMS_SETTING_ERROR);
+                throw new ServiceException(ResultCode.ALI_SMS_SETTING_ERROR);
             }
             Config config = new Config();
             //您的AccessKey ID

@@ -1,7 +1,6 @@
 package cn.crbz.modules.goods.serviceimpl;
 
 import cn.hutool.core.text.CharSequenceUtil;
-import cn.hutool.core.util.NumberUtil;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import cn.crbz.cache.Cache;
@@ -36,9 +35,6 @@ import cn.crbz.modules.goods.service.WholesaleService;
 import cn.crbz.modules.goods.sku.GoodsSkuBuilder;
 import cn.crbz.modules.goods.sku.render.SalesModelRender;
 import cn.crbz.modules.member.entity.dos.FootPrint;
-import cn.crbz.modules.member.entity.dto.EvaluationQueryParams;
-import cn.crbz.modules.member.entity.enums.EvaluationGradeEnum;
-import cn.crbz.modules.member.service.MemberEvaluationService;
 import cn.crbz.modules.promotion.entity.dos.Coupon;
 import cn.crbz.modules.promotion.entity.dos.PromotionGoods;
 import cn.crbz.modules.promotion.entity.dto.search.PromotionGoodsSearchParams;
@@ -101,11 +97,6 @@ public class GoodsSkuServiceImpl extends ServiceImpl<GoodsSkuMapper, GoodsSku> i
      */
     @Autowired
     private RocketmqCustomProperties rocketmqCustomProperties;
-    /**
-     * 会员评价
-     */
-    @Autowired
-    private MemberEvaluationService memberEvaluationService;
     /**
      * 商品
      */
@@ -337,6 +328,11 @@ public class GoodsSkuServiceImpl extends ServiceImpl<GoodsSkuMapper, GoodsSku> i
             }
 
         }
+        if (goodsSkuDetail.getGoodsGalleryList() == null || goodsSkuDetail.getGoodsGalleryList().isEmpty()) {
+            goodsSkuDetail.setGoodsGalleryList(goodsVO.getGoodsGalleryList());
+        } else {
+            goodsSkuDetail.getGoodsGalleryList().addAll(goodsVO.getGoodsGalleryList());
+        }
         map.put("data", goodsSkuDetail);
 
         //获取分类
@@ -477,13 +473,10 @@ public class GoodsSkuServiceImpl extends ServiceImpl<GoodsSkuMapper, GoodsSku> i
             SpecValueVO specValueVO = new SpecValueVO();
             if ("images".equals(entry.getKey())) {
                 specValueVO.setSpecName(entry.getKey());
-                if (entry.getValue().toString().contains("url")) {
-                    List<SpecValueVO.SpecImages> specImages = JSONUtil.toList(JSONUtil.parseArray(entry.getValue()),
-                            SpecValueVO.SpecImages.class);
-                    specValueVO.setSpecImage(specImages);
-                    goodsGalleryList =
-                            specImages.stream().map(SpecValueVO.SpecImages::getUrl).collect(Collectors.toList());
-                }
+                List<String> specImages = JSONUtil.toList(JSONUtil.parseArray(entry.getValue()),
+                        String.class);
+                specValueVO.setSpecImage(specImages);
+                goodsGalleryList = new ArrayList<>(specImages);
             } else {
                 specValueVO.setSpecName(entry.getKey());
                 specValueVO.setSpecValue(entry.getValue().toString());
@@ -526,18 +519,46 @@ public class GoodsSkuServiceImpl extends ServiceImpl<GoodsSkuMapper, GoodsSku> i
         //统计每个商品的库存
         for (Map.Entry<String, List<GoodsSkuStockDTO>> entry : groupByGoodsIds.entrySet()) {
             //库存
-            Integer quantity = 0;
             for (GoodsSkuStockDTO goodsSku : entry.getValue()) {
                 goodsSkuStockDTOS.stream().filter(i -> i.getSkuId().equals(goodsSku.getSkuId())).findFirst().ifPresent(i -> goodsSku.setQuantity(i.getQuantity()));
-                if (entry.getKey().equals(goodsSku.getGoodsId())) {
-                    quantity += goodsSku.getQuantity();
-                }
+
                 this.updateStock(goodsSku.getSkuId(), goodsSku.getQuantity());
             }
             //保存商品库存结果
-            goodsService.updateStock(entry.getKey(), quantity);
+            goodsService.updateStock(entry.getKey());
         }
     }
+
+    @Override
+    public void updateAlertQuantity(GoodsSkuStockDTO goodsSkuStockDTO) {
+        GoodsSku goodsSku = this.getById(goodsSkuStockDTO.getSkuId());
+        goodsSku.setAlertQuantity(goodsSkuStockDTO.getAlertQuantity());
+        //清除缓存，防止修改预警后直接修改商品导致预警数值错误
+        cache.remove(CachePrefix.GOODS.getPrefix() + goodsSku.getGoodsId());
+        this.update(goodsSku);
+    }
+
+    @Override
+    public void batchUpdateAlertQuantity(List<GoodsSkuStockDTO> goodsSkuStockDTOS) {
+        List<GoodsSku> goodsSkuList = new ArrayList<>();
+        List<String> skuIds = goodsSkuStockDTOS.stream().map(GoodsSkuStockDTO::getSkuId).collect(Collectors.toList());
+        List<GoodsSkuStockDTO> goodsSkuStockList = this.baseMapper.queryStocks(GoodsSearchParams.builder().ids(skuIds).build().queryWrapper());
+        List<String> goodsIdList = goodsSkuStockList.stream().map(GoodsSkuStockDTO::getGoodsId).collect(Collectors.toList());
+        HashSet<String> uniqueSet = new HashSet<>(goodsIdList);
+        // 将去重后的元素转回列表
+        List<String> uniqueGoodsIdList = new ArrayList<>(uniqueSet);
+        for (String goodsId : uniqueGoodsIdList) {
+            cache.remove(CachePrefix.GOODS.getPrefix() + goodsId);
+        }
+        //修改预警库存
+        for (GoodsSkuStockDTO goodsSkuStockDTO : goodsSkuStockDTOS) {
+            GoodsSku goodsSku = this.getById(goodsSkuStockDTO.getSkuId());
+            goodsSku.setAlertQuantity(goodsSkuStockDTO.getAlertQuantity());
+            goodsSkuList.add(goodsSku);
+        }
+        this.updateBatchById(goodsSkuList);
+    }
+
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -564,7 +585,8 @@ public class GoodsSkuServiceImpl extends ServiceImpl<GoodsSkuMapper, GoodsSku> i
             if (isFlag && CharSequenceUtil.equals(goodsSku.getMarketEnable(), GoodsStatusEnum.UPPER.name())) {
                 List<String> goodsIds = new ArrayList<>();
                 goodsIds.add(goodsSku.getGoodsId());
-                applicationEventPublisher.publishEvent(new TransactionCommitSendMQEvent("更新商品", rocketmqCustomProperties.getGoodsTopic(), GoodsTagsEnum.UPDATE_GOODS_INDEX.name(), goodsIds));
+                applicationEventPublisher.publishEvent(new TransactionCommitSendMQEvent("更新商品", rocketmqCustomProperties.getGoodsTopic(),
+                        GoodsTagsEnum.UPDATE_GOODS_INDEX.name(), goodsIds));
             }
         }
     }
@@ -598,34 +620,10 @@ public class GoodsSkuServiceImpl extends ServiceImpl<GoodsSkuMapper, GoodsSku> i
                 this.updateStock(goodsSku.getId(), goodsSku.getQuantity());
             }
             //保存商品库存结果
-            goodsService.updateStock(goodsId, quantity);
+            goodsService.updateStock(goodsId);
         }
 
 
-    }
-
-    @Override
-    @Transactional(rollbackFor = Exception.class)
-    public void updateGoodsSkuCommentNum(String skuId) {
-        //获取商品信息
-        GoodsSku goodsSku = this.getGoodsSkuByIdFromCache(skuId);
-
-        //好评数量
-        long highPraiseNum = memberEvaluationService.getEvaluationCount(EvaluationQueryParams.builder().status("OPEN").grade(EvaluationGradeEnum.GOOD.name()).skuId(skuId).build());
-
-        //更新商品评价数量
-        long commentNum = memberEvaluationService.getEvaluationCount(EvaluationQueryParams.builder().status("OPEN").skuId(skuId).build());
-        goodsSku.setCommentNum((int) commentNum);
-
-        //好评率
-        double grade = NumberUtil.mul(NumberUtil.div(highPraiseNum, goodsSku.getCommentNum().doubleValue(), 2), 100);
-        goodsSku.setGrade(grade);
-        //修改规格
-        this.updateGoodsSkuGrade(skuId, grade, goodsSku.getCommentNum());
-
-        //修改商品的评价数量
-        goodsService.updateGoodsCommentNum(goodsSku.getGoodsId(), skuId);
-        clearCache(skuId);
     }
 
     /**
@@ -656,7 +654,8 @@ public class GoodsSkuServiceImpl extends ServiceImpl<GoodsSkuMapper, GoodsSku> i
     public Long countSkuNum(String storeId) {
         LambdaQueryWrapper<GoodsSku> queryWrapper = new LambdaQueryWrapper<>();
 
-        queryWrapper.eq(GoodsSku::getStoreId, storeId).eq(GoodsSku::getDeleteFlag, Boolean.FALSE).eq(GoodsSku::getAuthFlag, GoodsAuthEnum.PASS.name()).eq(GoodsSku::getMarketEnable, GoodsStatusEnum.UPPER.name());
+        queryWrapper.eq(GoodsSku::getStoreId, storeId).eq(GoodsSku::getDeleteFlag, Boolean.FALSE).eq(GoodsSku::getAuthFlag,
+                GoodsAuthEnum.PASS.name()).eq(GoodsSku::getMarketEnable, GoodsStatusEnum.UPPER.name());
         return this.count(queryWrapper);
     }
 
@@ -673,7 +672,7 @@ public class GoodsSkuServiceImpl extends ServiceImpl<GoodsSkuMapper, GoodsSku> i
         salesModelRenders.stream().filter(i -> i.getSalesMode().equals(goodsOperationDTO.getSalesModel())).findFirst().ifPresent(i -> i.renderBatch(goodsSkuList, goodsOperationDTO));
         for (GoodsSku goodsSku : goodsSkuList) {
             extendOldSkuValue(goodsSku);
-            this.renderImages(goodsSku);
+            this.renderImages(goodsSku, goodsOperationDTO.getGoodsGalleryList());
         }
     }
 
@@ -686,12 +685,26 @@ public class GoodsSkuServiceImpl extends ServiceImpl<GoodsSkuMapper, GoodsSku> i
     }
 
     @Override
-    public void updateGoodsSkuGrade(String skuId, double grade, int commentNum) {
+    public void updateGoodsSkuGrade(String goodsId, double grade, int commentNum) {
         LambdaUpdateWrapper<GoodsSku> updateWrapper = new LambdaUpdateWrapper<>();
-        updateWrapper.eq(GoodsSku::getId, skuId);
+        updateWrapper.eq(GoodsSku::getGoodsId, goodsId);
         updateWrapper.set(GoodsSku::getGrade, grade);
         updateWrapper.set(GoodsSku::getCommentNum, commentNum);
         this.update(updateWrapper);
+        this.getSkuIdsByGoodsId(goodsId).forEach(this::clearCache);
+    }
+
+    @Override
+    public Integer getGoodsStock(String goodsId) {
+        List<String> skuIds = this.getSkuIdsByGoodsId(goodsId);
+
+        Integer stock = 0;
+
+        for (String skuId : skuIds) {
+            stock += this.getStock(skuId);
+        }
+        return stock;
+
     }
 
     /**
@@ -704,7 +717,7 @@ public class GoodsSkuServiceImpl extends ServiceImpl<GoodsSkuMapper, GoodsSku> i
         extendOldSkuValue(goodsSku);
         // 商品销售模式渲染器
         salesModelRenders.stream().filter(i -> i.getSalesMode().equals(goodsOperationDTO.getSalesModel())).findFirst().ifPresent(i -> i.renderSingle(goodsSku, goodsOperationDTO));
-        this.renderImages(goodsSku);
+        this.renderImages(goodsSku, goodsOperationDTO.getGoodsGalleryList());
     }
 
     /**
@@ -729,16 +742,23 @@ public class GoodsSkuServiceImpl extends ServiceImpl<GoodsSkuMapper, GoodsSku> i
      *
      * @param goodsSku sku
      */
-    void renderImages(GoodsSku goodsSku) {
-        JSONObject jsonObject = JSONUtil.parseObj(goodsSku.getSpecs());
-        List<Map<String, String>> images = jsonObject.get("images", List.class);
-        if (images != null && !images.isEmpty()) {
-            GoodsGallery goodsGallery = goodsGalleryService.getGoodsGallery(images.get(0).get("url"));
-            goodsSku.setBig(goodsGallery.getOriginal());
-            goodsSku.setOriginal(goodsGallery.getOriginal());
-            goodsSku.setThumbnail(goodsGallery.getThumbnail());
-            goodsSku.setSmall(goodsGallery.getSmall());
+    void renderImages(GoodsSku goodsSku, List<String> goodsImages) {
+        if (goodsImages == null || goodsImages.isEmpty()) {
+            return;
         }
+        JSONObject jsonObject = JSONUtil.parseObj(goodsSku.getSpecs());
+        List<String> images = jsonObject.getBeanList("images", String.class);
+        GoodsGallery goodsGallery;
+        if (images != null && !images.isEmpty()) {
+            goodsGallery = goodsGalleryService.getGoodsGallery(images.get(0));
+        } else {
+            goodsGallery = goodsGalleryService.getGoodsGallery(goodsImages.get(0));
+        }
+
+        goodsSku.setBig(goodsGallery.getOriginal());
+        goodsSku.setOriginal(goodsGallery.getOriginal());
+        goodsSku.setThumbnail(goodsGallery.getThumbnail());
+        goodsSku.setSmall(goodsGallery.getSmall());
     }
 
     /**

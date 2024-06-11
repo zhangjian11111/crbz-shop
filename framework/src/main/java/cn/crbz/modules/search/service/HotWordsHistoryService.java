@@ -1,8 +1,15 @@
 package cn.crbz.modules.search.service;
 
+import cn.crbz.modules.search.entity.dos.CustomWords;
 import cn.crbz.modules.search.entity.dos.HotWordsHistory;
+import cn.crbz.modules.search.entity.dto.HotWordsDTO;
 import cn.crbz.modules.search.entity.dto.HotWordsSearchParams;
+import cn.crbz.modules.search.entity.vo.HotWordsHistoryVO;
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
+import org.apache.poi.ss.formula.functions.T;
 
 import java.util.Date;
 import java.util.List;

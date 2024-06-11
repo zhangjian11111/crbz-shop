@@ -379,7 +379,7 @@ public class StoreServiceImpl extends ServiceImpl<StoreMapper, Store> implements
         clerkService.remove(new LambdaQueryWrapper<Clerk>().eq(Clerk::getShopkeeper, true));
         List<Clerk> clerkList = new ArrayList<>();
         //遍历已开启的店铺
-        for (Store store : this.list(new LambdaQueryWrapper<Store>().eq(Store::getDeleteFlag, 0).eq(Store::getStoreDisable,
+        for (Store store : this.list(new LambdaQueryWrapper<Store>().eq(Store::getDeleteFlag, false).eq(Store::getStoreDisable,
                 StoreStatusEnum.OPEN.name()))) {
             clerkList.add(new Clerk(store));
         }

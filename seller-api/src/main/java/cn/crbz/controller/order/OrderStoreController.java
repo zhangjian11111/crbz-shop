@@ -13,8 +13,10 @@ import cn.crbz.modules.member.entity.dto.MemberAddressDTO;
 import cn.crbz.modules.member.service.StoreLogisticsService;
 import cn.crbz.modules.order.order.entity.dto.OrderExportDTO;
 import cn.crbz.modules.order.order.entity.dto.OrderSearchParams;
+import cn.crbz.modules.order.order.entity.dto.PartDeliveryParamsDTO;
 import cn.crbz.modules.order.order.entity.vo.OrderDetailVO;
 import cn.crbz.modules.order.order.entity.vo.OrderSimpleVO;
+import cn.crbz.modules.order.order.service.OrderPackageService;
 import cn.crbz.modules.order.order.service.OrderPriceService;
 import cn.crbz.modules.order.order.service.OrderService;
 import cn.crbz.modules.system.service.LogisticsService;
@@ -69,6 +71,9 @@ public class OrderStoreController {
      */
     @Autowired
     private LogisticsService logisticsService;
+
+    @Autowired
+    private OrderPackageService orderPackageService;
 
 
     @ApiOperation(value = "查询订单列表")
@@ -216,5 +221,41 @@ public class OrderStoreController {
     public ResultMessage<Object> createElectronicsFaceSheet(@NotNull(message = "参数非法") @PathVariable String orderSn,
                                                             @NotNull(message = "请选择物流公司") String logisticsId) {
         return ResultUtil.data(logisticsService.labelOrder(orderSn, logisticsId));
+    }
+
+    @ApiOperation(value = "查看包裹列表")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "orderSn", value = "订单编号", required = true, dataType = "String", paramType = "path")
+    })
+    @GetMapping(value = "/getPackage/{orderSn}")
+    public ResultMessage<Object> getPackage(@NotBlank(message = "订单编号不能为空") @PathVariable String orderSn) {
+        return ResultUtil.data(orderPackageService.getOrderPackageVOList(orderSn));
+    }
+
+    @ApiOperation(value = "查询物流踪迹")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "orderSn", value = "订单编号", required = true, dataType = "String", paramType = "path")
+    })
+    @GetMapping(value = "/getTracesList/{orderSn}")
+    public ResultMessage<Object> getTracesList(@NotBlank(message = "订单编号不能为空") @PathVariable String orderSn) {
+        return ResultUtil.data(orderPackageService.getOrderPackageVOList(orderSn));
+    }
+
+    @ApiOperation(value = "订单包裹发货")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "orderSn", value = "订单sn", required = true, dataType = "String", paramType = "path"),
+            @ApiImplicitParam(name = "logisticsNo", value = "发货单号", required = true, dataType = "String", paramType = "query"),
+            @ApiImplicitParam(name = "logisticsId", value = "物流公司", required = true, dataType = "String", paramType = "query")
+    })
+    @PostMapping(value = "/{orderSn}/partDelivery")
+    public ResultMessage<Object> delivery(@RequestBody PartDeliveryParamsDTO partDeliveryParamsDTO) {
+        return ResultUtil.data(orderService.partDelivery(partDeliveryParamsDTO));
+    }
+
+    @ApiOperation(value = "卖家订单备注")
+    @PutMapping("/{orderSn}/sellerRemark")
+    public ResultMessage<Object> sellerRemark(@PathVariable String orderSn, @RequestParam String sellerRemark) {
+        orderService.updateSellerRemark(orderSn, sellerRemark);
+        return ResultUtil.success();
     }
 }

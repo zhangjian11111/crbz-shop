@@ -1,5 +1,6 @@
 package cn.crbz.modules.promotion.serviceimpl;
 
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.convert.Convert;
 import cn.hutool.core.text.CharSequenceUtil;
 import cn.hutool.json.JSONObject;
@@ -25,6 +26,7 @@ import cn.crbz.modules.promotion.service.SeckillApplyService;
 import cn.crbz.modules.promotion.tools.PromotionTools;
 import cn.crbz.modules.search.entity.dos.EsGoodsIndex;
 import cn.crbz.modules.search.service.EsGoodsIndexService;
+import cn.crbz.modules.system.aspect.annotation.SystemLogPoint;
 import cn.crbz.mybatis.util.PageUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -109,7 +111,7 @@ public class PromotionGoodsServiceImpl extends ServiceImpl<PromotionGoodsMapper,
         queryWrapper.and(i -> i.or(j -> j.in(SKU_ID_COLUMN, skuIds))
                 .or(n -> n.eq("scope_type", PromotionsScopeTypeEnum.ALL.name()))
                 .or(n -> n.and(k -> k.eq("scope_type", PromotionsScopeTypeEnum.PORTION_GOODS_CATEGORY.name())
-                        .and(l -> l.in("scope_id", categoriesPath)))));
+                        .and(l -> l.in(CollUtil.isNotEmpty(categoriesPath), "scope_id", categoriesPath)))));
         queryWrapper.and(i -> i.or(PromotionTools.queryPromotionStatus(PromotionsStatusEnum.START)).or(PromotionTools.queryPromotionStatus(PromotionsStatusEnum.NEW)));
         return this.list(queryWrapper);
     }
@@ -193,10 +195,10 @@ public class PromotionGoodsServiceImpl extends ServiceImpl<PromotionGoodsMapper,
     @Override
     public Integer getPromotionGoodsStock(PromotionTypeEnum typeEnum, String promotionId, String skuId) {
         String promotionStockKey = PromotionGoodsService.getPromotionGoodsStockCacheKey(typeEnum, promotionId, skuId);
-        String promotionGoodsStock = stringRedisTemplate.opsForValue().get(promotionStockKey);
+        Object promotionGoodsStock = cache.get(promotionStockKey);
 
         //库存如果不为空，则直接返回
-        if (promotionGoodsStock != null && CharSequenceUtil.isNotEmpty(promotionGoodsStock)) {
+        if (promotionGoodsStock != null) {
             return Convert.toInt(promotionGoodsStock);
         }
         //如果为空
@@ -211,7 +213,7 @@ public class PromotionGoodsServiceImpl extends ServiceImpl<PromotionGoodsMapper,
                 return 0;
             }
             //否则写入新的促销商品库存
-            stringRedisTemplate.opsForValue().set(promotionStockKey, promotionGoods.getQuantity().toString());
+            cache.put(promotionStockKey, promotionGoods.getQuantity());
             return promotionGoods.getQuantity();
         }
     }
@@ -267,19 +269,22 @@ public class PromotionGoodsServiceImpl extends ServiceImpl<PromotionGoodsMapper,
             updateWrapper.set(PromotionGoods::getQuantity, promotionGoods.getQuantity()).set(PromotionGoods::getNum, promotionGoods.getNum());
 
             this.update(updateWrapper);
-            stringRedisTemplate.opsForValue().set(promotionStockKey, promotionGoods.getQuantity().toString());
+            cache.put(promotionStockKey, promotionGoods.getQuantity());
         }
     }
 
     @Override
+    @SystemLogPoint(description = "更新促销活动商品库存", customerLog = "'操作的skuId:['+#skuId+']，修改后的库存:['+#quantity+']'")
     public void updatePromotionGoodsStock(String skuId, Integer quantity) {
         LambdaQueryWrapper<PromotionGoods> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.notIn(PromotionGoods::getPromotionType, Arrays.stream(PromotionTypeEnum.haveIndependanceStockPromotion).map(Enum::name).collect(Collectors.toList()));
         queryWrapper.eq(PromotionGoods::getSkuId, skuId);
         this.list(queryWrapper).forEach(promotionGoods -> {
             String promotionStockKey = PromotionGoodsService.getPromotionGoodsStockCacheKey(PromotionTypeEnum.valueOf(promotionGoods.getPromotionType()), promotionGoods.getPromotionId(), promotionGoods.getSkuId());
             cache.remove(promotionStockKey);
         });
         LambdaUpdateWrapper<PromotionGoods> updateWrapper = new LambdaUpdateWrapper<>();
+        updateWrapper.notIn(PromotionGoods::getPromotionType, Arrays.stream(PromotionTypeEnum.haveIndependanceStockPromotion).map(Enum::name).collect(Collectors.toList()));
         updateWrapper.eq(PromotionGoods::getSkuId, skuId);
         updateWrapper.set(PromotionGoods::getQuantity, quantity);
         this.update(updateWrapper);
@@ -305,6 +310,7 @@ public class PromotionGoodsServiceImpl extends ServiceImpl<PromotionGoodsMapper,
      * @param skuIds      skuId
      */
     @Override
+    @SystemLogPoint(description = "删除促销商品", customerLog = "'删除的skuId:['+#skuIds+']，促销活动ID:['+#promotionId+']'")
     public void deletePromotionGoods(String promotionId, List<String> skuIds) {
         LambdaQueryWrapper<PromotionGoods> queryWrapper = new LambdaQueryWrapper<PromotionGoods>()
                 .eq(PromotionGoods::getPromotionId, promotionId).in(PromotionGoods::getSkuId, skuIds);

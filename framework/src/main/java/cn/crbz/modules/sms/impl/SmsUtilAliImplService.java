@@ -59,7 +59,7 @@ public class SmsUtilAliImplService implements SmsUtil {
         //获取短信配置
         Setting setting = settingService.get(SettingEnum.SMS_SETTING.name());
         if (StrUtil.isBlank(setting.getSettingValue())) {
-            throw new ServiceException(ResultCode.Acrbz_SMS_SETTING_ERROR);
+            throw new ServiceException(ResultCode.ALI_SMS_SETTING_ERROR);
         }
         SmsSetting smsSetting = new Gson().fromJson(setting.getSettingValue(), SmsSetting.class);
 
@@ -82,6 +82,7 @@ public class SmsUtilAliImplService implements SmsUtil {
                 break;
             }
             //注册
+            case BIND_MOBILE:
             case REGISTER: {
                 templateCode = smsTemplateProperties.getREGISTER();
                 break;

@@ -1,6 +1,7 @@
 package cn.crbz.modules.member.entity.vo;
 
 import cn.crbz.modules.member.entity.dos.StoreMenu;
+import cn.crbz.modules.permission.entity.dos.Menu;
 import lombok.Data;
 
 /**

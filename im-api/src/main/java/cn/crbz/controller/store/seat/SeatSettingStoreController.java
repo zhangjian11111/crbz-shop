@@ -4,7 +4,7 @@ import cn.crbz.common.enums.ResultUtil;
 import cn.crbz.common.security.context.UserContext;
 import cn.crbz.common.vo.ResultMessage;
 import cn.crbz.modules.im.entity.dos.SeatSetting;
-import cn.crbz.modules.im.service.SeatSettingService;;
+import cn.crbz.modules.im.service.SeatSettingService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;

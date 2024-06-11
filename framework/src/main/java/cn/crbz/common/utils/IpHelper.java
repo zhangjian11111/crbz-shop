@@ -6,11 +6,8 @@ import cn.hutool.crypto.SecureUtil;
 import cn.hutool.http.HttpUtil;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
@@ -21,22 +18,19 @@ import javax.servlet.http.HttpServletRequest;
  *
  * @author Chopper
  */
-@Data
 @Slf4j
 @Component
-@Configuration
-@ConfigurationProperties(prefix = "crbz.lbs")
 public class IpHelper {
 
     /**
      * qq lbs 地区查询key
      */
-    //@Value("${crbz.lbs.key}")
+    @Value("${crbz.lbs.key}")
     private String key;
     /**
      * qq lbs 地区查询key
      */
-    //@Value("${crbz.lbs.sk}")
+    @Value("${crbz.lbs.sk}")
     private String sk;
 
     private static final String API = "https://apis.map.qq.com";

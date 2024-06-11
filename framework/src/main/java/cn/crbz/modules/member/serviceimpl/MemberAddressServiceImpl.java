@@ -1,6 +1,8 @@
 package cn.crbz.modules.member.serviceimpl;
 
+import cn.crbz.common.security.AuthUser;
 import cn.crbz.common.security.context.UserContext;
+import cn.crbz.common.security.enums.UserEnums;
 import cn.crbz.common.vo.PageVO;
 import cn.crbz.modules.member.entity.dos.MemberAddress;
 import cn.crbz.modules.member.mapper.MemberAddressMapper;
@@ -35,10 +37,15 @@ public class MemberAddressServiceImpl extends ServiceImpl<MemberAddressMapper, M
 
     @Override
     public MemberAddress getMemberAddress(String id) {
-        return this.getOne(
-                new QueryWrapper<MemberAddress>()
-                        .eq("member_id", Objects.requireNonNull(UserContext.getCurrentUser()).getId())
-                        .eq("id", id));
+        AuthUser authUser = UserContext.getCurrentUser();
+        if (authUser.getIsSuper() || UserEnums.MANAGER.equals(authUser.getRole())){
+            return this.getOne(new QueryWrapper<MemberAddress>().eq("id", id));
+        }else{
+            return this.getOne(
+                    new QueryWrapper<MemberAddress>()
+                            .eq("member_id", Objects.requireNonNull(UserContext.getCurrentUser()).getId())
+                            .eq("id", id));
+        }
     }
 
     /**

@@ -7,6 +7,7 @@ import cn.crbz.modules.order.order.entity.dto.AllOrderSearchParams;
 import cn.crbz.modules.order.order.entity.dto.OrderExportDTO;
 import cn.crbz.modules.order.order.entity.dto.OrderMessage;
 import cn.crbz.modules.order.order.entity.dto.OrderSearchParams;
+import cn.crbz.modules.order.order.entity.dto.PartDeliveryParamsDTO;
 import cn.crbz.modules.order.order.entity.vo.OrderDetailVO;
 import cn.crbz.modules.order.order.entity.vo.OrderSimpleVO;
 import cn.crbz.modules.order.order.entity.vo.PaymentLog;
@@ -337,4 +338,20 @@ public interface OrderService extends IService<Order> {
      */
     boolean checkFictitiousOrder(String pintuanId, Integer requiredNum, Boolean fictitious);
 
+    /**
+     * 订单部分发货
+     *
+     * @param partDeliveryParamsDTO 参数
+     * @return 订单
+     */
+    Order partDelivery(PartDeliveryParamsDTO partDeliveryParamsDTO);
+
+    /**
+     * 卖家订单备注
+     *
+     * @param orderSn 订单编号
+     * @param sellerRemark  卖家订单备注
+     * @return 订单
+     */
+    Order updateSellerRemark(String orderSn, String sellerRemark);
 }

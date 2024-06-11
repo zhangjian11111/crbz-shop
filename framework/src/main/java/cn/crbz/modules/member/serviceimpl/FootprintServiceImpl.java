@@ -85,17 +85,16 @@ public class FootprintServiceImpl extends ServiceImpl<FootprintMapper, FootPrint
             List<EsGoodsIndex> collect = IntStream.range(0, goodsSkuByIdFromCache.size())
                     .mapToObj(i -> {
                         if (goodsSkuByIdFromCache.get(i) == null) {
-                            EsGoodsIndex esGoodsIndex = new EsGoodsIndex();
-                            FootPrint footPrint = footPrintPages.getRecords().get(i);
-                            esGoodsIndex.setGoodsId(footPrint.getGoodsId());
-                            esGoodsIndex.setId(footPrint.getSkuId());
-                            esGoodsIndex.setReleaseTime(footPrintPages.getRecords().get(i).getCreateTime().getTime());
-                            return esGoodsIndex;
+                            return null;
                         }
-                        Optional<FootPrint> first = footPrintPages.getRecords().stream().filter(j -> j.getSkuId().equals(goodsSkuByIdFromCache.get(i).getId())).findFirst();
+                        Optional<FootPrint> first =
+                                footPrintPages.getRecords().stream().filter(j -> j.getSkuId().equals(goodsSkuByIdFromCache.get(i).getId())).findFirst();
                         return first.map(footPrint -> new EsGoodsIndex(goodsSkuByIdFromCache.get(i), footPrint.getCreateTime())).orElseGet(() -> new EsGoodsIndex(goodsSkuByIdFromCache.get(i)));
                     })
                     .collect(Collectors.toList());
+
+            collect.removeIf(Objects::isNull);
+
             esGoodsIndexIPage.setPages(footPrintPages.getPages());
             esGoodsIndexIPage.setRecords(collect);
             esGoodsIndexIPage.setTotal(footPrintPages.getTotal());
@@ -106,11 +105,12 @@ public class FootprintServiceImpl extends ServiceImpl<FootprintMapper, FootPrint
         return esGoodsIndexIPage;
     }
 
+
     @Override
     public long getFootprintNum() {
         LambdaQueryWrapper<FootPrint> lambdaQueryWrapper = Wrappers.lambdaQuery();
         lambdaQueryWrapper.eq(FootPrint::getMemberId, Objects.requireNonNull(UserContext.getCurrentUser()).getId());
-        lambdaQueryWrapper.eq(FootPrint::getDeleteFlag, 0);
+        lambdaQueryWrapper.eq(FootPrint::getDeleteFlag, false);
         return this.count(lambdaQueryWrapper);
     }
 }

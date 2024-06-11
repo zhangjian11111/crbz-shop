@@ -36,7 +36,7 @@ public interface GoodsMapper extends BaseMapper<Goods> {
      * @param goodsId    商品ID
      */
     @Update("UPDATE crbz_goods SET comment_num = comment_num + #{commentNum} WHERE id = #{goodsId}")
-    void addGoodsCommentNum(@Param("commentNum") Integer commentNum,@Param("goodsId") String goodsId);
+    void addGoodsCommentNum(Integer commentNum, String goodsId);
 
     /**
      * 查询商品VO分页

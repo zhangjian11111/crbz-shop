@@ -2,6 +2,7 @@ package cn.crbz.modules.promotion.entity.vos;
 
 import cn.crbz.modules.promotion.entity.dos.PointsGoodsCategory;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  * 积分商品分类视图对象

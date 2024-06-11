@@ -2,6 +2,8 @@ package cn.crbz.modules.member.mapper;
 
 import cn.crbz.modules.member.entity.dos.StoreMenu;
 import cn.crbz.modules.member.entity.vo.StoreUserMenuVO;
+import cn.crbz.modules.permission.entity.dos.Menu;
+import cn.crbz.modules.permission.entity.vo.UserMenuVO;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Select;
 

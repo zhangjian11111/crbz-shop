@@ -27,7 +27,8 @@ public class SpiceSqlInjector extends DefaultSqlInjector {
         // 在!t.isLogicDelete()表示不要逻辑删除字段，!"update_time".equals(t.getColumn())表示不要字段名为 update_time 的字段,不对进行操作
         // methodList.add(new InsertBatchSomeColumn(t -> !t.isLogicDelete() && !"update_time".equals(t.getColumn())));
         // 要逻辑删除 t.isLogicDelete() 默认不要
-        methodList.add(new InsertBatchSomeColumn(t -> !t.isLogicDelete()));
+        methodList.add(new InsertBatchSomeColumn(t -> t.isLogicDelete()));
+        methodList.add(new InsertIgnoreBatchAllColumn("insertIgnoreBatchAllColumn"));
         return methodList;
     }
 }

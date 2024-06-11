@@ -3,19 +3,19 @@ server:
 spring:
   profiles:
     active: prod
-  nacos-ip: 192.168.31.47:8848
+  nacos-ip: 192.168.31.209:8848
   application:
     name: jhkjGateway
   cloud:
     nacos:
       discovery:
         server-addr: ${spring.nacos-ip}
-        namespace: xbmall-prod
+        namespace: XBMALL-PROD
         group: CRBZSHOP_GROUP
       config:
         server-addr: ${spring.nacos-ip}
         file-extension: yaml
-        namespace: xbmall-prod
+        namespace: XBMALL-PROD
         group: CRBZSHOP_GROUP
         refresh-enabled: true
 

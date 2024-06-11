@@ -2,7 +2,6 @@ package cn.crbz.modules.order.order.mapper;
 
 import cn.crbz.modules.order.order.entity.dos.Trade;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Update;
 
 /**
@@ -19,5 +18,5 @@ public interface TradeMapper extends BaseMapper<Trade> {
      * @param tradeSn 交易编号
      */
     @Update("UPDATE crbz_trade SET flow_price =(SELECT SUM(flow_price) FROM crbz_order WHERE trade_sn=#{tradeSn}) WHERE sn=#{tradeSn}")
-    void updateTradePrice(@Param("tradeSn") String tradeSn);
+    void updateTradePrice(String tradeSn);
 }

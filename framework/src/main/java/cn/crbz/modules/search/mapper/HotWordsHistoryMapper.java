@@ -1,6 +1,9 @@
 package cn.crbz.modules.search.mapper;
 
+import cn.crbz.modules.search.entity.dos.CustomWords;
 import cn.crbz.modules.search.entity.dos.HotWordsHistory;
+import cn.crbz.modules.search.entity.vo.HotWordsHistoryVO;
+import cn.crbz.modules.statistics.entity.vo.OrderStatisticsDataVO;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.toolkit.Constants;

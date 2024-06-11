@@ -83,7 +83,6 @@ public class OrderMessageListener implements RocketMQListener<MessageExt> {
                 break;
             //订单状态变更
             case STATUS_CHANGE:
-                log.info("要变了吗：：");
                 for (OrderStatusChangeEvent orderStatusChangeEvent : orderStatusChangeEvents) {
                     try {
                         OrderMessage orderMessage = JSONUtil.toBean(new String(messageExt.getBody()), OrderMessage.class);

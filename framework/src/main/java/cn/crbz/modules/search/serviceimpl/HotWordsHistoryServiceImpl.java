@@ -1,5 +1,6 @@
 package cn.crbz.modules.search.serviceimpl;
 
+import cn.crbz.common.utils.DateUtil;
 import cn.crbz.modules.search.entity.dos.HotWordsHistory;
 import cn.crbz.modules.search.entity.dto.HotWordsSearchParams;
 import cn.crbz.modules.search.mapper.HotWordsHistoryMapper;

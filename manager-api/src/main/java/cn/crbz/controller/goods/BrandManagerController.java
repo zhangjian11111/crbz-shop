@@ -86,7 +86,7 @@ public class BrandManagerController {
             @ApiImplicitParam(name = "disable", value = "是否可用", required = true, dataType = "boolean", paramType = "query")
     })
     @PutMapping(value = "/disable/{brandId}")
-    public ResultMessage<Object> disable(@PathVariable String brandId, @RequestParam Boolean disable) {
+    public ResultMessage<Object> disable(@PathVariable String brandId, @RequestParam Integer disable) {
         if (brandService.brandDisable(brandId, disable)) {
             return ResultUtil.success();
         }

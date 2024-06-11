@@ -6,6 +6,7 @@ import cn.crbz.common.exception.ServiceException;
 import cn.crbz.common.vo.PageVO;
 import cn.crbz.common.vo.ResultMessage;
 import cn.crbz.modules.goods.entity.dos.Goods;
+import cn.crbz.modules.goods.entity.dos.GoodsSku;
 import cn.crbz.modules.goods.entity.dto.GoodsSearchParams;
 import cn.crbz.modules.goods.entity.vos.GoodsVO;
 import cn.crbz.modules.goods.service.GoodsService;
@@ -57,7 +58,7 @@ public class GoodsBuyerController {
     @Autowired
     private GoodsSkuService goodsSkuService;
     /**
-     * ES商品搜索
+//     * ES商品搜索
      */
     @Autowired
     private EsGoodsSearchService goodsSearchService;
@@ -99,6 +100,12 @@ public class GoodsBuyerController {
     @GetMapping
     public ResultMessage<IPage<Goods>> getByPage(GoodsSearchParams goodsSearchParams) {
         return ResultUtil.data(goodsService.queryByParams(goodsSearchParams));
+    }
+
+    @ApiOperation(value = "获取商品sku列表")
+    @GetMapping("/sku")
+    public ResultMessage<List<GoodsSku>> getSkuByPage(GoodsSearchParams goodsSearchParams) {
+        return ResultUtil.data(goodsSkuService.getGoodsSkuByList(goodsSearchParams));
     }
 
     @ApiOperation(value = "从ES中获取商品信息")

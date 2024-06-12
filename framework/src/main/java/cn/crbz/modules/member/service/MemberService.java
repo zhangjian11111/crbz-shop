@@ -29,7 +29,7 @@ public interface MemberService extends IService<Member> {
     /**
      * 默认密码
      */
-    static String DEFAULT_PASSWORD = "111111";
+    static String DEFAULT_PASSWORD = "$2a$10$mzoGYYK7xNf/Q8InQVSSkefQZvMuVprbaWwYLPGZmsUsJno8Ovbwi";
 
     /**
      * 获取当前登录的用户信息

@@ -374,6 +374,15 @@ public class MemberServiceImpl extends ServiceImpl<MemberMapper, Member> impleme
             lambdaUpdateWrapper.set(Member::getPassword, new BCryptPasswordEncoder().encode(password));
             this.update(lambdaUpdateWrapper);
         }
+
+//        if (new BCryptPasswordEncoder().matches(DEFAULT_PASSWORD, member.getPassword())) {
+//            // 修改会员密码
+//            LambdaUpdateWrapper<Member> lambdaUpdateWrapper = Wrappers.lambdaUpdate();
+//            lambdaUpdateWrapper.eq(Member::getId, member.getId());
+//            lambdaUpdateWrapper.set(Member::getPassword, new BCryptPasswordEncoder().encode(password));
+//            this.update(lambdaUpdateWrapper);
+//        }
+
         throw new ServiceException(ResultCode.UNINITIALIZED_PASSWORD);
 
     }
